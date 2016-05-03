@@ -19,7 +19,7 @@ module.exports = {
     return [require('autoprefixer'), require('precss')];
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx', '.css']
   },
   output: {
     path: __dirname + '/dist',
