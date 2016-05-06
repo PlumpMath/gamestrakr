@@ -1,5 +1,6 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
+import { Link } from 'react-router';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 export default React.createClass({
@@ -7,7 +8,7 @@ export default React.createClass({
   render: function() {
     return (
       <AppBar
-        title={this.props.title}
+        title={<Link to="/home">{this.props.appTitle}</Link>}
         onLeftIconButtonTouchTap={this.props.leftIconCB}
       />
     );

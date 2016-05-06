@@ -1,9 +1,11 @@
 import React from 'react';
 
 export default React.createClass({
-  render: function() {
+  render() {
     return (
-      <h1>Home</h1>
+      <div className="home-ctr">
+        <h1>Home</h1>
+      </div>
     );
   }
 });

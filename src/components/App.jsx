@@ -2,6 +2,8 @@ import React from 'react';
 import {List} from 'immutable';
 import Nav from './Nav';
 import LeftDrawer from './LeftDrawer';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 //Home - where users can view currently playing, their own collection, etc
 //Upcoming - where users can see a list of upcoming games with links to each game's page/discussions
@@ -16,13 +18,25 @@ function toggleLeftDrawer(){
 };
 
 export default React.createClass({
-  render: function() {
+  getInitialState: function(){
+    return {
+      leftDrawerOpen: false
+    };
+  },
+
+  toggleLeftDrawer: function(){
+    this.setState({leftDrawerOpen: !this.state.leftDrawerOpen});
+  },
+
+  render() {
     return (
-      <div>
-        <Nav appTitle={appTitle} leftIconCB={toggleLeftDrawer} />
-        <LeftDrawer navItems={navItems}/>
-        {this.props.children}
-      </div>
+      <MuiThemeProvider muiTheme={getMuiTheme()}>
+        <div>
+          <Nav appTitle={appTitle} leftIconCB={this.toggleLeftDrawer} />
+          <LeftDrawer open={this.state.leftDrawerOpen} navItems={navItems}/>
+          {this.props.children}
+          </div>
+      </MuiThemeProvider>
     );
   }
 });
