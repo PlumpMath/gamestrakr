@@ -4,17 +4,26 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Nav from './components/Nav';
+import {Router, Route, hashHistory} from 'react-router';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import css from './stylesheets/style.css';
+import App from './components/App';
+import Home from './components/Home';
 
-//Home - where users can view currently playing, their own collection, etc
-//Upcoming - where users can see a list of upcoming games with links to each game's page/discussions
-//Sales - possible section where users can submit and upvote sales
-//Discussion - open forum discussion
+const MuiApp = () => (
+  <MuiThemeProvider muiTheme={getMuiTheme()}>
+    <App />
+  </MuiThemeProvider>
+);
 
-const navItems = ['Home', 'Upcoming', 'Sales', 'Music', 'Discussion'];
+const routes = <Route component={MuiApp}>
+  <Route path="/" component={Home} />
+</Route>;
 
 ReactDOM.render(
-  <Nav navItems={navItems} />,
+  <Router history={hashHistory}>{routes}</Router>,
   document.getElementById('app')
 );
+
+

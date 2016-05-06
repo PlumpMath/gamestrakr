@@ -1,16 +1,15 @@
 import React from 'react';
+import AppBar from 'material-ui/AppBar';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 export default React.createClass({
-  getNavItems: function(){
-    return this.props.navItems || [];
-  },
+  mixins: [PureRenderMixin],
   render: function() {
-    return <div className="nav-ctr">
-      {this.getNavItems().map(navItem =>
-        <button key={navItem}>
-          <span>{navItem}</span>
-        </button>
-        )}
-      </div>;
+    return (
+      <AppBar
+        title={this.props.title}
+        onLeftIconButtonTouchTap={this.props.leftIconCB}
+      />
+    );
   }
 });
