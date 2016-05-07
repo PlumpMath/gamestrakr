@@ -7,7 +7,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, Route, hashHistory} from 'react-router';
 
-import css from './stylesheets/style.css';
+import css from './stylesheets/index.scss';
 
 import App from './components/App';
 import Home from './components/Home';
