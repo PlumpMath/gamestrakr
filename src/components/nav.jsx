@@ -11,7 +11,7 @@ import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
 
-import * as actionCreators from '../action_creators';
+import * as actions from '../actions';
 import css from '../stylesheets/nav.scss';
 
 //Home - where users can view currently playing, their own collection, etc
@@ -69,5 +69,5 @@ function mapStateToProps(state){
 
 export const NavContainer = connect(
   mapStateToProps,
-  actionCreators
+  actions
 )(Nav);

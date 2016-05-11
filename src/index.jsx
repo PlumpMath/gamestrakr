@@ -9,7 +9,7 @@ import {Router, Route, hashHistory} from 'react-router';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import reducer from './reducer';
-import {setState} from './action_creators';
+import {setState} from './actions';
 import remoteActionMiddleware from './remote_action_middleware';
 
 import css from './stylesheets/index.scss';
