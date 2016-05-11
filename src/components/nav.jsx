@@ -1,13 +1,18 @@
 import React from 'react';
-import AppBar from 'material-ui/AppBar';
-import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
-import { Link } from 'react-router';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import onClickOutside from 'react-onclickoutside';
+import { Link } from 'react-router';
 import {connect} from 'react-redux';
 
+import AppBar from 'material-ui/AppBar';
+import Drawer from 'material-ui/Drawer';
+import FontIcon from 'material-ui/FontIcon';
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton';
+import MenuItem from 'material-ui/MenuItem';
+
 import * as actionCreators from '../action_creators';
-import onClickOutside from 'react-onclickoutside';
+import css from '../stylesheets/nav.scss';
 
 //Home - where users can view currently playing, their own collection, etc
 //Upcoming - where users can see a list of upcoming games with links to each game's page/discussions
@@ -28,9 +33,23 @@ const Nav =  onClickOutside(React.createClass({
     return (
       <div className="nav-ctr">
         <AppBar
-          title={<Link to="/home">{this.props.appTitle}</Link>}
-          onLeftIconButtonTouchTap={this.props.toggleLeftDrawer} />
+          onLeftIconButtonTouchTap={this.props.toggleLeftDrawer}
+          iconElementRight={
+            <IconMenu
+              iconButtonElement={
+                <IconButton>
+                  <FontIcon className="material-icons">account_circle</FontIcon>
+                </IconButton>
+                }>
+                <MenuItem primaryText="Sign Up"/>
+                <MenuItem primaryText="Sign Up"/>
+                <MenuItem primaryText="Sign Up"/>
+              </IconMenu>
+              }/>
         <Drawer open={this.props.leftDrawerOpen}>
+          <AppBar
+            title={<Link to="/home" style={{textDecoration: 'none', color: 'black'}}>{this.props.appTitle}</Link>}
+            onLeftIconButtonTouchTap={this.props.toggleLeftDrawer} />
           {this.getDrawerItems().map((item) => {
             return <MenuItem style={{color: 'black'}}  key={item}>{item}</MenuItem>;
           })}
