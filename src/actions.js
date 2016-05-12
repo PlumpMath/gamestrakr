@@ -5,8 +5,25 @@ export function setState(state){
   }
 }
 
-export function toggleLeftDrawer(){
+export function toggleLeftDrawer(open){
   return {
-    type: 'TOGGLE_LEFT_DRAWER'
+    type: 'TOGGLE_LEFT_DRAWER',
+    open
+  }
+}
+
+export function requestGames(params){
+  return {
+    type: 'REQUEST_GAMES',
+    params
+  }
+}
+
+export function receiveGames(params, json){
+  return {
+    type: 'RECEIVE_GAMES',
+    params,
+    games: json.data.games,
+    recievedAt: Date.now()
   }
 }

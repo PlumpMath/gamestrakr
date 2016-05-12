@@ -22,7 +22,7 @@ const Nav =  onClickOutside(React.createClass({
   mixins: [PureRenderMixin],
 
   handleClickOutside: function(e) {
-    this.props.toggleLeftDrawer();
+    this.props.toggleLeftDrawer(false);
   },
 
   getDrawerItems: function(){
