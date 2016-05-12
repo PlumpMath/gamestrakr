@@ -1,7 +1,7 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import onClickOutside from 'react-onclickoutside';
-import { Link } from 'react-router';
+import { Link, hashHistory } from 'react-router';
 import {connect} from 'react-redux';
 
 import AppBar from 'material-ui/AppBar';
@@ -29,6 +29,10 @@ const Nav =  onClickOutside(React.createClass({
     return this.props.leftDrawerItems || [];
   },
 
+  triggerRoute(route){
+    hashHistory.push(route);
+  },
+
   render() {
     return (
       <div className="nav-ctr">
@@ -49,10 +53,17 @@ const Nav =  onClickOutside(React.createClass({
               }/>
         <Drawer open={this.props.leftDrawerOpen}>
           <AppBar
-            title={<Link to="/home" style={{textDecoration: 'none', color: '#fff'}}>{this.props.appTitle}</Link>}
+            title={<Link to="home" style={{textDecoration: 'none', color: '#fff'}}>{this.props.appTitle}</Link>}
             onLeftIconButtonTouchTap={this.props.toggleLeftDrawer} />
           {this.getDrawerItems().map((item) => {
-            return <MenuItem style={{color: 'black'}}  key={item}>{item}</MenuItem>;
+            return (
+              <MenuItem
+                key={item.get('name')}
+                style={{color: 'black'}}
+                onTouchTap={this.triggerRoute.bind(this, item.get('route'))}>
+                {item.get('name')}
+                </MenuItem>
+                );
           })}
           </Drawer>
         </div>

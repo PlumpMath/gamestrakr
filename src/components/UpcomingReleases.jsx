@@ -5,7 +5,7 @@ import {fetchGames} from '../actions';
 
 import GameGrid from './GameGrid';
 
-const Home = React.createClass({
+const UpcomingReleases = React.createClass({
   mixins: [PureRenderMixin],
   componentDidMount: function(){
     this.props.fetchGames();
@@ -27,11 +27,12 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-      fetchGames: () => {
-        dispatch(fetchGames({page: 'home'}));
-      }
-    };
+  return {
+    fetchGames: () => {
+      dispatch(fetchGames({page: 'upcoming_releases'}));
+    }
+  };
 }
 
-export const HomeContainer = connect(mapStateToProps, mapDispatchToProps)(Home);
+export const UpcomingReleasesContainer = connect(mapStateToProps, mapDispatchToProps)(UpcomingReleases);
+

@@ -17,7 +17,8 @@ import {setState, setNavTitle} from './actions';
 import css from './stylesheets/index.scss';
 
 import App from './components/App';
-import {HomeContainer} from './components/Home';
+import {RecentReleasesContainer} from './components/RecentReleases';
+import {UpcomingReleasesContainer} from './components/UpcomingReleases';
 
 const loggerMiddleware = createLogger({collapsed: true});
 const store = createStore(
@@ -28,12 +29,13 @@ const store = createStore(
 store.dispatch(setState({
   games: [],
   leftDrawerOpen: false,
-  leftDrawerItems: ['Home', 'Upcoming'],
+  leftDrawerItems: [{name: 'Home', route: 'home'}, {name: 'Recent Releases', route: 'recent_releases'}, {name: 'Upcoming', route: 'upcoming_releases'}],
   appTitle: 'GamerLyfe'
 }));
 
 const routes = <Route path="/" component={App}>
-  <Route path="/home" component={HomeContainer} onEnter={() => {store.dispatch(setNavTitle('Home'))}}/>
+  <Route path="/recent_releases" component={RecentReleasesContainer} onEnter={() => {store.dispatch(setNavTitle('Recent Releases'))}}/>
+  <Route path="/upcoming_releases" component={UpcomingReleasesContainer} onEnter={() => {store.dispatch(setNavTitle('Upcoming Releases'))}}/>
 </Route>;
 
 ReactDOM.render(
