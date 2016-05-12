@@ -3,22 +3,18 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {connect} from 'react-redux';
 import {fetchGames} from '../actions';
 
+import GameGrid from './GameGrid';
+
 const Home = React.createClass({
   mixins: [PureRenderMixin],
   componentDidMount: function(){
     this.props.fetchGames();
   },
 
-  // componentWillReceiveProps: function(){
-  //   debugger
-  // },
-
   render() {
     return (
       <div className="home-ctr">
-        {this.props.games.map((game) => {
-          return <h4 key={game.name}>{game.name}</h4>;
-        })}
+        <GameGrid games={this.props.games} />
       </div>
     );
   }
@@ -33,7 +29,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
       fetchGames: () => {
-        dispatch(fetchGames({page: 'games'}));
+        dispatch(fetchGames({page: 'home'}));
       }
     };
 }

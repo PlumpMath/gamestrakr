@@ -1,4 +1,4 @@
-import request from 'superagent';
+const request = require('superagent-cache')();
 
 export function setState(state){
   return {
@@ -43,7 +43,7 @@ export function fetchGames(params){
     const page = params.page || '';
 
     return request
-      .get(`${process.env.SERVER_URL}/${page}`)
+      .get(`${process.env.SERVER_URL}/games/${page}`)
       .end((req, res) => {
         dispatch(receiveGames(params, res.body))
       });
