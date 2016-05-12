@@ -5,26 +5,28 @@ injectTapEventPlugin();
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger';
 import {Router, Route, hashHistory} from 'react-router';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
+
 import reducer from './reducer';
 import {setState} from './actions';
-import remoteActionMiddleware from './remote_action_middleware';
 
 import css from './stylesheets/index.scss';
 
 import App from './components/App';
 import {HomeContainer} from './components/Home';
 
-
-const createStoreWithMiddleware = applyMiddleware(
-  remoteActionMiddleware
-)(createStore);
-const store = createStoreWithMiddleware(reducer);
+const loggerMiddleware = createLogger();
+const store = createStore(
+  reducer,
+  applyMiddleware(thunkMiddleware, loggerMiddleware)
+);
 
 store.dispatch(setState({
-  games: ['Overwatch', 'Bloodborne'],
+  games: [],
   leftDrawerOpen: false,
   leftDrawerItems: ['Home', 'Upcoming'],
   appTitle: 'GamerLyfe'

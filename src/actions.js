@@ -1,3 +1,5 @@
+import request from 'superagent';
+
 export function setState(state){
   return {
     type: 'SET_STATE',
@@ -23,7 +25,20 @@ export function receiveGames(params, json){
   return {
     type: 'RECEIVE_GAMES',
     params,
-    games: json.data.games,
+    games: json,
     recievedAt: Date.now()
+  }
+}
+
+export function fetchGames(params){
+  return function(dispatch){
+    dispatch(requestGames(params));
+    const page = params.page || '';
+
+    return request
+      .get(`${process.env.SERVER_URL}/${page}`)
+      .end((req, res) => {
+        dispatch(receiveGames(params, res.body))
+      });
   }
 }

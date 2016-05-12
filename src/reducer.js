@@ -17,7 +17,7 @@ function requestGames(state){
 }
 
 function receiveGames(state, games){
-  return state.set('games', true);
+  return state.set('games', games);
 }
 
 export default function(state = Map(), action) {
@@ -29,7 +29,7 @@ export default function(state = Map(), action) {
     case 'REQUEST_GAMES':
       return requestGames(state);
     case 'RECEIVE_GAMES':
-      return receiveGames(state, games);
+      return receiveGames(state, action.games);
   }
 
   return state;
