@@ -31,6 +31,7 @@ const Nav =  onClickOutside(React.createClass({
 
   triggerRoute(route){
     hashHistory.push(route);
+    this.props.toggleLeftDrawer();
   },
 
   render() {
