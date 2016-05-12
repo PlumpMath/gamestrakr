@@ -12,6 +12,10 @@ function toggleLeftDrawer(state, open){
   return state.set('leftDrawerOpen', drawerOpen)
 }
 
+function setNavTitle(state, title){
+  return state.set('navTitle', title);
+}
+
 function requestGames(state){
   return state.set('isFetching', true);
 }
@@ -26,6 +30,8 @@ export default function(state = Map(), action) {
       return setState(state, action.state);
     case 'TOGGLE_LEFT_DRAWER':
       return toggleLeftDrawer(state, action.open);
+    case 'SET_NAV_TITLE':
+      return setNavTitle(state, action.title);
     case 'REQUEST_GAMES':
       return requestGames(state);
     case 'RECEIVE_GAMES':

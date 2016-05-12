@@ -34,6 +34,7 @@ const Nav =  onClickOutside(React.createClass({
       <div className="nav-ctr">
         <AppBar
           onLeftIconButtonTouchTap={this.props.toggleLeftDrawer}
+          title={this.props.navTitle || ''}
           iconElementRight={
             <IconMenu
               iconButtonElement={
@@ -48,7 +49,7 @@ const Nav =  onClickOutside(React.createClass({
               }/>
         <Drawer open={this.props.leftDrawerOpen}>
           <AppBar
-            title={<Link to="/home" style={{textDecoration: 'none', color: 'black'}}>{this.props.appTitle}</Link>}
+            title={<Link to="/home" style={{textDecoration: 'none', color: '#fff'}}>{this.props.appTitle}</Link>}
             onLeftIconButtonTouchTap={this.props.toggleLeftDrawer} />
           {this.getDrawerItems().map((item) => {
             return <MenuItem style={{color: 'black'}}  key={item}>{item}</MenuItem>;
@@ -62,6 +63,7 @@ const Nav =  onClickOutside(React.createClass({
 function mapStateToProps(state){
   return {
     appTitle: state.get('appTitle'),
+    navTitle: state.get('navTitle'),
     leftDrawerOpen: state.get('leftDrawerOpen'),
     leftDrawerItems: state.get('leftDrawerItems')
   };

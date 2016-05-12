@@ -12,14 +12,14 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 
 import reducer from './reducer';
-import {setState} from './actions';
+import {setState, setNavTitle} from './actions';
 
 import css from './stylesheets/index.scss';
 
 import App from './components/App';
 import {HomeContainer} from './components/Home';
 
-const loggerMiddleware = createLogger();
+const loggerMiddleware = createLogger({collapsed: true});
 const store = createStore(
   reducer,
   applyMiddleware(thunkMiddleware, loggerMiddleware)
@@ -33,7 +33,7 @@ store.dispatch(setState({
 }));
 
 const routes = <Route path="/" component={App}>
-  <Route path="/home" component={HomeContainer} />
+  <Route path="/home" component={HomeContainer} onEnter={() => {store.dispatch(setNavTitle('Home'))}}/>
 </Route>;
 
 ReactDOM.render(

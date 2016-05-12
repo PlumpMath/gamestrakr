@@ -16,8 +16,6 @@ const Home = React.createClass({
   render() {
     return (
       <div className="home-ctr">
-        <h1>Home</h1>
-
         {this.props.games.map((game) => {
           return <h4 key={game.name}>{game.name}</h4>;
         })}

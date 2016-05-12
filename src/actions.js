@@ -30,6 +30,13 @@ export function receiveGames(params, json){
   }
 }
 
+export function setNavTitle(title){
+  return {
+    type: 'SET_NAV_TITLE',
+    title
+  }
+}
+
 export function fetchGames(params){
   return function(dispatch){
     dispatch(requestGames(params));
