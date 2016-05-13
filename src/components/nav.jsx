@@ -14,10 +14,6 @@ import MenuItem from 'material-ui/MenuItem';
 import * as actions from '../actions';
 import css from '../stylesheets/nav.scss';
 
-//Home - where users can view currently playing, their own collection, etc
-//Upcoming - where users can see a list of upcoming games with links to each game's page/discussions
-// TODO: Render recently viewed list of games underneath here in nav
-
 const Nav =  onClickOutside(React.createClass({
   mixins: [PureRenderMixin],
 

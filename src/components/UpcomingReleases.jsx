@@ -1,9 +1,11 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {connect} from 'react-redux';
-import {fetchGames} from '../actions';
+import {fetchGamesIfNeeded} from '../actions';
 
 import GameGrid from './GameGrid';
+
+const releaseType = "upcoming_releases";
 
 const UpcomingReleases = React.createClass({
   mixins: [PureRenderMixin],
@@ -22,14 +24,15 @@ const UpcomingReleases = React.createClass({
 
 const mapStateToProps = (state) => {
   return {
-    games: state.get('games')
+		isFetching: state.getIn([releaseType, 'isFetching']),
+    games: state.getIn([releaseType, 'games'])
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchGames: () => {
-      dispatch(fetchGames({page: 'upcoming_releases'}));
+      dispatch(fetchGamesIfNeeded(releaseType));
     }
   };
 }

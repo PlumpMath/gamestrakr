@@ -22,6 +22,10 @@ const styles = {
 const GameGrid = React.createClass({
   mixins: [PureRenderMixin],
 
+	getGames: function(){
+		return this.props.games || [];
+	},
+
   render(){
 
     return (
@@ -31,7 +35,7 @@ const GameGrid = React.createClass({
           cols={4}
           style={styles.gridList}>
 
-          {this.props.games.map((game) => (
+          {this.getGames().map((game) => (
             <GameTile key={game.name} game={game}/>
           ))}
 

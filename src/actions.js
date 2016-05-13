@@ -14,22 +14,6 @@ export function toggleLeftDrawer(open){
   }
 }
 
-export function requestGames(params){
-  return {
-    type: 'REQUEST_GAMES',
-    params
-  }
-}
-
-export function receiveGames(params, json){
-  return {
-    type: 'RECEIVE_GAMES',
-    params,
-    games: json,
-    recievedAt: Date.now()
-  }
-}
-
 export function setNavTitle(title){
   return {
     type: 'SET_NAV_TITLE',
@@ -37,15 +21,59 @@ export function setNavTitle(title){
   }
 }
 
-export function fetchGames(params){
-  return function(dispatch){
-    dispatch(requestGames(params));
-    const page = params.page || '';
+export function requestGames(releaseType){
+  return {
+    type: 'REQUEST_GAMES',
+		releaseType
+  }
+}
 
-    return request
-      .get(`${process.env.SERVER_URL}/games/${page}`)
-      .end((req, res) => {
-        dispatch(receiveGames(params, res.body))
-      });
+export function receiveGames(releaseType, json){
+  return {
+    type: 'RECEIVE_GAMES',
+		releaseType,
+    games: json,
+    recievedAt: Date.now()
+  }
+}
+
+export function fetchGames(releaseType){
+	return function(dispatch){
+		dispatch(requestGames(releaseType));
+
+		return request
+			.get(`${process.env.SERVER_URL}/games/${releaseType}`)
+			.end((req, res) => {
+				dispatch(receiveGames(releaseType, res.body));
+			});
+	}
+}
+
+function shouldFetchGames(state, releaseType) {
+	const games = state.getIn([releaseType, 'games'])
+	const isFetching = state.getIn([releaseType, 'isFetching']);
+	if (!games) {
+		return true
+	} else if (isFetching) {
+		return false
+	}
+ // else {
+		// return games.didInvalidate
+	// }
+}
+
+
+export function fetchGamesIfNeeded(releaseType) {
+
+  // Note that the function also receives getState()
+  // which lets you choose what to dispatch next.
+
+  // This is useful for avoiding a network request if
+  // a cached value is already available.
+  return (dispatch, getState) => {
+    if (shouldFetchGames(getState(), releaseType)) {
+      // Dispatch a thunk from thunk!
+      return dispatch(fetchGames(releaseType))
+    }
   }
 }

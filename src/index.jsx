@@ -1,3 +1,11 @@
+// TODO: Enable users to add games to currently playing, completed, saved
+// TODO: Enable users to rank games
+// TODO: Render recently viewed list of games underneath here in nav
+// TODO: Make upcoming and recent release pages one page/component(toggleable)
+// TODO: Make fetching of games more customizeable(ui options plug into actions and reducers)
+// TODO: Add QA ui for each game
+// TODO: Add platforms
+
 import injectTapEventPlugin from 'react-tap-event-plugin';
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -26,8 +34,9 @@ const store = createStore(
   applyMiddleware(thunkMiddleware, loggerMiddleware)
 );
 
+//Home - where users can view currently playing, their own collection, etc
+//Upcoming - where users can see a list of upcoming games with links to each game's page/discussions
 store.dispatch(setState({
-  games: [],
   leftDrawerOpen: false,
   leftDrawerItems: [{name: 'Home', route: 'home'}, {name: 'Recent Releases', route: 'recent_releases'}, {name: 'Upcoming', route: 'upcoming_releases'}],
   appTitle: 'GamerLyfe'

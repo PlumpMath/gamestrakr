@@ -5,9 +5,9 @@ function setState(state, newState) {
 }
 
 function toggleLeftDrawer(state, open){
-  const drawerOpen = (typeof(open) === "boolean") ?
-    open :
-    !state.get('leftDrawerOpen');
+	const drawerOpen = (typeof(open) === "boolean")
+		? open
+		: !state.get('leftDrawerOpen');
 
   return state.set('leftDrawerOpen', drawerOpen)
 }
@@ -16,12 +16,12 @@ function setNavTitle(state, title){
   return state.set('navTitle', title);
 }
 
-function requestGames(state){
-  return state.set('isFetching', true);
+function requestGames(state, releaseType){
+  return state.setIn([releaseType, 'isFetching'], true);
 }
 
-function receiveGames(state, games){
-  return state.set('games', games);
+function receiveGames(state, releaseType, games){
+  return state.setIn([releaseType, 'games'], games);
 }
 
 export default function(state = Map(), action) {
@@ -33,9 +33,9 @@ export default function(state = Map(), action) {
     case 'SET_NAV_TITLE':
       return setNavTitle(state, action.title);
     case 'REQUEST_GAMES':
-      return requestGames(state);
+      return requestGames(state, action.releaseType);
     case 'RECEIVE_GAMES':
-      return receiveGames(state, action.games);
+      return receiveGames(state, action.releaseType, action.games);
   }
 
   return state;
