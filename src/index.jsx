@@ -36,6 +36,10 @@ const store = createStore(
   applyMiddleware(thunkMiddleware, loggerMiddleware)
 );
 
+store.dispatch(setState({
+	leftDrawerOpen: false,
+}));
+
 const routes = <Route path="/" component={App}>
   <Route
     path="/home"

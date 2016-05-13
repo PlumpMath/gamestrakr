@@ -10,9 +10,7 @@ export default React.createClass({
       <MuiThemeProvider muiTheme={getMuiTheme()}>
         <div>
           <NavContainer />
-          <div className="content-ctr">
-            {this.props.children}
-          </div>
+          {this.props.children}
         </div>
       </MuiThemeProvider>
     );
