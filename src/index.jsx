@@ -22,7 +22,7 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 
 import reducer from './reducer';
-import {setState, setNavTitle} from './actions';
+import {setState, setCurrentPage} from './actions';
 
 import css from './stylesheets/index.scss';
 
@@ -36,17 +36,19 @@ const store = createStore(
   applyMiddleware(thunkMiddleware, loggerMiddleware)
 );
 
-//Home - where users can view currently playing, their own collection, etc
-//Upcoming - where users can see a list of upcoming games with links to each game's page/discussions
-store.dispatch(setState({
-  leftDrawerOpen: false,
-  leftDrawerItems: [{name: 'Home', route: 'home'}, {name: 'Recent Releases', route: 'recent_releases'}, {name: 'Upcoming', route: 'upcoming_releases'}],
-  appTitle: 'GamerLyfe'
-}));
-
 const routes = <Route path="/" component={App}>
-  <Route path="/recent_releases" component={RecentReleasesContainer} onEnter={() => {store.dispatch(setNavTitle('Recent Releases'))}}/>
-  <Route path="/upcoming_releases" component={UpcomingReleasesContainer} onEnter={() => {store.dispatch(setNavTitle('Upcoming Releases'))}}/>
+  <Route
+    path="/home"
+    component={RecentReleasesContainer}
+    onEnter={() => {store.dispatch(setCurrentPage('recent_releases'))}}/>
+  <Route
+    path="/recent_releases"
+    component={RecentReleasesContainer}
+    onEnter={() => {store.dispatch(setCurrentPage('recent_releases'))}}/>
+  <Route
+    path="/upcoming_releases"
+    component={UpcomingReleasesContainer}
+    onEnter={() => {store.dispatch(setCurrentPage('upcoming_releases'))}}/>
 </Route>;
 
 ReactDOM.render(

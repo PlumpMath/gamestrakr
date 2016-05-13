@@ -5,7 +5,7 @@ import {fetchGamesIfNeeded} from '../actions';
 
 import GameGrid from './GameGrid';
 
-const releaseType = "upcoming_releases";
+const pageName = "upcoming_releases";
 
 const UpcomingReleases = React.createClass({
   mixins: [PureRenderMixin],
@@ -24,15 +24,15 @@ const UpcomingReleases = React.createClass({
 
 const mapStateToProps = (state) => {
   return {
-		isFetching: state.getIn([releaseType, 'isFetching']),
-    games: state.getIn([releaseType, 'games'])
+		isFetching: state.getIn([pageName, 'isFetching']),
+    games: state.getIn([pageName, 'games'])
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchGames: () => {
-      dispatch(fetchGamesIfNeeded(releaseType));
+      dispatch(fetchGamesIfNeeded(pageName));
     }
   };
 }

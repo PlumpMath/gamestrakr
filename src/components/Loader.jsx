@@ -8,7 +8,7 @@ const LoaderContainer = React.createClass({
   render(){
     return (
       <div className="loader-ctr">
-        <Loader active="true" type="pacman" />
+        <Loader active={true} type="pacman" />
       </div>
     );
   }

@@ -14,44 +14,44 @@ export function toggleLeftDrawer(open){
   }
 }
 
-export function setNavTitle(title){
+export function setCurrentPage(pageName){
   return {
-    type: 'SET_NAV_TITLE',
-    title
+    type: 'SET_CURRENT_PAGE',
+    pageName
   }
 }
 
-export function requestGames(releaseType){
+export function requestGames(pageName){
   return {
     type: 'REQUEST_GAMES',
-		releaseType
+		pageName
   }
 }
 
-export function receiveGames(releaseType, json){
+export function receiveGames(pageName, json){
   return {
     type: 'RECEIVE_GAMES',
-		releaseType,
+		pageName,
     games: json,
     recievedAt: Date.now()
   }
 }
 
-export function fetchGames(releaseType){
+export function fetchGames(pageName){
 	return function(dispatch){
-		dispatch(requestGames(releaseType));
+		dispatch(requestGames(pageName));
 
 		return request
-			.get(`${process.env.SERVER_URL}/games/${releaseType}`)
+			.get(`${process.env.SERVER_URL}/games/${pageName}`)
 			.end((req, res) => {
-				dispatch(receiveGames(releaseType, res.body));
+				dispatch(receiveGames(pageName, res.body));
 			});
 	}
 }
 
-function shouldFetchGames(state, releaseType) {
-	const games = state.getIn([releaseType, 'games'])
-	const isFetching = state.getIn([releaseType, 'isFetching']);
+function shouldFetchGames(state, pageName) {
+	const games = state.getIn([pageName, 'games'])
+	const isFetching = state.getIn([pageName, 'isFetching']);
 	if (!games) {
 		return true
 	} else if (isFetching) {
@@ -63,7 +63,7 @@ function shouldFetchGames(state, releaseType) {
 }
 
 
-export function fetchGamesIfNeeded(releaseType) {
+export function fetchGamesIfNeeded(pageName) {
 
   // Note that the function also receives getState()
   // which lets you choose what to dispatch next.
@@ -71,9 +71,9 @@ export function fetchGamesIfNeeded(releaseType) {
   // This is useful for avoiding a network request if
   // a cached value is already available.
   return (dispatch, getState) => {
-    if (shouldFetchGames(getState(), releaseType)) {
+    if (shouldFetchGames(getState(), pageName)) {
       // Dispatch a thunk from thunk!
-      return dispatch(fetchGames(releaseType))
+      return dispatch(fetchGames(pageName))
     }
   }
 }

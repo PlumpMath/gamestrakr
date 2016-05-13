@@ -35,8 +35,8 @@ const GameGrid = React.createClass({
           cols={4}
           style={styles.gridList}>
 
-          {this.getGames().map((game) => (
-            <GameTile key={game.name} game={game}/>
+          {this.getGames().map((game, i) => (
+            <GameTile key={`${game.get('name')}${i}`} game={game}/>
           ))}
 
         </GridList>

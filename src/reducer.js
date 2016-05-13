@@ -1,4 +1,4 @@
-import {Map} from 'immutable';
+import {Map, fromJS} from 'immutable';
 
 function setState(state, newState) {
   return state.merge(newState);
@@ -12,16 +12,16 @@ function toggleLeftDrawer(state, open){
   return state.set('leftDrawerOpen', drawerOpen)
 }
 
-function setNavTitle(state, title){
-  return state.set('navTitle', title);
+function setCurrentPage(state, pageName){
+  return state.set('currentPage', pageName);
 }
 
-function requestGames(state, releaseType){
-  return state.setIn([releaseType, 'isFetching'], true);
+function requestGames(state, pageName){
+  return state.setIn([pageName, 'isFetching'], true);
 }
 
-function receiveGames(state, releaseType, games){
-  return state.setIn([releaseType, 'games'], games);
+function receiveGames(state, pageName, games){
+  return state.set(pageName, fromJS({games: games, isFetching: false}));
 }
 
 export default function(state = Map(), action) {
@@ -30,12 +30,12 @@ export default function(state = Map(), action) {
       return setState(state, action.state);
     case 'TOGGLE_LEFT_DRAWER':
       return toggleLeftDrawer(state, action.open);
-    case 'SET_NAV_TITLE':
-      return setNavTitle(state, action.title);
+    case 'SET_CURRENT_PAGE':
+      return setCurrentPage(state, action.pageName);
     case 'REQUEST_GAMES':
-      return requestGames(state, action.releaseType);
+      return requestGames(state, action.pageName);
     case 'RECEIVE_GAMES':
-      return receiveGames(state, action.releaseType, action.games);
+      return receiveGames(state, action.pageName, action.games);
   }
 
   return state;
