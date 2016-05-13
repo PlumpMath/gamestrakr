@@ -16,7 +16,7 @@ const RecentReleases = React.createClass({
   render() {
     return (
       <div className="home-ctr">
-        <GameGrid games={this.props.games} />
+        <GameGrid {...this.props} />
       </div>
     );
   }

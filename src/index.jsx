@@ -1,6 +1,7 @@
 // TODO: Enable users to add games to currently playing, completed, saved
 // TODO: Enable users to rank games
 // TODO: Render recently viewed list of games underneath here in nav
+// TODO: Disable Redux logger in prod
 // TODO: Make upcoming and recent release pages one page/component(toggleable)
 // TODO: Make fetching of games more customizeable(ui options plug into actions and reducers)
 // TODO: Add QA ui for each game
