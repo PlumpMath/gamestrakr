@@ -14,9 +14,11 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 import {toggleLeftDrawer} from '../actions';
 import css from '../stylesheets/nav.scss';
 
-// Home - where users can view currently playing, their own collection, etc
-//Upcoming - where users can see a list of upcoming games with links to each game's page/discussions
-const navLinks =  [{name: 'Home', route: 'home', icon: 'home'}, {name: 'Recent Releases', route: 'recent_releases', icon: 'videogame_asset'}, {name: 'Upcoming', route: 'upcoming_releases', icon: 'videogame_asset'}];
+// Home - where users can view currently playing, their own collection, recently viewed etc
+// Games - where users can search for and sort through upcoming and recently released games
+// Platforms - where users can look through platforms
+
+const navLinks =  [{name: 'Home', route: 'home', icon: 'home'}, {name: 'Games', route: 'games', icon: 'videogame_asset'}, {name: 'Platforms', route: 'platforms', icon: 'videogame_asset'}];
 
 const Nav =  React.createClass({
 	mixins: [PureRenderMixin],
@@ -24,10 +26,6 @@ const Nav =  React.createClass({
 	triggerRoute(route){
 		hashHistory.push(route);
 		this.props.toggleLeftDrawer();
-	},
-
-	clickHandler(){
-		debugger;
 	},
 
 	render() {
@@ -52,35 +50,21 @@ const Nav =  React.createClass({
 							<AppBar
 								title={<Link to="home" style={{textDecoration: 'none', color: '#fff'}}>{this.props.appTitle}</Link>}
 								iconElementLeft={<IconButton onClick={this.props.toggleLeftDrawer} ><FontIcon className="material-icons">arrow_back</FontIcon></IconButton>} />
-								{
-									navLinks.map((item) => {
-										return (
-											<MenuItem
-											key={item.name}
-											style={{color: 'black'}}
-											onTouchTap={this.triggerRoute.bind(this, item.route)}>
-											{item.name}
-											</MenuItem>
-										);
-									})
-								}
+								{ navLinks.map((item) => {
+									return (
+										<MenuItem
+										key={item.name}
+										style={{color: 'black'}}
+										onTouchTap={this.triggerRoute.bind(this, item.route)}>
+										{item.name}
+										</MenuItem>
+									);
+								}) }
 						</Drawer>
 					</div>
 		);
 	}
 });
-							// <ToolBarGroup firstChild={true}>
-							// {navLinks.map((item) => {
-							// 	return (
-							// 		<MenuItem
-							// 		key={item.get('name')}
-							// 		style={{color: 'black'}}
-							// 		onTouchTap={this.triggerRoute.bind(this, item.get('route'))}>
-							// 		{item.get('name')}
-							// 		</MenuItem>
-							// 	);
-							// })}
-							// </ToolBarGroup>
 
 function mapStateToProps(state){
   return {

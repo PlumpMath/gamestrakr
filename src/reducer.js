@@ -9,19 +9,22 @@ function toggleLeftDrawer(state, open){
 		? open
 		: !state.get('leftDrawerOpen');
 
-  return state.set('leftDrawerOpen', drawerOpen)
+  return state.set('leftDrawerOpen', drawerOpen);
 }
 
 function setCurrentPage(state, pageName){
   return state.set('currentPage', pageName);
 }
 
-function requestGames(state, pageName){
-  return state.setIn([pageName, 'isFetching'], true);
+function requestGames(state, gamesType){
+  return state.setIn(['gamesByType', gamesType, 'isFetching'], true);
 }
 
-function receiveGames(state, pageName, games){
-  return state.set(pageName, fromJS({games: games, isFetching: false}));
+function receiveGames(state, gamesType, json){
+	var newState = {gamesByType: {}};
+ 	newState.gamesByType[gamesType] = {items: json, isFetching: false};
+
+	return state.merge(fromJS(newState));
 }
 
 export default function(state = Map(), action) {
@@ -33,9 +36,9 @@ export default function(state = Map(), action) {
     case 'SET_CURRENT_PAGE':
       return setCurrentPage(state, action.pageName);
     case 'REQUEST_GAMES':
-      return requestGames(state, action.pageName);
+      return requestGames(state, action.gamesType);
     case 'RECEIVE_GAMES':
-      return receiveGames(state, action.pageName, action.games);
+      return receiveGames(state, action.gamesType, action.json);
   }
 
   return state;

@@ -21,59 +21,52 @@ export function setCurrentPage(pageName){
   }
 }
 
-export function requestGames(pageName){
+export function requestGames(gamesType){
   return {
     type: 'REQUEST_GAMES',
-		pageName
+		gamesType
   }
 }
 
-export function receiveGames(pageName, json){
+export function receiveGames(gamesType, json){
   return {
     type: 'RECEIVE_GAMES',
-		pageName,
-    games: json,
+		gamesType,
+    json,
     recievedAt: Date.now()
   }
 }
 
-export function fetchGames(pageName){
+export function fetchGames(gamesType){
 	return function(dispatch){
-		dispatch(requestGames(pageName));
+		dispatch(requestGames(gamesType));
 
 		return request
-			.get(`${process.env.SERVER_URL}/games/${pageName}`)
+			.get(`${process.env.SERVER_URL}/games`)
+			.query({games_type: gamesType})
+			// .query({index: index})
 			.end((req, res) => {
-				dispatch(receiveGames(pageName, res.body));
+				dispatch(receiveGames(gamesType, res.body));
 			});
 	}
 }
 
-function shouldFetchGames(state, pageName) {
-	const games = state.getIn([pageName, 'games'])
-	const isFetching = state.getIn([pageName, 'isFetching']);
+function shouldFetchGames(state, gamesType) {
+	const games = state.getIn(['gamesByType', gamesType])
+	const isFetching = state.getIn(['gamesByType', gamesType, 'isFetching']);
+
 	if (!games) {
-		return true
+		return true;
 	} else if (isFetching) {
-		return false
+		return false;
 	}
- // else {
-		// return games.didInvalidate
-	// }
 }
 
-
-export function fetchGamesIfNeeded(pageName) {
-
-  // Note that the function also receives getState()
-  // which lets you choose what to dispatch next.
-
-  // This is useful for avoiding a network request if
-  // a cached value is already available.
+export function fetchGamesIfNeeded(gamesType) {
   return (dispatch, getState) => {
-    if (shouldFetchGames(getState(), pageName)) {
-      // Dispatch a thunk from thunk!
-      return dispatch(fetchGames(pageName))
+    if (shouldFetchGames(getState(), gamesType)) {
+      return dispatch(fetchGames(gamesType))
     }
   }
 }
+

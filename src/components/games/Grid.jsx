@@ -3,7 +3,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {GridList} from 'material-ui/GridList';
 import {hasIn} from 'lodash';
 
-import GameTile from './GameTile';
+import Tile from './Tile';
 
 const styles = {
   root: {
@@ -19,11 +19,11 @@ const styles = {
   },
 };
 
-const GameGrid = React.createClass({
+const Grid = React.createClass({
   mixins: [PureRenderMixin],
 
-	getGames: function(){
-		return this.props.games || [];
+	getItems: function(){
+		return this.props.items || [];
 	},
 
   render(){
@@ -35,8 +35,8 @@ const GameGrid = React.createClass({
           cols={4}
           style={styles.gridList}>
 
-          {this.getGames().map((game, i) => (
-            <GameTile key={`${game.get('name')}${i}`} game={game}/>
+          {this.getItems().map((item, i) => (
+            <Tile key={`${item.get('name')}${i}`} item={item}/>
           ))}
 
         </GridList>
@@ -46,4 +46,4 @@ const GameGrid = React.createClass({
 
 });
 
-export default GameGrid;
+export default Grid;

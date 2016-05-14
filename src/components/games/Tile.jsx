@@ -5,17 +5,17 @@ import {hasIn} from 'immutable';
 
 const placeholderImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=38&txt=GamerLyfe&w=450&h=300&txttrack=0'
 
-const GameTile = React.createClass({
+const Tile = React.createClass({
   mixins: [PureRenderMixin],
 
   getInitialState: function(){
     return {
-      imageUrl: this.getGameImageUrl(this.props.game)
+      imageUrl: this.getGameImageUrl(this.props.item)
     };
   },
 
-  getGameImageUrl: function(game){
-    return game.getIn(['image', 'small_url']) || game.getIn(['image', 'medium_url']) || placeholderImageUrl;
+  getGameImageUrl: function(item){
+    return item.getIn(['image', 'small_url']) || item.getIn(['image', 'medium_url']) || placeholderImageUrl;
   },
 
   onImageError: function(){
@@ -23,11 +23,11 @@ const GameTile = React.createClass({
   },
 
   render(){
-    const {game} = this.props;
+    const {item} = this.props;
 
     return (
       <GridTile
-        title={game.get('name')}>
+        title={item.get('name')}>
         <img
           src={this.state.imageUrl}
           onError={this.onImageError}/>
@@ -36,4 +36,4 @@ const GameTile = React.createClass({
   }
 });
 
-export default GameTile;
+export default Tile;

@@ -1,13 +1,3 @@
-// TODO: Move desktop navbar to top, remove left drawer
-// TODO: Make upcoming and recent release pages one page/component(toggleable)
-// TODO: Disable Redux logger in prod
-// TODO: Enable users to add games to currently playing, completed, saved
-// TODO: Enable users to rank games
-// TODO: Render recently viewed list of games underneath here in nav
-// TODO: Make fetching of games more customizeable(ui options plug into actions and reducers)
-// TODO: Add QA ui for each game
-// TODO: Add platforms
-
 import injectTapEventPlugin from 'react-tap-event-plugin';
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -27,10 +17,19 @@ import {setState, setCurrentPage} from './actions';
 import css from './stylesheets/index.scss';
 
 import App from './components/App';
-import {RecentReleasesContainer} from './components/RecentReleases';
-import {UpcomingReleasesContainer} from './components/UpcomingReleases';
+import GamesIndex from './components/games/index';
 
-const loggerMiddleware = createLogger({collapsed: true});
+import {Iterable} from 'immutable';
+
+const stateTransformer = (state) => {
+  if (Iterable.isIterable(state)) return state.toJS();
+  else return state;
+};
+
+const loggerMiddleware = createLogger({
+  stateTransformer,
+});
+
 const store = createStore(
   reducer,
   applyMiddleware(thunkMiddleware, loggerMiddleware)
@@ -43,16 +42,16 @@ store.dispatch(setState({
 const routes = <Route path="/" component={App}>
   <Route
     path="/home"
-    component={RecentReleasesContainer}
-    onEnter={() => {store.dispatch(setCurrentPage('recent_releases'))}}/>
+    component={GamesIndex}
+    onEnter={() => {store.dispatch(setCurrentPage('games'))}}/>
   <Route
-    path="/recent_releases"
-    component={RecentReleasesContainer}
-    onEnter={() => {store.dispatch(setCurrentPage('recent_releases'))}}/>
+    path="/games"
+    component={GamesIndex}
+    onEnter={() => {store.dispatch(setCurrentPage('games'))}}/>
   <Route
-    path="/upcoming_releases"
-    component={UpcomingReleasesContainer}
-    onEnter={() => {store.dispatch(setCurrentPage('upcoming_releases'))}}/>
+    path="/platforms"
+    component={GamesIndex}
+    onEnter={() => {store.dispatch(setCurrentPage('platforms'))}}/>
 </Route>;
 
 ReactDOM.render(
