@@ -28,6 +28,7 @@ const stateTransformer = (state) => {
 
 const loggerMiddleware = createLogger({
   stateTransformer,
+  collapsed: true
 });
 
 const store = createStore(
@@ -36,7 +37,7 @@ const store = createStore(
 );
 
 store.dispatch(setState({
-	leftDrawerOpen: false,
+  ui: {leftDrawerOpen: false, loginDialogOpen: false}
 }));
 
 const routes = <Route path="/" component={App}>

@@ -4,12 +4,20 @@ function setState(state, newState) {
   return state.merge(newState);
 }
 
-function toggleLeftDrawer(state, open){
-	const drawerOpen = (typeof(open) === "boolean")
-		? open
-		: !state.get('leftDrawerOpen');
+function openLeftDrawer(state){
+  return state.setIn(['ui', 'leftDrawerOpen'], true);
+}
 
-  return state.set('leftDrawerOpen', drawerOpen);
+function closeLeftDrawer(state){
+  return state.setIn(['ui', 'leftDrawerOpen'], false);
+}
+
+function openLoginDialog(state){
+  return state.setIn(['ui', 'loginDialogOpen'], true);
+}
+
+function closeLoginDialog(state){
+  return state.setIn(['ui', 'loginDialogOpen'], false);
 }
 
 function setCurrentPage(state, pageName){
@@ -31,10 +39,20 @@ export default function(state = Map(), action) {
   switch (action.type) {
     case 'SET_STATE':
       return setState(state, action.state);
-    case 'TOGGLE_LEFT_DRAWER':
-      return toggleLeftDrawer(state, action.open);
+
+    // UI
+    case 'OPEN_LEFT_DRAWER':
+      return openLeftDrawer(state);
+    case 'CLOSE_LEFT_DRAWER':
+      return closeLeftDrawer(state);
+    case 'OPEN_LOGIN_DIALOG':
+      return openLoginDialog(state);
+    case 'CLOSE_LOGIN_DIALOG':
+      return closeLoginDialog(state);
     case 'SET_CURRENT_PAGE':
       return setCurrentPage(state, action.pageName);
+
+    // GAMES
     case 'REQUEST_GAMES':
       return requestGames(state, action.gamesType);
     case 'RECEIVE_GAMES':

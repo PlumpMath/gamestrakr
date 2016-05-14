@@ -7,10 +7,27 @@ export function setState(state){
   }
 }
 
-export function toggleLeftDrawer(open){
+export function openLeftDrawer(){
   return {
-    type: 'TOGGLE_LEFT_DRAWER',
-    open
+    type: 'OPEN_LEFT_DRAWER'
+  }
+}
+
+export function closeLeftDrawer(){
+  return {
+    type: 'CLOSE_LEFT_DRAWER'
+  }
+}
+
+export function openLoginDialog(){
+  return {
+    type: 'OPEN_LOGIN_DIALOG'
+  }
+}
+
+export function closeLoginDialog(){
+  return {
+    type: 'OPEN_LOGIN_DIALOG'
   }
 }
 

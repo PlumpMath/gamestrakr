@@ -11,7 +11,7 @@ import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 
-import {toggleLeftDrawer} from '../actions';
+import {openLeftDrawer, closeLeftDrawer, openLoginDialog} from '../actions';
 import css from '../stylesheets/nav.scss';
 
 // Home - where users can view currently playing, their own collection, recently viewed etc
@@ -25,14 +25,14 @@ const Nav =  React.createClass({
 
 	triggerRoute(route){
 		hashHistory.push(route);
-		this.props.toggleLeftDrawer();
+		this.props.closeLeftDrawer();
 	},
 
 	render() {
 		return (
 			<div className="nav-ctr">
 				<AppBar
-					onLeftIconButtonTouchTap={this.props.toggleLeftDrawer}
+					onLeftIconButtonTouchTap={this.props.openLeftDrawer}
 					title={this.props.navTitle || ''}
 					iconElementRight={
 						<IconMenu
@@ -41,15 +41,14 @@ const Nav =  React.createClass({
 									<FontIcon className="material-icons">account_circle</FontIcon>
 								</IconButton>
 								}>
-								<MenuItem primaryText="Sign Up"/>
-								<MenuItem primaryText="Sign Up"/>
-								<MenuItem primaryText="Sign Up"/>
-							</IconMenu>
-							}/>
+								<MenuItem primaryText="Sign Up" onTouchTap={this.props.openLoginDialog}/>
+              </IconMenu>
+          }/>
+
 						<Drawer open={this.props.leftDrawerOpen}>
 							<AppBar
 								title={<Link to="home" style={{textDecoration: 'none', color: '#fff'}}>{this.props.appTitle}</Link>}
-								iconElementLeft={<IconButton onClick={this.props.toggleLeftDrawer} ><FontIcon className="material-icons">arrow_back</FontIcon></IconButton>} />
+								iconElementLeft={<IconButton onClick={this.props.closeLeftDrawer} ><FontIcon className="material-icons">arrow_back</FontIcon></IconButton>} />
 								{ navLinks.map((item) => {
 									return (
 										<MenuItem
@@ -59,7 +58,7 @@ const Nav =  React.createClass({
 										{item.name}
 										</MenuItem>
 									);
-								}) }
+								})}
 						</Drawer>
 					</div>
 		);
@@ -68,14 +67,20 @@ const Nav =  React.createClass({
 
 function mapStateToProps(state){
   return {
-    leftDrawerOpen: state.get('leftDrawerOpen')
+    leftDrawerOpen: state.getIn(['ui', 'leftDrawerOpen'])
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleLeftDrawer: () => {
-      dispatch(toggleLeftDrawer());
+    openLeftDrawer: () => {
+      dispatch(openLeftDrawer());
+    },
+    closeLeftDrawer: () => {
+      dispatch(closeLeftDrawer());
+    },
+    openLoginDialog: () => {
+      dispatch(openLoginDialog());
     }
   };
 }
