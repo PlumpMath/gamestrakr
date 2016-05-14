@@ -1,9 +1,9 @@
-#GamerLyfe Web
-##Dev Notes
-###Run webpack dev server
+# GamerLyfe Web
+## Dev Notes
+### Run webpack dev server
 webpack-dev-server --inline
 
-###Example redux state map
+### Example redux state map
 ```javascript
 state = {
 	app: {
@@ -32,7 +32,7 @@ state = {
 }
 ```
 
-##TODOS
+## TODOS
 * Create users
 * Enable users to add games to currently playing, completed, saved
 * Create multiple reducers(one for each main section)
