@@ -53,7 +53,6 @@ const Nav =  React.createClass({
 									return (
 										<MenuItem
 										key={item.name}
-										style={{color: 'black'}}
 										onTouchTap={this.triggerRoute.bind(this, item.route)}>
 										{item.name}
 										</MenuItem>

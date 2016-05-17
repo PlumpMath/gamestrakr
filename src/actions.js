@@ -27,7 +27,7 @@ export function openLoginDialog(){
 
 export function closeLoginDialog(){
   return {
-    type: 'OPEN_LOGIN_DIALOG'
+    type: 'CLOSE_LOGIN_DIALOG'
   }
 }
 

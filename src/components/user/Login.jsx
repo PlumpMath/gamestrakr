@@ -17,10 +17,10 @@ const Login = React.createClass({
         linkButton={true}
         href={`${process.env.SERVER_URL}/auth/twitter`}/>,
       <FlatButton
-        label={"Google"}
+        label={"Facebook"}
         primary={true}
         linkButton={true}
-        href={`${process.env.SERVER_URL}/auth/google`}/>
+        href={`${process.env.SERVER_URL}/auth/facebook`}/>
     ];
 
     return (
@@ -41,7 +41,7 @@ function mapStateToProps(state){
   };
 }
 
-function mapDispatchToProps(state){
+function mapDispatchToProps(dispatch){
   return {
     openLoginDialog: () => {
       dispatch(openLoginDialog());
