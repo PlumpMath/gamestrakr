@@ -35,6 +35,11 @@ function receiveGames(state, gamesType, json){
 	return state.merge(fromJS(newState));
 }
 
+function receiveUser(state, token, name){
+  //TODO: set user cookie here
+  return state.set('user', fromJS({token: token, name: name, isFetching: false}));
+}
+
 export default function(state = Map(), action) {
   switch (action.type) {
     case 'SET_STATE':
@@ -57,7 +62,12 @@ export default function(state = Map(), action) {
       return requestGames(state, action.gamesType);
     case 'RECEIVE_GAMES':
       return receiveGames(state, action.gamesType, action.json);
-  }
 
-  return state;
+    // USER
+    case 'RECEIVE_USER':
+      return receiveUser(state, action.json)
+
+    return state;
+  }
 }
+

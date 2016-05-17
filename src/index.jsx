@@ -7,12 +7,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
+import queryString from 'query-string';
 import {Router, Route, hashHistory} from 'react-router';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 
 import reducer from './reducer';
-import {setState, setCurrentPage} from './actions';
+import {setState, setCurrentPage, receiveUser} from './actions';
 
 import css from './stylesheets/index.scss';
 
@@ -41,6 +42,13 @@ store.dispatch(setState({
 }));
 
 const routes = <Route path="/" component={App}>
+  <Route
+    path="/auth_success"
+    component={GamesIndex}
+    onEnter={(nextState, replace) => {
+      const {token, name} = queryString.parse(nextState.location.search);
+      store.dispatch(receiveUser(token, name));
+    }}/>
   <Route
     path="/home"
     component={GamesIndex}

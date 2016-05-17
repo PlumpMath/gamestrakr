@@ -11,6 +11,10 @@ state = {
 		leftDrawerOpen: bool,
 		selectedGamesType: string
 	},
+  user: {
+    token: String,
+    name: String
+  },
 	gamesByType: {
 		userSaved: {
 			isFetching: bool
@@ -31,6 +35,7 @@ state = {
 	}
 }
 ```
+
 
 ## TODOS
 * Create users

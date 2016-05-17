@@ -38,6 +38,14 @@ export function setCurrentPage(pageName){
   }
 }
 
+export function receiveUser(token, name){
+  return {
+    type: 'RECEIVE_USER',
+    token,
+    name
+  }
+}
+
 export function requestGames(gamesType){
   return {
     type: 'REQUEST_GAMES',
