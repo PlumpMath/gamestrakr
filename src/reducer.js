@@ -1,4 +1,5 @@
 import {Map, fromJS} from 'immutable';
+import Cookies from 'js-cookie';
 
 function setState(state, newState) {
   return state.merge(newState);
@@ -31,12 +32,11 @@ function requestGames(state, gamesType){
 function receiveGames(state, gamesType, json){
 	var newState = {gamesByType: {}};
  	newState.gamesByType[gamesType] = {items: json, isFetching: false};
-
 	return state.merge(fromJS(newState));
 }
 
 function receiveUser(state, token, name){
-  //TODO: set user cookie here
+  Cookies.set('user', {token: token, name: name});
   return state.set('user', fromJS({token: token, name: name}));
 }
 
@@ -44,7 +44,6 @@ export default function(state = Map(), action) {
   switch (action.type) {
     case 'SET_STATE':
       return setState(state, action.state);
-
     // UI
     case 'OPEN_LEFT_DRAWER':
       return openLeftDrawer(state);
@@ -56,17 +55,14 @@ export default function(state = Map(), action) {
       return closeLoginDialog(state);
     case 'SET_CURRENT_PAGE':
       return setCurrentPage(state, action.pageName);
-
     // GAMES
     case 'REQUEST_GAMES':
       return requestGames(state, action.gamesType);
     case 'RECEIVE_GAMES':
       return receiveGames(state, action.gamesType, action.json);
-
     // USER
     case 'RECEIVE_USER':
       return receiveUser(state, action.token, action.name)
-
     return state;
   }
 }

@@ -11,6 +11,7 @@ import queryString from 'query-string';
 import {Router, Route, hashHistory} from 'react-router';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
+import Cookies from 'js-cookie';
 
 import reducer from './reducer';
 import {setState, setCurrentPage, receiveUser} from './actions';
@@ -20,25 +21,27 @@ import css from './stylesheets/index.scss';
 import App from './components/App';
 import GamesIndex from './components/games/index';
 
-import {Iterable} from 'immutable';
+import {Iterable, fromJS} from 'immutable';
 
+// Initiate Redux store with logger and thunk middlewares
 const stateTransformer = (state) => {
   if (Iterable.isIterable(state)) return state.toJS();
   else return state;
 };
-
 const loggerMiddleware = createLogger({
   stateTransformer,
   collapsed: true
 });
-
 const store = createStore(
   reducer,
   applyMiddleware(thunkMiddleware, loggerMiddleware)
 );
 
+// Grab user from cookies if available, dispatch initial state
+const userFromCookie = fromJS(Cookies.getJSON('user'));
 store.dispatch(setState({
-  ui: {leftDrawerOpen: false, loginDialogOpen: false}
+  ui: {leftDrawerOpen: false, loginDialogOpen: false},
+  user: userFromCookie
 }));
 
 const routes = <Route path="/" component={App}>
