@@ -29,6 +29,14 @@ function requestGames(state, gamesType){
   return state.setIn(['gamesByType', gamesType, 'isFetching'], true);
 }
 
+function requestUserGames(state){
+  return state.setIn(['user', 'isFetching'], true);
+}
+
+function receiveUserGames(state, json){
+	return state.setIn(['user', 'games'], fromJS(json.games));
+}
+
 function receiveGames(state, gamesType, json){
 	var newState = {gamesByType: {}};
  	newState.gamesByType[gamesType] = {items: json, isFetching: false};
@@ -61,6 +69,10 @@ export default function(state = Map(), action) {
     case 'RECEIVE_GAMES':
       return receiveGames(state, action.gamesType, action.json);
     // USER
+    case 'REQUEST_USER_GAMES':
+      return requestUserGames(state)
+    case 'RECEIVE_USER_GAMES':
+      return receiveUserGames(state, action.json)
     case 'RECEIVE_USER':
       return receiveUser(state, action.token, action.name)
     return state;

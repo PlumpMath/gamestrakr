@@ -7,7 +7,7 @@ import Grid from './Grid';
 
 const defaultGamesType = 'recent';
 
-const Index= React.createClass({
+const Index = React.createClass({
   mixins: [PureRenderMixin],
   componentDidMount: function(){
     this.props.fetchGames(this.props.gamesType);

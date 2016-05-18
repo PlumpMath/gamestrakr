@@ -13,7 +13,8 @@ state = {
 	},
   user: {
     token: String,
-    name: String
+    name: String,
+    isFetching: bool
   },
 	gamesByType: {
 		userSaved: {
@@ -38,7 +39,6 @@ state = {
 
 
 ## TODOS
-* Create users
 * Enable users to add games to currently playing, completed, saved
 * Create multiple reducers(one for each main section)
 * Make upcoming and recent release pages one page/component(toggleable)

@@ -20,6 +20,7 @@ import css from './stylesheets/index.scss';
 
 import App from './components/App';
 import GamesIndex from './components/games/index';
+import HomeIndex from './components/home/index';
 
 import {Iterable, fromJS} from 'immutable';
 
@@ -47,7 +48,7 @@ store.dispatch(setState({
 const routes = <Route path="/" component={App}>
   <Route
     path="/home"
-    component={GamesIndex}
+    component={HomeIndex}
     onEnter={() => {store.dispatch(setCurrentPage('games'))}}/>
   <Route
     path="/games"

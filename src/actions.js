@@ -46,39 +46,54 @@ export function receiveUser(token, name){
   }
 }
 
-// export function fetchUserGames(){
-// 	return function(dispatch){
-// 		dispatch(requestUser());
+export function requestUserGames(){
+  return {
+    type: 'REQUEST_USER_GAMES'
+  }
+}
 
-// 		return request
-// 			.get(`${process.env.SERVER_URL}/user/info`)
-//       .set('X-Access-Token', token)
-// 			.end((req, res) => {
-// 				dispatch(receiveUser(res.body));
-// 			});
-// 	}
-// }
+export function receiveUserGames(json){
+  return {
+    type: 'RECEIVE_USER_GAMES',
+    json,
+    recievedAt: Date.now()
+  }
+}
 
-// function shouldFetchUserGames(state, token){
-//   const user = state.get('user');
+export function fetchUserGames(token){
+	return function(dispatch){
+		dispatch(requestUserGames());
+		return request
+			.get(`${process.env.SERVER_URL}/user/games`)
+      .set('X-Access-Token', token)
+			.end((req, res) => {
+				dispatch(receiveUserGames(res.body));
+			});
+	}
+}
 
-//   if(!user && token) {
-//     return true;
-//   } else {
-//     return false;
-//   }
-// }
+function shouldFetchUserGames(state){
+  const games = state.getIn(['user', 'games']);
+  const token = state.getIn(['user', 'token']);
+	const isFetching = state.getIn(['user', 'isFetching']);
 
-// export function fetchUserGamesIfNeeded(){
-//   //TODO: get token from cookie
-//   // const token = Cookie.get('user-token');
+  if(token && !games) {
+    return true;
+  } else if(isFetching){
+    return false;
+  }
+}
 
-//   return (dispatch, getState) => {
-//     if(shouldFetchUser(getState(), token)) {
-//       return dispatch(fetchUser(token));
-//     }
-//   }
-// }
+export function fetchUserGamesIfNeeded(){
+  return (dispatch, getState) => {
+    const state = getState();
+
+    if(shouldFetchUserGames(state)) {
+      const token = state.getIn(['user', 'token']);
+      return dispatch(fetchUserGames(token));
+    }
+  }
+}
 
 export function requestGames(gamesType){
   return {
