@@ -1,7 +1,6 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {GridTile} from 'material-ui/GridList';
-import {hasIn} from 'immutable';
 
 const placeholderImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=38&txt=GamerLyfe&w=450&h=300&txttrack=0'
 

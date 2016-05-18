@@ -46,6 +46,47 @@ export function receiveUser(token, name){
   }
 }
 
+// export function fetchUserGames(){
+// 	return function(dispatch){
+// 		dispatch(requestUser());
+
+// 		return request
+// 			.get(`${process.env.SERVER_URL}/user/info`)
+//       .set('X-Access-Token', token)
+// 			.end((req, res) => {
+// 				dispatch(receiveUser(res.body));
+// 			});
+// 	}
+// }
+
+// function shouldFetchUserGames(state, token){
+//   const user = state.get('user');
+
+//   if(!user && token) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
+
+// export function fetchUserGamesIfNeeded(){
+//   //TODO: get token from cookie
+//   // const token = Cookie.get('user-token');
+
+//   return (dispatch, getState) => {
+//     if(shouldFetchUser(getState(), token)) {
+//       return dispatch(fetchUser(token));
+//     }
+//   }
+// }
+
+export function requestGames(gamesType){
+  return {
+    type: 'REQUEST_GAMES',
+		gamesType
+  }
+}
+
 export function requestGames(gamesType){
   return {
     type: 'REQUEST_GAMES',

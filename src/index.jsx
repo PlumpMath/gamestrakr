@@ -43,13 +43,6 @@ store.dispatch(setState({
 
 const routes = <Route path="/" component={App}>
   <Route
-    path="/auth_success"
-    component={GamesIndex}
-    onEnter={(nextState, replace) => {
-      const {token, name} = queryString.parse(nextState.location.search);
-      store.dispatch(receiveUser(token, name));
-    }}/>
-  <Route
     path="/home"
     component={GamesIndex}
     onEnter={() => {store.dispatch(setCurrentPage('games'))}}/>
@@ -61,6 +54,17 @@ const routes = <Route path="/" component={App}>
     path="/platforms"
     component={GamesIndex}
     onEnter={() => {store.dispatch(setCurrentPage('platforms'))}}/>
+  <Route
+    path="/auth_success"
+    component={GamesIndex}
+    onEnter={(nextState, replace) => {
+      const {token, name} = queryString.parse(nextState.location.search);
+      store.dispatch(receiveUser(token, name));
+    }}/>
+  <Route
+    path="/profile"
+    component={GamesIndex}
+    onEnter={() => {store.dispatch(setCurrentPage('profile'))}}/>
 </Route>;
 
 ReactDOM.render(

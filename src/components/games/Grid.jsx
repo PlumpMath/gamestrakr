@@ -1,7 +1,6 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {GridList} from 'material-ui/GridList';
-import {hasIn} from 'lodash';
 
 import Tile from './Tile';
 

@@ -29,44 +29,44 @@ const Nav =  React.createClass({
 	},
 
 	render() {
-		return (
-			<div className="nav-ctr">
-				<AppBar
-					onLeftIconButtonTouchTap={this.props.openLeftDrawer}
-					title={this.props.navTitle || ''}
-					iconElementRight={
-						<IconMenu
-							iconButtonElement={
-								<IconButton>
-									<FontIcon className="material-icons">account_circle</FontIcon>
-								</IconButton>
-								}>
-								<MenuItem primaryText="Sign Up" onTouchTap={this.props.openLoginDialog}/>
-              </IconMenu>
-          }/>
+    const {leftDrawerOpen, navTitle, user} = this.props;
+    const signUpButton = (<MenuItem primaryText="Sign Up" onTouchTap={this.props.openLoginDialog}/>);
+    const userProfileButton = (<MenuItem primaryText={'View profile'} onTouchTap={this.triggerRoute.bind(this, 'profile')}/>);
 
-						<Drawer open={this.props.leftDrawerOpen}>
-							<AppBar
-								title={<Link to="home" style={{textDecoration: 'none', color: '#fff'}}>{this.props.appTitle}</Link>}
-								iconElementLeft={<IconButton onClick={this.props.closeLeftDrawer} ><FontIcon className="material-icons">arrow_back</FontIcon></IconButton>} />
-								{ navLinks.map((item) => {
-									return (
-										<MenuItem
-										key={item.name}
-										onTouchTap={this.triggerRoute.bind(this, item.route)}>
-										{item.name}
-										</MenuItem>
-									);
-								})}
-						</Drawer>
-					</div>
+    const accountNavElement = (
+      <IconMenu iconButtonElement={
+        <IconButton>
+          <FontIcon className="material-icons">account_circle</FontIcon>
+        </IconButton>}>
+        {user ? userProfileButton : signUpButton}
+      </IconMenu>
+    );
+
+    return(
+      <div className="nav-ctr">
+				<AppBar onLeftIconButtonTouchTap={this.props.openLeftDrawer} title={navTitle || ''} iconElementRight={accountNavElement}/>
+        <Drawer open={leftDrawerOpen}>
+          <AppBar
+            title={<Link to="home" style={{textDecoration: 'none', color: '#fff'}}>{this.props.appTitle}</Link>}
+            iconElementLeft={<IconButton onClick={this.props.closeLeftDrawer}><FontIcon className="material-icons">arrow_back</FontIcon></IconButton>}/>
+            {navLinks.map((item) => {
+              return (
+                <MenuItem key={item.name} onTouchTap={this.triggerRoute.bind(this, item.route)}>
+                  {item.name}
+                </MenuItem>
+              );
+            })}
+        </Drawer>
+      </div>
 		);
 	}
 });
 
 function mapStateToProps(state){
   return {
-    leftDrawerOpen: state.getIn(['ui', 'leftDrawerOpen'])
+    leftDrawerOpen: state.getIn(['ui', 'leftDrawerOpen']),
+    navTitle: state.getIn(['ui', 'currentPage']),
+    user: state.get('user')
   };
 }
 

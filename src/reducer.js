@@ -37,7 +37,7 @@ function receiveGames(state, gamesType, json){
 
 function receiveUser(state, token, name){
   //TODO: set user cookie here
-  return state.set('user', fromJS({token: token, name: name, isFetching: false}));
+  return state.set('user', fromJS({token: token, name: name}));
 }
 
 export default function(state = Map(), action) {
@@ -65,7 +65,7 @@ export default function(state = Map(), action) {
 
     // USER
     case 'RECEIVE_USER':
-      return receiveUser(state, action.json)
+      return receiveUser(state, action.token, action.name)
 
     return state;
   }
