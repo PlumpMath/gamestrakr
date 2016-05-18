@@ -45,7 +45,7 @@ const Index = React.createClass({
           <div key={status} style={styles.gridCtr}>
             <h2 style={styles.h2}>{status}</h2>
             {this.getGamesByStatus(status).map((game, i) => (
-              <div key={i}>{game.get('giantBombId')}</div>
+              <div key={i}>{game.get('name')}</div>
             ))}
           </div>
         ))}

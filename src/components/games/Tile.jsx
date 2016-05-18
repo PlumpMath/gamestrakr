@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {GridTile} from 'material-ui/GridList';
 import FontIcon from 'material-ui/FontIcon';
@@ -7,7 +8,15 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Popover from 'material-ui/Popover';
 
+import {addUserGame} from '../../actions';
+
 const placeholderImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=38&txt=GamerLyfe&w=450&h=300&txttrack=0'
+
+const styles = {
+	menuItem: {
+		textTransform: 'capitalize'
+	}
+}
 
 const Tile = React.createClass({
   mixins: [PureRenderMixin],
@@ -36,34 +45,65 @@ const Tile = React.createClass({
 		this.setState({popOverOpen: false});
 	},
 
+	onAddGame: function(status){
+		const {item} = this.props;
+		this.props.addUserGame(item.get('name'), this.state.imageUrl, item.get('api_detail_url'), status);
+	},
+
   render(){
     const {item} = this.props;
+    const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped'];
 
     return (
-      <GridTile
-        title={item.get('name')}
-        actionIcon={
+			<GridTile
+				title={item.get('name')}
+				actionIcon={
 					<IconButton onTouchTap={this.onPlusTap}>
 						<FontIcon className="material-icons">add_circle</FontIcon>
-					</IconButton>}>
-        <img
-          src={this.state.imageUrl}
-          onError={this.onImageError}/>
-				<Popover
-					open={this.state.popOverOpen}
-					anchorEl={this.state.popOverAnchor}
-					onRequestClose={this.onClosePopOver}>
-					<Menu>
-						<MenuItem primaryText="Playing" />
-						<MenuItem primaryText="Planning" />
-						<MenuItem primaryText="Completed" />
-						<MenuItem primaryText="On-Hold" />
-						<MenuItem primaryText="Dropped" />
-					</Menu>
-				</Popover>
-      </GridTile>
+						<Popover
+							open={this.state.popOverOpen}
+							anchorEl={this.state.popOverAnchor}
+							onRequestClose={this.onClosePopOver}>
+							<Menu>
+								{statuses.map((status, i) => (
+									<MenuItem
+										key={i}
+										style={styles.menuItem}
+										primaryText={status}
+										onTouchTap={this.onAddGame.bind(this, status)}/>
+									))}
+								</Menu>
+							</Popover>
+						</IconButton>}>
+						<img
+							src={this.state.imageUrl}
+							onError={this.onImageError}/>
+				</GridTile>
     );
   }
 });
 
-export default Tile;
+const mapStateToProps = (state) => {
+  // const games = state.getIn(['user', 'games'])
+	// if(games){
+		// const game = games.find((v, k) => {
+			// if(v.get('name') ==	this.props.item.get('name')) return true;
+		// });
+	// }
+
+  return {
+    userGame: undefined
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addUserGame: (name, imageUrl, giantBombUrl, status) => {
+      dispatch(addUserGame(name, imageUrl, giantBombUrl, status));
+    }
+  };
+};
+
+const TileContainer = connect(mapStateToProps, mapDispatchToProps)(Tile);
+
+export default TileContainer;

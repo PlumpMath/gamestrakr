@@ -1,4 +1,4 @@
-import {Map, fromJS} from 'immutable';
+import {Map, List, fromJS} from 'immutable';
 import Cookies from 'js-cookie';
 
 function setState(state, newState) {
@@ -37,10 +37,17 @@ function receiveUserGames(state, json){
 	return state.setIn(['user', 'games'], fromJS(json.games));
 }
 
+function receiveUserGame(state, game){
+	return state.updateIn(['user', 'games'], List(), arr => {
+		const duplicate = arr.find((v, k) => { return v.get('name') === game.name});
+		if(!duplicate) return arr.push(fromJS(game));
+		else return arr;
+	});
+}
+
 function receiveGames(state, gamesType, json){
-	var newState = {gamesByType: {}};
- 	newState.gamesByType[gamesType] = {items: json, isFetching: false};
-	return state.merge(fromJS(newState));
+	return state.setIn(['gamesByType', gamesType],
+										 fromJS({items: json, isFetching: false}));
 }
 
 function receiveUser(state, token, name){
@@ -75,6 +82,8 @@ export default function(state = Map(), action) {
       return receiveUserGames(state, action.json)
     case 'RECEIVE_USER':
       return receiveUser(state, action.token, action.name)
+		case 'RECEIVE_USER_GAME':
+      return receiveUserGame(state, action.game)
     return state;
   }
 }

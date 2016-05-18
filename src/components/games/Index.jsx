@@ -23,7 +23,7 @@ const Index = React.createClass({
 });
 
 const mapStateToProps = (state) => {
-  var gamesType = state.getIn(['app', 'selectedGamesType']) || defaultGamesType;
+  var gamesType = state.getIn(['ui', 'selectedGamesType']) || defaultGamesType;
 
   return {
     gamesType: gamesType,

@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import queryString from 'query-string';
-import {Router, Route, hashHistory} from 'react-router';
+import {Router, Route, IndexRoute, hashHistory} from 'react-router';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import Cookies from 'js-cookie';
@@ -46,6 +46,7 @@ store.dispatch(setState({
 }));
 
 const routes = <Route path="/" component={App}>
+ <IndexRoute component={GamesIndex}/>
   <Route
     path="/home"
     component={HomeIndex}

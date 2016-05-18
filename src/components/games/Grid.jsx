@@ -2,7 +2,7 @@ import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {GridList} from 'material-ui/GridList';
 
-import Tile from './Tile';
+import TileContainer from './Tile';
 
 const styles = {
   root: {
@@ -35,7 +35,7 @@ const Grid = React.createClass({
           style={styles.gridList}>
 
           {this.getItems().map((item, i) => (
-            <Tile key={`${item.get('name')}${i}`} item={item}/>
+            <TileContainer key={`${item.get('name')}${i}`} item={item}/>
           ))}
 
         </GridList>

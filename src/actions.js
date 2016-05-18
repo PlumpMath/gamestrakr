@@ -55,8 +55,14 @@ export function requestUserGames(){
 export function receiveUserGames(json){
   return {
     type: 'RECEIVE_USER_GAMES',
-    json,
-    recievedAt: Date.now()
+    json
+  }
+}
+
+export function receiveUserGame(game){
+  return {
+    type: 'RECEIVE_USER_GAME',
+    game
   }
 }
 
@@ -95,6 +101,23 @@ export function fetchUserGamesIfNeeded(){
   }
 }
 
+export function addUserGame(name, imageUrl, giantBombUrl, status){
+	const game = {name, imageUrl, giantBombUrl, status};
+	return (dispatch, getState) => {
+		const state = getState();
+		const token = state.getIn(['user', 'token']);
+		request
+			.post(`${process.env.SERVER_URL}/user/games`)
+			.send({game: game})
+			.set('X-Access-Token', token)
+			.end((err, res) => {
+				if(err) console.log('err', err);
+			});
+
+			dispatch(receiveUserGame(game));
+	}
+};
+
 export function requestGames(gamesType){
   return {
     type: 'REQUEST_GAMES',
@@ -125,6 +148,7 @@ export function fetchGames(gamesType){
 		return request
 			.get(`${process.env.SERVER_URL}/games`)
 			.query({games_type: gamesType})
+			.query({limit: 16})
 			// .query({index: index})
 			.end((req, res) => {
 				dispatch(receiveGames(gamesType, res.body));
