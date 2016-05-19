@@ -41,6 +41,7 @@ state = {
 ## TODOS
 * Make upcoming and recent release pages one page/component(toggleable)
 * Add pagination
+* Add game detail component
 * Make fetching of games more customizeable(genre, search, platform, etc)
 * Dasable Redux logger in prod
 * Render recently viewed list and currently playing list of games in nav
