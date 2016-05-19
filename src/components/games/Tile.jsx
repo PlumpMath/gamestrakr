@@ -50,7 +50,20 @@ const Tile = React.createClass({
 		this.props.addUserGame(item.get('name'), this.state.imageUrl, item.get('api_detail_url'), status);
 	},
 
+	getUserGame: function(){
+		const {userGames, item} = this.props;
+		var game;
+		if (userGames){
+			game = userGames.find((v, k) => {
+				if(v.get('name') ==	item.get('name')) return true;
+			});
+		}
+
+		return game;
+	},
+
   render(){
+		const userGame = this.getUserGame();
     const {item} = this.props;
     const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped'];
 
@@ -69,6 +82,7 @@ const Tile = React.createClass({
 									<MenuItem
 										key={i}
 										style={styles.menuItem}
+										disabled={userGame ? userGame.get('status') === status : false}
 										primaryText={status}
 										onTouchTap={this.onAddGame.bind(this, status)}/>
 									))}
@@ -84,15 +98,8 @@ const Tile = React.createClass({
 });
 
 const mapStateToProps = (state) => {
-  // const games = state.getIn(['user', 'games'])
-	// if(games){
-		// const game = games.find((v, k) => {
-			// if(v.get('name') ==	this.props.item.get('name')) return true;
-		// });
-	// }
-
   return {
-    userGame: undefined
+    userGames: state.getIn(['user', 'games'])
   };
 };
 

@@ -41,7 +41,10 @@ function receiveUserGame(state, game){
 	return state.updateIn(['user', 'games'], List(), arr => {
 		const duplicate = arr.find((v, k) => { return v.get('name') === game.name});
 		if(!duplicate) return arr.push(fromJS(game));
-		else return arr;
+		else{
+			const index = arr.indexOf(duplicate);
+			return arr.set(index, fromJS(game));
+		}
 	});
 }
 
