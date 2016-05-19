@@ -19,8 +19,8 @@ import {setState, setCurrentPage, receiveUser} from './actions';
 import css from './stylesheets/index.scss';
 
 import App from './components/App';
-import GamesIndex from './components/games/index';
-import HomeIndex from './components/home/index';
+import GamesIndex from './components/games/Index';
+import UserGamesIndex from './components/user_games/Index';
 
 import {Iterable, fromJS} from 'immutable';
 
@@ -48,17 +48,13 @@ store.dispatch(setState({
 const routes = <Route path="/" component={App}>
  <IndexRoute component={GamesIndex}/>
   <Route
-    path="/home"
-    component={HomeIndex}
+    path="/my_games"
+    component={UserGamesIndex}
     onEnter={() => {store.dispatch(setCurrentPage('games'))}}/>
   <Route
     path="/games"
     component={GamesIndex}
     onEnter={() => {store.dispatch(setCurrentPage('games'))}}/>
-  <Route
-    path="/platforms"
-    component={GamesIndex}
-    onEnter={() => {store.dispatch(setCurrentPage('platforms'))}}/>
   <Route
     path="/auth_success"
     component={GamesIndex}

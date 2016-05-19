@@ -39,13 +39,9 @@ state = {
 
 
 ## TODOS
-* Enable users to add games to currently playing, completed, saved
-* Create multiple reducers(one for each main section)
 * Make upcoming and recent release pages one page/component(toggleable)
+* Add pagination
+* Make fetching of games more customizeable(genre, search, platform, etc)
 * Dasable Redux logger in prod
 * Render recently viewed list and currently playing list of games in nav
-* Make fetching of games more customizeable(ui options plug into actions and reducers)
-* Add QA ui for each game
-* Add platforms
 * Enable users to rank games
-

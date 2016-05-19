@@ -18,7 +18,7 @@ import css from '../stylesheets/nav.scss';
 // Games - where users can search for and sort through upcoming and recently released games
 // Platforms - where users can look through platforms
 
-const navLinks =  [{name: 'Home', route: 'home', icon: 'home'}, {name: 'Games', route: 'games', icon: 'videogame_asset'}, {name: 'Platforms', route: 'platforms', icon: 'videogame_asset'}];
+const navLinks =  [{name: 'All Games', route: 'games', icon: 'videogame_asset'}, {name: 'My Games', route: 'my_games', icon: 'videogame_asset'}];
 
 const Nav =  React.createClass({
 	mixins: [PureRenderMixin],
