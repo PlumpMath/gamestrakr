@@ -1,9 +1,11 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import {List} from 'immutable';
 import {connect} from 'react-redux';
-import {fetchUserGamesIfNeeded} from '../../actions';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
-import Grid from '../games/Grid';
+import {fetchUserGamesIfNeeded} from '../../actions';
+import Grid from './Grid';
 
 const styles = {
   root: {
@@ -27,28 +29,25 @@ const Index = React.createClass({
 
   getGamesByStatus(status){
     const {items} = this.props;
-    if(items){
-      return items.takeWhile((item) => {
-        if(item.get('status') === status) return true;
-      });
-    } else {
-      return [];
-    }
+		if(items){
+			return items.takeWhile((item) => ( item.get('status') === status ));
+		}	else {
+			return List();
+		}
   },
 
   render() {
     const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped'];
 
     return (
-      <div style={styles.root} className="home-ctr">
-        {statuses.map((status) => (
-          <div key={status} style={styles.gridCtr}>
-            <h2 style={styles.h2}>{status}</h2>
-            {this.getGamesByStatus(status).map((game, i) => (
-              <div key={i}>{game.get('name')}</div>
-            ))}
-          </div>
-        ))}
+      <div className="home-ctr">
+				<Tabs>
+					{statuses.map((status) => (
+						<Tab key={status} label={status}>
+							<Grid addUserGame={this.props.addUserGame} items={this.getGamesByStatus(status)} />
+						</Tab>
+					))}
+				</Tabs>
       </div>
     );
   }
@@ -64,6 +63,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchGames: (gamesType) => {
       dispatch(fetchUserGamesIfNeeded());
+    },
+    addUserGame: (name, imageUrl, giantBombUrl, status) => {
+      dispatch(addUserGame(name, imageUrl, giantBombUrl, status));
     }
   };
 };
