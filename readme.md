@@ -44,6 +44,5 @@ state = {
 * Add back loader animation
 * Add game detail component
 * Make fetching of games more customizeable(genre, search, platform, etc)
-* Dasable Redux logger in prod
 * Render recently viewed list and currently playing list of games in nav
 * Enable users to rank games
