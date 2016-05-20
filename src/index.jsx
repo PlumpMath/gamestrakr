@@ -24,19 +24,27 @@ import UserGamesIndex from './components/user_games/Index';
 
 import {Iterable, fromJS} from 'immutable';
 
-// Initiate Redux store with logger and thunk middlewares
 const stateTransformer = (state) => {
   if (Iterable.isIterable(state)) return state.toJS();
   else return state;
 };
-const loggerMiddleware = createLogger({
-  stateTransformer,
-  collapsed: true
-});
-const store = createStore(
-  reducer,
-  applyMiddleware(thunkMiddleware, loggerMiddleware)
-);
+
+if (process.env.NODE_ENV === 'production'){
+	var store = createStore(
+		reducer,
+		applyMiddleware(thunkMiddleware)
+	);
+} else {
+	const loggerMiddleware = createLogger({
+		stateTransformer,
+		collapsed: true
+	});
+	// Initiate Redux store with logger and thunk middlewares
+	var store = createStore(
+		reducer,
+		applyMiddleware(thunkMiddleware, loggerMiddleware)
+	);
+}
 
 // Grab user from cookies if available, dispatch initial state
 const userFromCookie = fromJS(Cookies.getJSON('user'));
