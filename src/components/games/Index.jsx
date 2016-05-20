@@ -1,7 +1,7 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {connect} from 'react-redux';
-import {fetchGamesIfNeeded} from '../../actions';
+import {fetchGamesIfNeeded, fetchUserGamesIfNeeded, setGamesType} from '../../actions';
 
 import Grid from './Grid';
 
@@ -11,6 +11,7 @@ const Index = React.createClass({
   mixins: [PureRenderMixin],
   componentDidMount: function(){
     this.props.fetchGames(this.props.gamesType);
+    this.props.fetchUserGames();
   },
 
   render() {
@@ -35,6 +36,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchGames: (gamesType) => {
       dispatch(fetchGamesIfNeeded(gamesType));
+    },
+    fetchUserGames: (gamesType) => {
+      dispatch(fetchUserGamesIfNeeded(gamesType));
+    },
+    setGamesType: (gamesType) => {
+      dispatch(setGamesType(gamesType));
     }
   };
 };

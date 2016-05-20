@@ -147,6 +147,13 @@ export function receiveGames(gamesType, json){
   }
 }
 
+export function setGamesType(gamesType){
+  return {
+    type: 'SET_GAMES_TYPE',
+		gamesType
+  }
+}
+
 export function fetchGames(gamesType){
 	return function(dispatch){
 		dispatch(requestGames(gamesType));
@@ -155,7 +162,6 @@ export function fetchGames(gamesType){
 			.get(`${process.env.SERVER_URL}/games`)
 			.query({games_type: gamesType})
 			.query({limit: 16})
-			// .query({index: index})
 			.end((req, res) => {
 				dispatch(receiveGames(gamesType, res.body));
 			});
@@ -163,7 +169,7 @@ export function fetchGames(gamesType){
 }
 
 function shouldFetchGames(state, gamesType) {
-	const games = state.getIn(['gamesByType', gamesType])
+	const games = state.getIn(['gamesByType', gamesType]);
 	const isFetching = state.getIn(['gamesByType', gamesType, 'isFetching']);
 
 	if (!games) {

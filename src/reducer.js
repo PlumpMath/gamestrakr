@@ -53,6 +53,10 @@ function receiveGames(state, gamesType, json){
 										 fromJS({items: json, isFetching: false}));
 }
 
+function setGamesType(state, gamesType){
+  return state.setIn(['ui', 'selectedGamesType'], gamesType);
+}
+
 function receiveUser(state, token, name){
   Cookies.set('user', {token: token, name: name});
   return state.set('user', fromJS({token: token, name: name}));
@@ -79,6 +83,8 @@ export default function(state = Map(), action) {
       return setCurrentPage(state, action.pageName);
     case 'AUTH_FAILED':
       return setCurrentPage(state);
+    case 'SET_GAMES_TYPE':
+      return setGamesType(state, action.gamesType);
     // GAMES
     case 'REQUEST_GAMES':
       return requestGames(state, action.gamesType);
