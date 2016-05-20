@@ -2,8 +2,6 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: [
-    'webpack-dev-server/client?http://localhost:8080',
-    'webpack/hot/only-dev-server',
     './src/index.jsx'
   ],
   module: {
@@ -11,7 +9,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'react-hot!babel'
+        loader: 'babel'
       },
       {
         test: /\.scss$/,
@@ -35,12 +33,8 @@ module.exports = {
     publicPath: '/',
     filename: 'bundle.js'
   },
-  devServer: {
-    contentBase: './dist',
-    hot: true
-  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.DefinePlugin({'process.env.SERVER_URL': '"http://127.0.0.1:3001"'})
+    new webpack.DefinePlugin({'process.env.SERVER_URL': '"https://gamestrackr-server.herokuapp.com"'})
   ]
 };
