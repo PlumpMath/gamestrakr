@@ -40,10 +40,10 @@ state = {
 
 ## TODOS
 * Add pagination
-* Add back loader animation
-* render errors
+* Add loader animation
 * Add game detail component
-* Enable users not logged in to save games then upload to server once signed in(show msg)
+* Add search
 * Make fetching of games more customizeable(genre, search, platform, etc)
 * Render recently viewed list and currently playing list of games in nav
 * Enable users to rank games
+* render errors
