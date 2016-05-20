@@ -79,4 +79,14 @@ const Tile = React.createClass({
   }
 });
 
-export default Tile;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addUserGame: (name, imageUrl, giantBombUrl, status) => {
+      dispatch(addUserGame(name, imageUrl, giantBombUrl, status));
+    }
+  };
+};
+
+const TileContainer = connect(undefined, mapDispatchToProps)(Tile);
+
+export default TileContainer;

@@ -27,15 +27,6 @@ const Index = React.createClass({
     this.props.fetchGames();
   },
 
-  getGamesByStatus(status){
-    const {items} = this.props;
-		if(items){
-			return items.takeWhile((item) => ( item.get('status') === status ));
-		}	else {
-			return List();
-		}
-  },
-
   render() {
     const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped'];
 
@@ -44,7 +35,7 @@ const Index = React.createClass({
 				<Tabs>
 					{statuses.map((status) => (
 						<Tab key={status} label={status}>
-							<Grid addUserGame={this.props.addUserGame} items={this.getGamesByStatus(status)} />
+							<Grid addUserGame={this.props.addUserGame} status={status} />
 						</Tab>
 					))}
 				</Tabs>
@@ -54,20 +45,17 @@ const Index = React.createClass({
 });
 
 const mapStateToProps = (state) => {
-  return {
-    items: state.getIn(['user', 'games'])
-  };
+	return {
+		items: state.getIn(['user', 'games'])
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchGames: (gamesType) => {
-      dispatch(fetchUserGamesIfNeeded());
-    },
-    addUserGame: (name, imageUrl, giantBombUrl, status) => {
-      dispatch(addUserGame(name, imageUrl, giantBombUrl, status));
-    }
-  };
+	return {
+		fetchGames: (gamesType) => {
+			dispatch(fetchUserGamesIfNeeded());
+		}
+	};
 };
 
 const IndexContainer = connect(mapStateToProps, mapDispatchToProps)(Index);

@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {GridList} from 'material-ui/GridList';
 
@@ -22,7 +23,7 @@ const Grid = React.createClass({
   mixins: [PureRenderMixin],
 
 	getItems: function(){
-    return this.props.items;
+    return this.props.items || [];
 	},
 
   render(){
@@ -35,7 +36,7 @@ const Grid = React.createClass({
           style={styles.gridList}>
 
           {this.getItems().map((item, i) => (
-            <TileContainer key={i} addUserGame={this.props.addUserGame} item={item}/>
+            <TileContainer key={i} item={item}/>
           ))}
 
         </GridList>
@@ -45,4 +46,18 @@ const Grid = React.createClass({
 
 });
 
-export default Grid;
+const mapStateToProps = (state, ownProps) => {
+  if (state.hasIn(['user', 'games'])){
+    return {
+      items: state.getIn(['user', 'games']).filter((item) => {
+        return item.get('status') === ownProps.status;
+      })
+    };
+  } else {
+      return {items: []};
+  }
+};
+
+const GridContainer = connect(mapStateToProps)(Grid);
+
+export default GridContainer;
