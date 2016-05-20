@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "635935c8ff683823253c"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "e30f8048dbf30a00945a"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -33978,7 +33978,7 @@
 	function fetchUserGames(token) {
 	  return function (dispatch) {
 	    dispatch(requestUserGames());
-	    return request.get(("https://gamestrackr-server.herokuapp.com") + '/user/games').set('X-Access-Token', token).end(function (req, res) {
+	    return request.get(("https://gamestrakr-server.herokuapp.com") + '/user/games').set('X-Access-Token', token).end(function (req, res) {
 	      dispatch(receiveUserGames(res.body));
 	    });
 	  };
@@ -34012,7 +34012,7 @@
 	  return function (dispatch, getState) {
 	    var state = getState();
 	    var token = state.getIn(['user', 'token']);
-	    request.post(("https://gamestrackr-server.herokuapp.com") + '/user/games').send({ game: game }).set('X-Access-Token', token).end(function (err, res) {
+	    request.post(("https://gamestrakr-server.herokuapp.com") + '/user/games').send({ game: game }).set('X-Access-Token', token).end(function (err, res) {
 	      if (err) console.log('err', err);
 	    });
 
@@ -34047,7 +34047,7 @@
 	  return function (dispatch) {
 	    dispatch(requestGames(gamesType));
 
-	    return request.get(("https://gamestrackr-server.herokuapp.com") + '/games').query({ games_type: gamesType }).query({ limit: 16 })
+	    return request.get(("https://gamestrakr-server.herokuapp.com") + '/games').query({ games_type: gamesType }).query({ limit: 16 })
 	    // .query({index: index})
 	    .end(function (req, res) {
 	      dispatch(receiveGames(gamesType, res.body));
@@ -46572,11 +46572,11 @@
 	      label: "Twitter",
 	      primary: true,
 	      linkButton: true,
-	      href: ("https://gamestrackr-server.herokuapp.com") + '/auth/twitter' }), _react2.default.createElement(_FlatButton2.default, {
+	      href: ("https://gamestrakr-server.herokuapp.com") + '/auth/twitter' }), _react2.default.createElement(_FlatButton2.default, {
 	      label: "Facebook",
 	      primary: true,
 	      linkButton: true,
-	      href: ("https://gamestrackr-server.herokuapp.com") + '/auth/facebook' })];
+	      href: ("https://gamestrakr-server.herokuapp.com") + '/auth/facebook' })];
 
 	    return _react2.default.createElement(_Dialog2.default, {
 	      title: 'Log In',
