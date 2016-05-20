@@ -30,7 +30,7 @@ module.exports = {
   },
   output: {
     path: __dirname + '/dist',
-    publicPath: '/',
+    publicPath: '/gamestrackr/dist/',
     filename: 'bundle.js'
   },
   plugins: [
