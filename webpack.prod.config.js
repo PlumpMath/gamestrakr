@@ -35,6 +35,6 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.DefinePlugin({'process.env.SERVER_URL': '"https://gamestrackr-server.herokuapp.com"'})
+    new webpack.DefinePlugin({'process.env.SERVER_URL': '"https://gamestrakr-server.herokuapp.com"'})
   ]
 };
