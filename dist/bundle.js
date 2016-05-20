@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "e30f8048dbf30a00945a"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "56edf5111398e4e347f5"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -704,6 +704,12 @@
 	      var name = _queryString$parse.name;
 
 	      store.dispatch((0, _actions.receiveUser)(token, name));
+	    } }),
+	  _react2.default.createElement(_reactRouter.Route, {
+	    path: '/auth_failure',
+	    component: _Index2.default,
+	    onEnter: function onEnter() {
+	      store.dispatch((0, _actions.authFailed)());
 	    } }),
 	  _react2.default.createElement(_reactRouter.Route, {
 	    path: '/profile',
@@ -28813,6 +28819,8 @@
 	      return closeLoginDialog(state);
 	    case 'SET_CURRENT_PAGE':
 	      return setCurrentPage(state, action.pageName);
+	    case 'AUTH_FAILED':
+	      return setCurrentPage(state);
 	    // GAMES
 	    case 'REQUEST_GAMES':
 	      return requestGames(state, action.gamesType);
@@ -28894,6 +28902,10 @@
 	function receiveUser(state, token, name) {
 	  _jsCookie2.default.set('user', { token: token, name: name });
 	  return state.set('user', (0, _immutable.fromJS)({ token: token, name: name }));
+	}
+
+	function authFailed(state) {
+	  return state.setIn(['ui', 'errors'], 'Auth Failed');
 	}
 
 /***/ },
@@ -33896,6 +33908,7 @@
 	exports.closeLoginDialog = closeLoginDialog;
 	exports.setCurrentPage = setCurrentPage;
 	exports.receiveUser = receiveUser;
+	exports.authFailed = authFailed;
 	exports.requestUserGames = requestUserGames;
 	exports.receiveUserGames = receiveUserGames;
 	exports.receiveUserGame = receiveUserGame;
@@ -33952,6 +33965,12 @@
 	    type: 'RECEIVE_USER',
 	    token: token,
 	    name: name
+	  };
+	}
+
+	function authFailed() {
+	  return {
+	    type: 'AUTH_FAILED'
 	  };
 	}
 
