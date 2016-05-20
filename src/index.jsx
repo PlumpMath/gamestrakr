@@ -14,7 +14,7 @@ import {Provider} from 'react-redux';
 import Cookies from 'js-cookie';
 
 import reducer from './reducer';
-import {setState, setCurrentPage, receiveUser} from './actions';
+import {setState, setCurrentPage, receiveUser, authFailed} from './actions';
 
 import css from './stylesheets/index.scss';
 
@@ -69,6 +69,12 @@ const routes = <Route path="/" component={App}>
     onEnter={(nextState, replace) => {
       const {token, name} = queryString.parse(nextState.location.search);
       store.dispatch(receiveUser(token, name));
+    }}/>
+  <Route
+    path="/auth_failure"
+    component={GamesIndex}
+    onEnter={() => {
+      store.dispatch(authFailed());
     }}/>
   <Route
     path="/profile"

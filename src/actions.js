@@ -46,6 +46,12 @@ export function receiveUser(token, name){
   }
 }
 
+export function authFailed(){
+  return {
+    type: 'AUTH_FAILED'
+  }
+}
+
 export function requestUserGames(){
   return {
     type: 'REQUEST_USER_GAMES'
