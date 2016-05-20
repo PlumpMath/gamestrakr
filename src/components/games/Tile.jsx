@@ -99,7 +99,7 @@ const Tile = React.createClass({
 
 const mapStateToProps = (state) => {
   return {
-    userGames: state.getIn(['user', 'games'])
+    userGames: state.getIn(['user', 'games', 'items'])
   };
 };
 

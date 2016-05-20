@@ -30,15 +30,16 @@ function requestGames(state, gamesType){
 }
 
 function requestUserGames(state){
-  return state.setIn(['user', 'isFetching'], true);
+  return state.setIn(['user', 'games', 'isFetching'], true);
 }
 
 function receiveUserGames(state, json){
-	return state.setIn(['user', 'games'], fromJS(json.games));
+	return state.mergeIn(['user', 'games'],
+										 fromJS({items: json.games, isFetching: false}));
 }
 
 function receiveUserGame(state, game){
-	return state.updateIn(['user', 'games'], List(), arr => {
+	return state.updateIn(['user', 'games', 'items'], List(), arr => {
 		const duplicate = arr.find((v, k) => { return v.get('name') === game.name});
 		if(!duplicate) return arr.push(fromJS(game));
 		else{

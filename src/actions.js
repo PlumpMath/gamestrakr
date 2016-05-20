@@ -87,7 +87,7 @@ export function fetchUserGames(token){
 function shouldFetchUserGames(state){
   const games = state.getIn(['user', 'games']);
   const token = state.getIn(['user', 'token']);
-	const isFetching = state.getIn(['user', 'isFetching']);
+	const isFetching = state.getIn(['user', 'games', 'isFetching']);
 
   if(token && !games) {
     return true;
@@ -119,7 +119,6 @@ export function addUserGame(name, imageUrl, giantBombUrl, status){
 			.end((err, res) => {
 				if(err) console.log('err', err);
 			});
-
 			dispatch(receiveUserGame(game));
 	}
 };

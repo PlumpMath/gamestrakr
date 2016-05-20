@@ -46,7 +46,7 @@ const Index = React.createClass({
 
 const mapStateToProps = (state) => {
 	return {
-		items: state.getIn(['user', 'games'])
+		items: state.getIn(['user', 'games', 'items'])
 	};
 };
 
