@@ -72,7 +72,7 @@ const Tile = React.createClass({
 				title={item.get('name')}
 				actionIcon={
 					<IconButton onTouchTap={this.onPlusTap}>
-						<FontIcon className="material-icons">add_circle</FontIcon>
+						<FontIcon className="material-icons">{userGame ? 'check_circle' : 'add_circle'}</FontIcon>
 						<Popover
 							open={this.state.popOverOpen}
 							anchorEl={this.state.popOverAnchor}
