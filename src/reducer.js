@@ -58,6 +58,10 @@ function receiveUser(state, token, name){
   return state.set('user', fromJS({token: token, name: name}));
 }
 
+function authFailed(state){
+  return state.setIn(['ui', 'errors'], 'Auth Failed');
+}
+
 export default function(state = Map(), action) {
   switch (action.type) {
     case 'SET_STATE':
@@ -73,6 +77,8 @@ export default function(state = Map(), action) {
       return closeLoginDialog(state);
     case 'SET_CURRENT_PAGE':
       return setCurrentPage(state, action.pageName);
+    case 'AUTH_FAILED':
+      return setCurrentPage(state);
     // GAMES
     case 'REQUEST_GAMES':
       return requestGames(state, action.gamesType);
