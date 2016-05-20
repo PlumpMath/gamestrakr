@@ -46,6 +46,12 @@ export function receiveUser(token, name){
   }
 }
 
+export function signOut(){
+  return {
+    type: 'SIGN_OUT'
+  }
+}
+
 export function authFailed(){
   return {
     type: 'AUTH_FAILED'

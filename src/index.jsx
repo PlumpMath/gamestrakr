@@ -76,10 +76,6 @@ const routes = <Route path="/" component={App}>
     onEnter={() => {
       store.dispatch(authFailed());
     }}/>
-  <Route
-    path="/profile"
-    component={GamesIndex}
-    onEnter={() => {store.dispatch(setCurrentPage('profile'))}}/>
 </Route>;
 
 ReactDOM.render(

@@ -3,8 +3,9 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {List} from 'immutable';
 import {connect} from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
+import RaisedButton from 'material-ui/RaisedButton';
 
-import {fetchUserGamesIfNeeded} from '../../actions';
+import {openLoginDialog, fetchUserGamesIfNeeded} from '../../actions';
 import Grid from './Grid';
 
 const styles = {
@@ -29,16 +30,25 @@ const Index = React.createClass({
 
   render() {
     const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped'];
+    const signedOutMsg = (
+      <div>
+        <h2>Sign in to add games to your collection</h2>
+        <RaisedButton label='Sign In' onTouchTap={this.props.openLoginDialog}/>
+      </div>
+    );
+    const tabs = (
+      <Tabs>
+        {statuses.map((status) => (
+          <Tab key={status} label={status}>
+            <Grid addUserGame={this.props.addUserGame} status={status} />
+          </Tab>
+        ))}
+      </Tabs>
+    );
 
     return (
       <div className="home-ctr">
-				<Tabs>
-					{statuses.map((status) => (
-						<Tab key={status} label={status}>
-							<Grid addUserGame={this.props.addUserGame} status={status} />
-						</Tab>
-					))}
-				</Tabs>
+        {this.props.userName ? tabs : signedOutMsg}
       </div>
     );
   }
@@ -46,7 +56,8 @@ const Index = React.createClass({
 
 const mapStateToProps = (state) => {
 	return {
-		items: state.getIn(['user', 'games', 'items'])
+    items: state.getIn(['user', 'games', 'items']),
+    userName: state.getIn(['user', 'name'])
 	};
 };
 
@@ -54,7 +65,10 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		fetchGames: (gamesType) => {
 			dispatch(fetchUserGamesIfNeeded());
-		}
+		},
+    openLoginDialog: () => {
+      dispatch(openLoginDialog());
+    },
 	};
 };
 

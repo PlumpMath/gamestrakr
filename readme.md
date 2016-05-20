@@ -39,7 +39,6 @@ state = {
 
 
 ## TODOS
-* fix user games is fetching
 * Add pagination
 * Add back loader animation
 * render errors

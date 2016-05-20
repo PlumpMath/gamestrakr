@@ -63,6 +63,11 @@ function receiveUser(state, token, name){
   return state.set('user', fromJS({token: token, name: name}));
 }
 
+function signOut(state){
+  Cookies.remove('user');
+  return state.merge('user', fromJS({token: "", name: "", games: {}}));
+}
+
 function authFailed(state){
   return state.setIn(['ui', 'errors'], 'Auth Failed');
 }
@@ -96,6 +101,8 @@ export default function(state = Map(), action) {
       return requestUserGames(state)
     case 'RECEIVE_USER_GAMES':
       return receiveUserGames(state, action.json)
+    case 'SIGN_OUT':
+      return signOut(state)
     case 'RECEIVE_USER':
       return receiveUser(state, action.token, action.name)
 		case 'RECEIVE_USER_GAME':
