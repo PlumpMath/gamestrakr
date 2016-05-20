@@ -1,4 +1,4 @@
-# GamerLyfe Web
+# GamesTrakr Web
 ## Dev Notes
 ### Run webpack dev server
 webpack-dev-server --inline
@@ -6,34 +6,34 @@ webpack-dev-server --inline
 ### Example redux state map
 ```javascript
 state = {
-	app: {
-		currentPage: string,
-		leftDrawerOpen: bool,
-		selectedGamesType: string
-	},
-  user: {
-    token: String,
+ ui: {
+	currentPage: string,
+	leftDrawerOpen: bool,
+	selectedGamesType: string
+ },
+ user: {
+ 	token: String,
     name: String,
-    isFetching: bool
+    isFetching: bool,
+    games: {
+    	isFetching: bool
+		items: []
+    }
   },
-	gamesByType: {
-		userSaved: {
-			isFetching: bool
-			items: []
-		},
-		upcoming: {
-			isFetching: bool
-			items: []
-		},
-		recent: {
-			isFetching: bool
-			items: []
-		},
-		searchedFor: {
-			isFetching: bool
-			items: []
-		}
+ gamesByType: {
+	upcoming: {
+		isFetching: bool
+		items: []
+	},
+	recent: {
+		isFetching: bool
+		items: []
+	},
+	searchedFor: {
+		isFetching: bool
+		items: []
 	}
+ }
 }
 ```
 
