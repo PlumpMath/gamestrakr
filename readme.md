@@ -39,7 +39,6 @@ state = {
 
 
 ## TODOS
-* Enable persisting of games saved before signing in
 * Add pagination
 * Add loader animation
 * Add game detail component
@@ -47,4 +46,5 @@ state = {
 * Render recently viewed list and currently playing list of games in nav
 * Make fetching of games more customizeable(genre, search, platform, etc)
 * Enable users to rank games
+* Enable persisting of games saved before signing in
 * render errors
