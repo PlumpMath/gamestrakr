@@ -3,7 +3,7 @@
 ### Run webpack dev server
 webpack-dev-server --inline
 
-### Example redux state map
+### Redux state map
 ```javascript
 state = {
  app: {
