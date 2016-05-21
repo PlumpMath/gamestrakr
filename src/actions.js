@@ -119,17 +119,20 @@ export function fetchUserGamesIfNeeded(){
 export function addUserGame(name, imageUrl, giantBombUrl, status){
 	const game = {name, imageUrl, giantBombUrl, status};
 	return (dispatch, getState) => {
+    dispatch(receiveUserGame(game));
 		const state = getState();
 		const token = state.user.get('token');
-		request
-			.post(`${process.env.SERVER_URL}/user/games`)
-			.send({game: game})
-			.set('X-Access-Token', token)
-			.end((err, res) => {
-				if(err) console.log('err', err);
-			});
-			dispatch(receiveUserGame(game));
-	}
+    if (token){
+      request
+        .post(`${process.env.SERVER_URL}/user/games`)
+        .send({game: game})
+        .set('X-Access-Token', token)
+        .end((err, res) => {
+          if(err) console.log('err', err);
+        });
+
+    }
+  }
 };
 
 

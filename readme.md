@@ -44,7 +44,7 @@ state = {
 * Add loader animation
 * Add game detail component
 * Add search
-* Make fetching of games more customizeable(genre, search, platform, etc)
 * Render recently viewed list and currently playing list of games in nav
+* Make fetching of games more customizeable(genre, search, platform, etc)
 * Enable users to rank games
 * render errors

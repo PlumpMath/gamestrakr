@@ -29,25 +29,16 @@ const Index = React.createClass({
 
   render() {
     const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped'];
-    const signedOutMsg = (
-      <div>
-        <h2>Sign in to add games to your collection</h2>
-        <RaisedButton label='Sign In' onTouchTap={this.props.openLoginDialog}/>
-      </div>
-    );
-    const tabs = (
-      <Tabs>
-        {statuses.map((status) => (
-          <Tab key={status} label={status}>
-            <Grid addUserGame={this.props.addUserGame} status={status} />
-          </Tab>
-        ))}
-      </Tabs>
-    );
 
     return (
       <div className="home-ctr">
-        {this.props.user.get('token')? tabs : signedOutMsg}
+        <Tabs>
+          {statuses.map((status) => (
+            <Tab key={status} label={status}>
+              <Grid addUserGame={this.props.addUserGame} status={status} />
+            </Tab>
+          ))}
+        </Tabs>
       </div>
     );
   }
@@ -55,8 +46,7 @@ const Index = React.createClass({
 
 const mapStateToProps = (state) => {
 	return {
-    items: state.user.getIn(['games', 'items']),
-    user: state.user
+    items: state.user.getIn(['games', 'items'])
 	};
 };
 

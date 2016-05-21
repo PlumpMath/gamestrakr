@@ -38,7 +38,7 @@ const Tile = React.createClass({
 
 	onPlusTap: function(e){
 		e.preventDefault();
-		this.setState({popOverOpen: true, popOverAnchor: e.currentTarget});
+    this.setState({popOverOpen: true, popOverAnchor: e.currentTarget});
 	},
 
 	onClosePopOver: function(){
@@ -47,7 +47,7 @@ const Tile = React.createClass({
 
 	onAddGame: function(status){
 		const {item} = this.props;
-		this.props.addUserGame(item.get('name'), this.state.imageUrl, item.get('api_detail_url'), status);
+    this.props.addUserGame(item.get('name'), this.state.imageUrl, item.get('api_detail_url'), status);
 	},
 
 	getUserGame: function(){

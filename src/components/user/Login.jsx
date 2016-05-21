@@ -12,12 +12,12 @@ const Login = React.createClass({
   render(){
     const actions = [
       <FlatButton
-        label={"Twitter"}
+        label={"Sign in With Twitter"}
         primary={true}
         linkButton={true}
         href={`${process.env.SERVER_URL}/auth/twitter`}/>,
       <FlatButton
-        label={"Facebook"}
+        label={"Sign in With Facebook"}
         primary={true}
         linkButton={true}
         href={`${process.env.SERVER_URL}/auth/facebook`}/>
@@ -30,6 +30,7 @@ const Login = React.createClass({
         modal={false}
         open={this.props.loginDialogOpen || false}
         onRequestClose={this.props.closeLoginDialog}>
+        <div>Sign in to persist saved games</div>
       </Dialog>
     );
   }

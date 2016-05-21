@@ -32,7 +32,7 @@ function userFromCookie(state){
 
 function signOut(state){
   Cookies.remove('user');
-  return state.merge(fromJS({token: "", name: "", games: {}}));
+  return state.merge(fromJS({token: undefined, name: undefined, games: {}}));
 }
 
 
