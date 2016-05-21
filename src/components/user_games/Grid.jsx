@@ -47,9 +47,9 @@ const Grid = React.createClass({
 });
 
 const mapStateToProps = (state, ownProps) => {
-  if (state.user.hasIn(['games', 'items'])){
+  if (state.gamesByType.hasIn(['user', 'items'])){
     return {
-      items: state.user.getIn(['games', 'items']).filter((item) => {
+      items: state.gamesByType.getIn(['user', 'items']).filter((item) => {
         return item.get('status') === ownProps.status;
       })
     };

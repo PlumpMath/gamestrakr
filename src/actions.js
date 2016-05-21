@@ -59,7 +59,7 @@ export function authFailed(){
   }
 }
 
-// USER GAMES ACTIONS
+// USER ACTIONS
 
 export function requestUserGames(){
   return {
@@ -71,13 +71,6 @@ export function receiveUserGames(json){
   return {
     type: 'RECEIVE_USER_GAMES',
     json
-  }
-}
-
-export function receiveUserGame(game){
-  return {
-    type: 'RECEIVE_USER_GAME',
-    game
   }
 }
 
@@ -119,7 +112,7 @@ export function fetchUserGamesIfNeeded(){
 export function addUserGame(name, imageUrl, giantBombUrl, status){
 	const game = {name, imageUrl, giantBombUrl, status};
 	return (dispatch, getState) => {
-    dispatch(receiveUserGame(game));
+    dispatch(receiveGame('user', game));
 		const state = getState();
 		const token = state.user.get('token');
     if (token){
@@ -156,6 +149,14 @@ export function requestGames(gamesType){
   return {
     type: 'REQUEST_GAMES',
 		gamesType
+  }
+}
+
+export function receiveGame(gamesType, game){
+  return {
+    type: 'RECEIVE_GAME',
+    gamesType,
+    game
   }
 }
 
