@@ -1,13 +1,11 @@
-import {Map, List, fromJS} from 'immutable';
 import Cookies from 'js-cookie';
+import {Map, List, fromJS} from 'immutable';
 
-function receiveUser(state, token, name){
-  Cookies.set('user', {token: token, name: name});
-  return state.merge(fromJS({token: token, name: name}));
+function receiveUser(state, name, token){
+  return state.merge(fromJS({name: name, token: token}));
 }
 
 function userFromCookie(state){
-  const userFromCookie = fromJS(Cookies.getJSON('user'));
   return state.merge(userFromCookie);
 }
 
@@ -16,15 +14,12 @@ function signOut(state){
   return state.merge(fromJS({token: undefined, name: undefined, games: {}}));
 }
 
-
 export default function(state = Map(), action) {
   switch (action.type) {
     case 'SIGN_OUT':
       return signOut(state)
     case 'RECEIVE_USER':
-      return receiveUser(state, action.token, action.name)
-    case 'USER_FROM_COOKIE':
-      return userFromCookie(state);
+      return receiveUser(state, action.name, action.token)
     default:
       return state;
   }

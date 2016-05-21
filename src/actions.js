@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 const request = require('superagent-cache')();
 
 // APP ACTIONS
@@ -33,17 +34,30 @@ export function closeLoginDialog(){
   }
 }
 
-export function receiveUser(token, name){
+export function receiveUser(name, token){
   return {
     type: 'RECEIVE_USER',
-    token,
-    name
+    name,
+    token
   }
 }
 
 export function userFromCookie(){
-  return {
-    type: 'USER_FROM_COOKIE'
+  const user = Cookies.getJSON('user');
+
+  return (dispatch, getState) => {
+    if (user && user.name && user.token) {
+      return dispatch(receiveUser(user.name, user.token));
+    }
+  }
+}
+
+export function userFromAuth(name, token){
+  return (dispatch, getState) => {
+    if (name && token) {
+      Cookies.set('user', {name: name, token: token});
+      return dispatch(receiveUser(name, token))
+    }
   }
 }
 
@@ -100,16 +114,18 @@ export function setGamesType(gamesType){
   }
 }
 
-export function fetchGames(gamesType){
+export function fetchGames(state, gamesType){
+  const token = state.user.get('token');
 	return function(dispatch){
 		dispatch(requestGames(gamesType));
 
 		return request
-			.get(`${process.env.SERVER_URL}/games`)
-			.query({games_type: gamesType})
+			.get(`${process.env.SERVER_URL}/games/${gamesType}`)
+      .set('X-Access-Token', token)
 			.query({limit: 16})
-			.end((req, res) => {
-				dispatch(receiveGames(gamesType, res.body));
+			.end((err, res) => {
+        if(err) return false;
+				else dispatch(receiveGames(gamesType, res.body));
 			});
 	}
 }
@@ -122,7 +138,7 @@ export function saveGame(name, imageUrl, giantBombUrl, status){
 		const token = state.user.get('token');
     if (token){
       request
-        .post(`${process.env.SERVER_URL}/user/games`)
+        .post(`${process.env.SERVER_URL}/games/user`)
         .send({game: game})
         .set('X-Access-Token', token)
         .end((err, res) => {
@@ -145,7 +161,7 @@ function shouldFetchGames(state, gamesType) {
 export function fetchGamesIfNeeded(gamesType) {
   return (dispatch, getState) => {
     if (shouldFetchGames(getState(), gamesType)) {
-      return dispatch(fetchGames(gamesType))
+      return dispatch(fetchGames(getState(), gamesType))
     }
   }
 }
