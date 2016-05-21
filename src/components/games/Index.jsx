@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {fetchGamesIfNeeded, setGamesType} from '../../actions';
 
 import Grid from './Grid';
+import Tile from './Tile';
 
 const defaultGamesType = 'recent';
 const styles = {
@@ -44,7 +45,7 @@ const Index = React.createClass({
     return (
       <div className="home-ctr">
         {toolbar}
-        <Grid {...this.props} />
+        <Grid tile={Tile} {...this.props} />
       </div>
     );
   }

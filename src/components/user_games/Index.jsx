@@ -6,7 +6,8 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import {openLoginDialog, fetchGamesIfNeeded} from '../../actions';
-import Grid from './Grid';
+import Grid from '../games/Grid';
+import Tile from './Tile';
 
 const styles = {
   root: {
@@ -45,7 +46,7 @@ const Index = React.createClass({
         <Tabs>
           {statuses.map((status) => (
             <Tab key={status} label={status}>
-              <Grid items={this.itemsByStatus(status)} status={status} />
+              <Grid items={this.itemsByStatus(status)} tile={Tile} status={status} />
             </Tab>
           ))}
         </Tabs>

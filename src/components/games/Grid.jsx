@@ -1,9 +1,7 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {GridList} from 'material-ui/GridList';
-import RaisedButton from 'material-ui/RaisedButton';
-
-import TileContainer from './Tile';
 
 const styles = {
   root: {
@@ -16,29 +14,34 @@ const styles = {
     height: '100%',
     overflowY: 'auto',
     marginBottom: 24,
-  }
+  },
 };
 
 const Grid = React.createClass({
   mixins: [PureRenderMixin],
 
-	getItems: function(){
-		return this.props.items || [];
-	},
-
   render(){
+    const {items} = this.props;
+    var grid;
+
+    if (items && items.size > 0){
+      grid = (
+          <GridList
+            cellHeight={200}
+            cols={4}
+            style={styles.gridList}>
+
+            {items.map((item, i) => (
+              <this.props.tile key={i} item={item}/>
+            ))}
+
+          </GridList>
+      );
+    }
+
     return (
       <div style={styles.root}>
-        <GridList
-          cellHeight={200}
-          cols={4}
-          style={styles.gridList}>
-
-          {this.getItems().map((item, i) => (
-            <TileContainer key={`${item.get('name')}${i}`} item={item}/>
-          ))}
-
-        </GridList>
+        {grid}
       </div>
     );
   }
