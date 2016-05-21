@@ -36,6 +36,6 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({'process.env.SERVER_URL': '"https://gamestrakr-server.herokuapp.com"'}),
-    new webpack.DefinePlugin({'process.env.NODE_ENV': 'production'})
+    new webpack.DefinePlugin({'process.env.NODE_ENV': "'production'"})
   ]
 };
