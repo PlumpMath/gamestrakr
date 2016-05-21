@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 const request = require('superagent-cache')();
 
 // APP ACTIONS
@@ -33,17 +34,30 @@ export function closeLoginDialog(){
   }
 }
 
-export function receiveUser(token, name){
+export function receiveUser(name, token){
   return {
     type: 'RECEIVE_USER',
-    token,
-    name
+    name,
+    token
   }
 }
 
 export function userFromCookie(){
-  return {
-    type: 'USER_FROM_COOKIE'
+  const user = Cookies.getJSON('user');
+
+  return (dispatch, getState) => {
+    if (user && user.name && user.token) {
+      return dispatch(receiveUser(user.name, user.token));
+    }
+  }
+}
+
+export function userFromAuth(name, token){
+  return (dispatch, getState) => {
+    if (name && token) {
+      Cookies.set('user', {name: name, token: token});
+      return dispatch(receiveUser(name, token))
+    }
   }
 }
 
@@ -59,84 +73,8 @@ export function authFailed(){
   }
 }
 
-// USER GAMES ACTIONS
-
-export function requestUserGames(){
-  return {
-    type: 'REQUEST_USER_GAMES'
-  }
-}
-
-export function receiveUserGames(json){
-  return {
-    type: 'RECEIVE_USER_GAMES',
-    json
-  }
-}
-
-export function receiveUserGame(game){
-  return {
-    type: 'RECEIVE_USER_GAME',
-    game
-  }
-}
-
-export function fetchUserGames(token){
-	return function(dispatch){
-		dispatch(requestUserGames());
-		return request
-			.get(`${process.env.SERVER_URL}/user/games`)
-      .set('X-Access-Token', token)
-			.end((req, res) => {
-				dispatch(receiveUserGames(res.body));
-			});
-	}
-}
-
-function shouldFetchUserGames(state){
-  const games = state.user.get('games');
-  const token = state.user.get('token');
-	const isFetching = state.user.getIn(['games', 'isFetching']);
-
-  if(token && !games) {
-    return true;
-  } else if(isFetching){
-    return false;
-  }
-}
-
-export function fetchUserGamesIfNeeded(){
-  return (dispatch, getState) => {
-    const state = getState();
-
-    if(shouldFetchUserGames(state)) {
-      const token = state.user.get('token');
-      return dispatch(fetchUserGames(token));
-    }
-  }
-}
-
-export function addUserGame(name, imageUrl, giantBombUrl, status){
-	const game = {name, imageUrl, giantBombUrl, status};
-	return (dispatch, getState) => {
-    dispatch(receiveUserGame(game));
-		const state = getState();
-		const token = state.user.get('token');
-    if (token){
-      request
-        .post(`${process.env.SERVER_URL}/user/games`)
-        .send({game: game})
-        .set('X-Access-Token', token)
-        .end((err, res) => {
-          if(err) console.log('err', err);
-        });
-
-    }
-  }
-};
-
-
 // GAMES ACTIONS
+
 
 export function nextPage(gamesType){
   return {
@@ -152,10 +90,11 @@ export function requestGames(gamesType){
   }
 }
 
-export function requestGames(gamesType){
+export function receiveGame(gamesType, game){
   return {
-    type: 'REQUEST_GAMES',
-		gamesType
+    type: 'RECEIVE_GAME',
+    gamesType,
+    game
   }
 }
 
@@ -175,35 +114,71 @@ export function setGamesType(gamesType){
   }
 }
 
-export function fetchGames(gamesType){
+export function fetchGames(state, gamesType){
+  const token = state.user.get('token');
 	return function(dispatch){
 		dispatch(requestGames(gamesType));
 
 		return request
-			.get(`${process.env.SERVER_URL}/games`)
-			.query({games_type: gamesType})
+			.get(`${process.env.SERVER_URL}/games/${gamesType}`)
+      .set('X-Access-Token', token)
 			.query({limit: 16})
-			.end((req, res) => {
-				dispatch(receiveGames(gamesType, res.body));
+			.end((err, res) => {
+        if(err) return false;
+				else dispatch(receiveGames(gamesType, res.body));
 			});
 	}
 }
+
+export function saveGames(){
+	return (dispatch, getState) => {
+		const state = getState();
+		const token = state.user.get('token');
+    const games = state.games.getIn('user', 'items');
+    if (token){
+      request
+        .post(`${process.env.SERVER_URL}/games/user`)
+        .send({games: games})
+        .set('X-Access-Token', token)
+        .end((err, res) => {
+          if(err) console.log('err', err);
+        });
+    }
+  }
+};
+
+export function saveGame(name, imageUrl, giantBombUrl, status){
+	const game = {name, imageUrl, giantBombUrl, status};
+	return (dispatch, getState) => {
+    dispatch(receiveGame('user', game));
+		const state = getState();
+		const token = state.user.get('token');
+    if (token){
+      request
+        .post(`${process.env.SERVER_URL}/games/user`)
+        .send({game: game})
+        .set('X-Access-Token', token)
+        .end((err, res) => {
+          if(err) console.log('err', err);
+        });
+    }
+  }
+};
 
 function shouldFetchGames(state, gamesType) {
 	const games = state.gamesByType.getIn([gamesType, 'items']);
 	const isFetching = state.gamesByType.getIn([gamesType, 'isFetching']);
 
-	if (!games) {
-		return true;
-	} else if (isFetching) {
-		return false;
-	}
+  if(gamesType === 'user' && !state.user.get('token')) return false;
+
+	if (!games) return true;
+  else if (isFetching) return false;
 }
 
 export function fetchGamesIfNeeded(gamesType) {
   return (dispatch, getState) => {
     if (shouldFetchGames(getState(), gamesType)) {
-      return dispatch(fetchGames(gamesType))
+      return dispatch(fetchGames(getState(), gamesType))
     }
   }
 }

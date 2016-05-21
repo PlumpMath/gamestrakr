@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import {openLoginDialog, fetchUserGamesIfNeeded} from '../../actions';
+import {openLoginDialog, fetchGamesIfNeeded} from '../../actions';
 import Grid from './Grid';
 
 const styles = {
@@ -35,7 +35,7 @@ const Index = React.createClass({
         <Tabs>
           {statuses.map((status) => (
             <Tab key={status} label={status}>
-              <Grid addUserGame={this.props.addUserGame} status={status} />
+              <Grid status={status} />
             </Tab>
           ))}
         </Tabs>
@@ -52,12 +52,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		fetchGames: (gamesType) => {
-			dispatch(fetchUserGamesIfNeeded());
-		},
-    openLoginDialog: () => {
-      dispatch(openLoginDialog());
-    },
+		fetchGames: () => {
+			dispatch(fetchGamesIfNeeded('user'));
+		}
 	};
 };
 

@@ -14,7 +14,7 @@ import {Provider} from 'react-redux';
 import Cookies from 'js-cookie';
 
 import reducer from './reducers';
-import {closeLeftDrawer, userFromCookie, receiveUser, authFailed} from './actions';
+import {closeLeftDrawer, userFromCookie, userFromAuth, authFailed} from './actions';
 
 import css from './stylesheets/index.scss';
 
@@ -68,8 +68,9 @@ const routes = <Route path="/" component={App}>
     path="/auth_success"
     component={GamesIndex}
     onEnter={(nextState, replace) => {
-      const {token, name} = queryString.parse(nextState.location.search);
-      store.dispatch(receiveUser(token, name));
+      const {name, token} = queryString.parse(nextState.location.search);
+      // store.disptach(uploadSavedGames());
+      store.dispatch(userFromAuth(name, token));
     }}/>
   <Route
     path="/auth_failure"
