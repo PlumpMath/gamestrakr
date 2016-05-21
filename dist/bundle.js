@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "9e2981cd4f24a03af622"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "1e20012cbdbc181e6540"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -721,10 +721,11 @@
 	    onEnter: function onEnter(nextState, replace) {
 	      var _queryString$parse = _queryString2.default.parse(nextState.location.search);
 
-	      var token = _queryString$parse.token;
 	      var name = _queryString$parse.name;
+	      var token = _queryString$parse.token;
+	      // store.disptach(uploadSavedGames());
 
-	      store.dispatch((0, _actions.receiveUser)(token, name));
+	      store.dispatch((0, _actions.userFromAuth)(name, token));
 	    } }),
 	  _react2.default.createElement(_reactRouter.Route, {
 	    path: '/auth_failure',
@@ -33096,6 +33097,8 @@
 	      return requestGames(state, action.gamesType);
 	    case 'RECEIVE_GAMES':
 	      return receiveGames(state, action.gamesType, action.json);
+	    case 'RECEIVE_GAME':
+	      return receiveGame(state, action.gamesType, action.game);
 	    case 'NEXT_PAGE':
 	      return nextPage(state, action.gamesType);
 	    default:
@@ -33113,6 +33116,19 @@
 	  return state.set(gamesType, (0, _immutable.fromJS)({ items: json, isFetching: false }));
 	}
 
+	function receiveGame(state, gamesType, game) {
+	  return state.updateIn([gamesType, 'items'], (0, _immutable.List)(), function (arr) {
+	    var duplicate = arr.find(function (v, k) {
+	      return v.get('name') === game.name;
+	    });
+	    if (!duplicate) return arr.push((0, _immutable.fromJS)(game));else {
+	      var index = arr.indexOf(duplicate);
+	      return arr.set(index, (0, _immutable.fromJS)(game));
+	    }
+	  });
+	  // return state.mergeIn([gamesType, 'items'], game);
+	}
+
 /***/ },
 /* 263 */
 /***/ function(module, exports, __webpack_require__) {
@@ -33128,58 +33144,28 @@
 	  var action = arguments[1];
 
 	  switch (action.type) {
-	    case 'REQUEST_USER_GAMES':
-	      return requestUserGames(state);
-	    case 'RECEIVE_USER_GAMES':
-	      return receiveUserGames(state, action.json);
 	    case 'SIGN_OUT':
 	      return signOut(state);
 	    case 'RECEIVE_USER':
-	      return receiveUser(state, action.token, action.name);
-	    case 'RECEIVE_USER_GAME':
-	      return receiveUserGame(state, action.game);
-	    case 'USER_FROM_COOKIE':
-	      return userFromCookie(state);
+	      return receiveUser(state, action.name, action.token);
 	    default:
 	      return state;
 	  }
 	};
 
-	var _immutable = __webpack_require__(261);
-
 	var _jsCookie = __webpack_require__(258);
 
 	var _jsCookie2 = _interopRequireDefault(_jsCookie);
 
+	var _immutable = __webpack_require__(261);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function requestUserGames(state) {
-	  return state.setIn(['games', 'isFetching'], true);
-	}
-
-	function receiveUserGames(state, json) {
-	  return state.set('games', (0, _immutable.fromJS)({ items: json.games, isFetching: false }));
-	}
-
-	function receiveUserGame(state, game) {
-	  return state.updateIn(['games', 'items'], (0, _immutable.List)(), function (arr) {
-	    var duplicate = arr.find(function (v, k) {
-	      return v.get('name') === game.name;
-	    });
-	    if (!duplicate) return arr.push((0, _immutable.fromJS)(game));else {
-	      var index = arr.indexOf(duplicate);
-	      return arr.set(index, (0, _immutable.fromJS)(game));
-	    }
-	  });
-	}
-
-	function receiveUser(state, token, name) {
-	  _jsCookie2.default.set('user', { token: token, name: name });
-	  return state.merge((0, _immutable.fromJS)({ token: token, name: name }));
+	function receiveUser(state, name, token) {
+	  return state.merge((0, _immutable.fromJS)({ name: name, token: token }));
 	}
 
 	function userFromCookie(state) {
-	  var userFromCookie = (0, _immutable.fromJS)(_jsCookie2.default.getJSON('user'));
 	  return state.merge(userFromCookie);
 	}
 
@@ -33204,21 +33190,25 @@
 	exports.closeLoginDialog = closeLoginDialog;
 	exports.receiveUser = receiveUser;
 	exports.userFromCookie = userFromCookie;
+	exports.userFromAuth = userFromAuth;
 	exports.signOut = signOut;
 	exports.authFailed = authFailed;
-	exports.requestUserGames = requestUserGames;
-	exports.receiveUserGames = receiveUserGames;
-	exports.receiveUserGame = receiveUserGame;
-	exports.fetchUserGames = fetchUserGames;
-	exports.fetchUserGamesIfNeeded = fetchUserGamesIfNeeded;
-	exports.addUserGame = addUserGame;
 	exports.nextPage = nextPage;
 	exports.requestGames = requestGames;
-	exports.requestGames = requestGames;
+	exports.receiveGame = receiveGame;
 	exports.receiveGames = receiveGames;
 	exports.setGamesType = setGamesType;
 	exports.fetchGames = fetchGames;
+	exports.saveGames = saveGames;
+	exports.saveGame = saveGame;
 	exports.fetchGamesIfNeeded = fetchGamesIfNeeded;
+
+	var _jsCookie = __webpack_require__(258);
+
+	var _jsCookie2 = _interopRequireDefault(_jsCookie);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	var request = __webpack_require__(265)();
 
 	// APP ACTIONS
@@ -33254,17 +33244,30 @@
 	  };
 	}
 
-	function receiveUser(token, name) {
+	function receiveUser(name, token) {
 	  return {
 	    type: 'RECEIVE_USER',
-	    token: token,
-	    name: name
+	    name: name,
+	    token: token
 	  };
 	}
 
 	function userFromCookie() {
-	  return {
-	    type: 'USER_FROM_COOKIE'
+	  var user = _jsCookie2.default.getJSON('user');
+
+	  return function (dispatch, getState) {
+	    if (user && user.name && user.token) {
+	      return dispatch(receiveUser(user.name, user.token));
+	    }
+	  };
+	}
+
+	function userFromAuth(name, token) {
+	  return function (dispatch, getState) {
+	    if (name && token) {
+	      _jsCookie2.default.set('user', { name: name, token: token });
+	      return dispatch(receiveUser(name, token));
+	    }
 	  };
 	}
 
@@ -33279,74 +33282,6 @@
 	    type: 'AUTH_FAILED'
 	  };
 	}
-
-	// USER GAMES ACTIONS
-
-	function requestUserGames() {
-	  return {
-	    type: 'REQUEST_USER_GAMES'
-	  };
-	}
-
-	function receiveUserGames(json) {
-	  return {
-	    type: 'RECEIVE_USER_GAMES',
-	    json: json
-	  };
-	}
-
-	function receiveUserGame(game) {
-	  return {
-	    type: 'RECEIVE_USER_GAME',
-	    game: game
-	  };
-	}
-
-	function fetchUserGames(token) {
-	  return function (dispatch) {
-	    dispatch(requestUserGames());
-	    return request.get(("https://gamestrakr-server.herokuapp.com") + '/user/games').set('X-Access-Token', token).end(function (req, res) {
-	      dispatch(receiveUserGames(res.body));
-	    });
-	  };
-	}
-
-	function shouldFetchUserGames(state) {
-	  var games = state.user.get('games');
-	  var token = state.user.get('token');
-	  var isFetching = state.user.getIn(['games', 'isFetching']);
-
-	  if (token && !games) {
-	    return true;
-	  } else if (isFetching) {
-	    return false;
-	  }
-	}
-
-	function fetchUserGamesIfNeeded() {
-	  return function (dispatch, getState) {
-	    var state = getState();
-
-	    if (shouldFetchUserGames(state)) {
-	      var token = state.user.get('token');
-	      return dispatch(fetchUserGames(token));
-	    }
-	  };
-	}
-
-	function addUserGame(name, imageUrl, giantBombUrl, status) {
-	  var game = { name: name, imageUrl: imageUrl, giantBombUrl: giantBombUrl, status: status };
-	  return function (dispatch, getState) {
-	    dispatch(receiveUserGame(game));
-	    var state = getState();
-	    var token = state.user.get('token');
-	    if (token) {
-	      request.post(("https://gamestrakr-server.herokuapp.com") + '/user/games').send({ game: game }).set('X-Access-Token', token).end(function (err, res) {
-	        if (err) console.log('err', err);
-	      });
-	    }
-	  };
-	};
 
 	// GAMES ACTIONS
 
@@ -33364,10 +33299,11 @@
 	  };
 	}
 
-	function requestGames(gamesType) {
+	function receiveGame(gamesType, game) {
 	  return {
-	    type: 'REQUEST_GAMES',
-	    gamesType: gamesType
+	    type: 'RECEIVE_GAME',
+	    gamesType: gamesType,
+	    game: game
 	  };
 	}
 
@@ -33387,31 +33323,57 @@
 	  };
 	}
 
-	function fetchGames(gamesType) {
+	function fetchGames(state, gamesType) {
+	  var token = state.user.get('token');
 	  return function (dispatch) {
 	    dispatch(requestGames(gamesType));
 
-	    return request.get(("https://gamestrakr-server.herokuapp.com") + '/games').query({ games_type: gamesType }).query({ limit: 16 }).end(function (req, res) {
-	      dispatch(receiveGames(gamesType, res.body));
+	    return request.get(("https://gamestrakr-server.herokuapp.com") + '/games/' + gamesType).set('X-Access-Token', token).query({ limit: 16 }).end(function (err, res) {
+	      if (err) return false;else dispatch(receiveGames(gamesType, res.body));
 	    });
 	  };
 	}
+
+	function saveGames() {
+	  return function (dispatch, getState) {
+	    var state = getState();
+	    var token = state.user.get('token');
+	    var games = state.games.getIn('user', 'items');
+	    if (token) {
+	      request.post(("https://gamestrakr-server.herokuapp.com") + '/games/user').send({ games: games }).set('X-Access-Token', token).end(function (err, res) {
+	        if (err) console.log('err', err);
+	      });
+	    }
+	  };
+	};
+
+	function saveGame(name, imageUrl, giantBombUrl, status) {
+	  var game = { name: name, imageUrl: imageUrl, giantBombUrl: giantBombUrl, status: status };
+	  return function (dispatch, getState) {
+	    dispatch(receiveGame('user', game));
+	    var state = getState();
+	    var token = state.user.get('token');
+	    if (token) {
+	      request.post(("https://gamestrakr-server.herokuapp.com") + '/games/user').send({ game: game }).set('X-Access-Token', token).end(function (err, res) {
+	        if (err) console.log('err', err);
+	      });
+	    }
+	  };
+	};
 
 	function shouldFetchGames(state, gamesType) {
 	  var games = state.gamesByType.getIn([gamesType, 'items']);
 	  var isFetching = state.gamesByType.getIn([gamesType, 'isFetching']);
 
-	  if (!games) {
-	    return true;
-	  } else if (isFetching) {
-	    return false;
-	  }
+	  if (gamesType === 'user' && !state.user.get('token')) return false;
+
+	  if (!games) return true;else if (isFetching) return false;
 	}
 
 	function fetchGamesIfNeeded(gamesType) {
 	  return function (dispatch, getState) {
 	    if (shouldFetchGames(getState(), gamesType)) {
-	      return dispatch(fetchGames(gamesType));
+	      return dispatch(fetchGames(getState(), gamesType));
 	    }
 	  };
 	}
@@ -55912,7 +55874,7 @@
 	  mixins: [_reactAddonsPureRenderMixin2.default],
 	  componentDidMount: function componentDidMount() {
 	    this.props.fetchGames(this.props.gamesType);
-	    this.props.fetchUserGames();
+	    this.props.fetchGames('user');
 	  },
 
 	  render: function render() {
@@ -55938,9 +55900,6 @@
 	  return {
 	    fetchGames: function fetchGames(gamesType) {
 	      dispatch((0, _actions.fetchGamesIfNeeded)(gamesType));
-	    },
-	    fetchUserGames: function fetchUserGames(gamesType) {
-	      dispatch((0, _actions.fetchUserGamesIfNeeded)(gamesType));
 	    },
 	    setGamesType: function setGamesType(gamesType) {
 	      dispatch((0, _actions.setGamesType)(gamesType));
@@ -57415,7 +57374,7 @@
 		onAddGame: function onAddGame(status) {
 			var item = this.props.item;
 
-			this.props.addUserGame(item.get('name'), this.state.imageUrl, item.get('api_detail_url'), status);
+			this.props.saveGame(item.get('name'), this.state.imageUrl, item.get('api_detail_url'), status);
 		},
 
 		getUserGame: function getUserGame() {
@@ -57482,14 +57441,14 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 		return {
-			userGames: state.user.getIn(['games', 'items'])
+			userGames: state.gamesByType.getIn(['user', 'items'])
 		};
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 		return {
-			addUserGame: function addUserGame(name, imageUrl, giantBombUrl, status) {
-				dispatch((0, _actions.addUserGame)(name, imageUrl, giantBombUrl, status));
+			saveGame: function saveGame(name, imageUrl, giantBombUrl, status) {
+				dispatch((0, _actions.saveGame)(name, imageUrl, giantBombUrl, status));
 			}
 		};
 	};
@@ -57605,8 +57564,6 @@
 	  },
 
 	  render: function render() {
-	    var _this = this;
-
 	    var statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped'];
 
 	    return _react2.default.createElement(
@@ -57619,7 +57576,7 @@
 	          return _react2.default.createElement(
 	            _Tabs.Tab,
 	            { key: status, label: status },
-	            _react2.default.createElement(_Grid2.default, { addUserGame: _this.props.addUserGame, status: status })
+	            _react2.default.createElement(_Grid2.default, { status: status })
 	          );
 	        })
 	      )
@@ -57635,11 +57592,8 @@
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
-	    fetchGames: function fetchGames(gamesType) {
-	      dispatch((0, _actions.fetchUserGamesIfNeeded)());
-	    },
-	    openLoginDialog: function openLoginDialog() {
-	      dispatch((0, _actions.openLoginDialog)());
+	    fetchGames: function fetchGames() {
+	      dispatch((0, _actions.fetchGamesIfNeeded)('user'));
 	    }
 	  };
 	};
@@ -58399,9 +58353,9 @@
 	});
 
 	var mapStateToProps = function mapStateToProps(state, ownProps) {
-	  if (state.user.hasIn(['games', 'items'])) {
+	  if (state.gamesByType.hasIn(['user', 'items'])) {
 	    return {
-	      items: state.user.getIn(['games', 'items']).filter(function (item) {
+	      items: state.gamesByType.getIn(['user', 'items']).filter(function (item) {
 	        return item.get('status') === ownProps.status;
 	      })
 	    };
@@ -58495,7 +58449,7 @@
 		onAddGame: function onAddGame(status) {
 			var item = this.props.item;
 
-			this.props.addUserGame(item.get('name'), item.get('imageUrl'), item.get('api_detail_url'), status);
+			this.props.saveGame(item.get('name'), item.get('imageUrl'), item.get('api_detail_url'), status);
 		},
 
 		render: function render() {
@@ -58546,8 +58500,8 @@
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 		return {
-			addUserGame: function addUserGame(name, imageUrl, giantBombUrl, status) {
-				dispatch((0, _actions.addUserGame)(name, imageUrl, giantBombUrl, status));
+			saveGame: function saveGame(name, imageUrl, giantBombUrl, status) {
+				dispatch((0, _actions.saveGame)(name, imageUrl, giantBombUrl, status));
 			}
 		};
 	};
