@@ -17,19 +17,22 @@ state = {
  },
  gamesByType: {
 	upcoming: {
-    page: 0,
+    page: Integer,
 		isFetching: bool
 		items: []
 	},
 	recent: {
+    page: Integer,
 		isFetching: bool
 		items: []
 	},
 	user: {
+    page: Integer,
 		isFetching: bool
 		items: []
 	},
 	searchedFor: {
+    page: Integer,
 		isFetching: bool
 		items: []
 	}

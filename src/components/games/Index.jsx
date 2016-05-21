@@ -68,9 +68,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     setGamesType: (gamesType) => {
       dispatch(setGamesType(gamesType));
-    },
-    nextPage: (gamesType) => {
-      dispatch(nextPage(gamesType));
     }
   };
 };

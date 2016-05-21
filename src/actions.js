@@ -34,6 +34,8 @@ export function closeLoginDialog(){
   }
 }
 
+// USER ACTIONS
+
 export function receiveUser(name, token){
   return {
     type: 'RECEIVE_USER',
@@ -180,6 +182,20 @@ export function fetchGamesIfNeeded(gamesType) {
     if (shouldFetchGames(getState(), gamesType)) {
       return dispatch(fetchGames(getState(), gamesType))
     }
+  }
+}
+
+export function prevPage(gamesType){
+  return {
+    type: 'PREV_PAGE',
+    gamesType
+  }
+}
+
+export function nextPage(gamesType){
+  return {
+    type: 'NEXT_PAGE',
+    gamesType
   }
 }
 

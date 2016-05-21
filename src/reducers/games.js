@@ -21,6 +21,17 @@ function receiveGame(state, gamesType, game){
 	// return state.mergeIn([gamesType, 'items'], game);
 }
 
+function nextPage(state, gamesType){
+  return state.updateIn([gamesType, 'page'], (page) => {
+    return page ? page + 1 : 1;
+  });
+}
+
+function prevPage(state, gamesType){
+  return state.updateIn([gamesType, 'page'], (page) => {
+    return page ? page - 1 : 0;
+  });
+}
 
 export default function(state = Map(), action) {
   switch (action.type) {
@@ -32,6 +43,8 @@ export default function(state = Map(), action) {
       return receiveGame(state, action.gamesType, action.game);
     case 'NEXT_PAGE':
       return nextPage(state, action.gamesType);
+    case 'PREV_PAGE':
+      return prevPage(state, action.gamesType);
     default:
       return state;
   }
