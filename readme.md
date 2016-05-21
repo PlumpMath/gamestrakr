@@ -1,4 +1,4 @@
-# GamerLyfe Web
+# GamesTrakr Web
 ## Dev Notes
 ### Run webpack dev server
 webpack-dev-server --inline
@@ -6,46 +6,45 @@ webpack-dev-server --inline
 ### Example redux state map
 ```javascript
 state = {
-	app: {
-		currentPage: string,
-		leftDrawerOpen: bool,
-		selectedGamesType: string
-	},
-  user: {
-    token: String,
+ app: {
+	currentPage: string,
+	leftDrawerOpen: bool,
+	selectedGamesType: string
+ },
+ user: {
+ 	token: String,
     name: String,
-    isFetching: bool
+    isFetching: bool,
+    games: {
+    	isFetching: bool
+		items: []
+    }
   },
-	gamesByType: {
-		userSaved: {
-			isFetching: bool
-			items: []
-		},
-		upcoming: {
-			isFetching: bool
-			items: []
-		},
-		recent: {
-			isFetching: bool
-			items: []
-		},
-		searchedFor: {
-			isFetching: bool
-			items: []
-		}
+ gamesByType: {
+	upcoming: {
+    page: 0,
+		isFetching: bool
+		items: []
+	},
+	recent: {
+		isFetching: bool
+		items: []
+	},
+	searchedFor: {
+		isFetching: bool
+		items: []
 	}
+ }
 }
 ```
 
 
 ## TODOS
-* Make upcoming and recent release pages one page/component(toggleable)
 * Add pagination
-* Add back loader animation
-* render errors
+* Add loader animation
 * Add game detail component
-* Enable users not logged in to save games then upload to server once signed in(show msg)
-* Make fetching of games more customizeable(genre, search, platform, etc)
+* Add search
 * Render recently viewed list and currently playing list of games in nav
-* Make responsive
+* Make fetching of games more customizeable(genre, search, platform, etc)
 * Enable users to rank games
+* render errors

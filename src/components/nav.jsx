@@ -11,7 +11,7 @@ import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 
-import {openLeftDrawer, closeLeftDrawer, openLoginDialog} from '../actions';
+import {openLeftDrawer, closeLeftDrawer, openLoginDialog, signOut} from '../actions';
 import css from '../stylesheets/nav.scss';
 
 // Home - where users can view currently playing, their own collection, recently viewed etc
@@ -30,15 +30,15 @@ const Nav =  React.createClass({
 
 	render() {
     const {leftDrawerOpen, navTitle, user} = this.props;
-    const signUpButton = (<MenuItem primaryText="Sign Up" onTouchTap={this.props.openLoginDialog}/>);
-    const userProfileButton = (<MenuItem primaryText={'View profile'} onTouchTap={this.triggerRoute.bind(this, 'profile')}/>);
+    const signUpButton = (<MenuItem primaryText='Sign In' onTouchTap={this.props.openLoginDialog}/>);
+    const signOutButton= (<MenuItem primaryText='Sign Out' onTouchTap={this.props.signOut}/>);
 
     const accountNavElement = (
       <IconMenu iconButtonElement={
         <IconButton>
           <FontIcon className="material-icons">account_circle</FontIcon>
         </IconButton>}>
-        {user ? userProfileButton : signUpButton}
+        {user.get('token') ? signOutButton : signUpButton}
       </IconMenu>
     );
 
@@ -64,9 +64,9 @@ const Nav =  React.createClass({
 
 function mapStateToProps(state){
   return {
-    leftDrawerOpen: state.getIn(['ui', 'leftDrawerOpen']),
-    navTitle: state.getIn(['ui', 'currentPage']),
-    user: state.get('user')
+    leftDrawerOpen: state.app.get('leftDrawerOpen'),
+    navTitle: state.app.get(['app', 'currentPage']),
+    user: state.user
   };
 }
 
@@ -80,6 +80,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     openLoginDialog: () => {
       dispatch(openLoginDialog());
+    },
+    signOut: () => {
+      dispatch(signOut());
     }
   };
 }

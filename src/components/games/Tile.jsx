@@ -38,7 +38,7 @@ const Tile = React.createClass({
 
 	onPlusTap: function(e){
 		e.preventDefault();
-		this.setState({popOverOpen: true, popOverAnchor: e.currentTarget});
+    this.setState({popOverOpen: true, popOverAnchor: e.currentTarget});
 	},
 
 	onClosePopOver: function(){
@@ -47,7 +47,7 @@ const Tile = React.createClass({
 
 	onAddGame: function(status){
 		const {item} = this.props;
-		this.props.addUserGame(item.get('name'), this.state.imageUrl, item.get('api_detail_url'), status);
+    this.props.addUserGame(item.get('name'), this.state.imageUrl, item.get('api_detail_url'), status);
 	},
 
 	getUserGame: function(){
@@ -72,7 +72,7 @@ const Tile = React.createClass({
 				title={item.get('name')}
 				actionIcon={
 					<IconButton onTouchTap={this.onPlusTap}>
-						<FontIcon className="material-icons">add_circle</FontIcon>
+						<FontIcon className="material-icons">{userGame ? 'check_circle' : 'add_circle'}</FontIcon>
 						<Popover
 							open={this.state.popOverOpen}
 							anchorEl={this.state.popOverAnchor}
@@ -99,7 +99,7 @@ const Tile = React.createClass({
 
 const mapStateToProps = (state) => {
   return {
-    userGames: state.getIn(['user', 'games'])
+    userGames: state.user.getIn(['games', 'items'])
   };
 };
 

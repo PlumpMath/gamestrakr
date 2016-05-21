@@ -13,8 +13,8 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import Cookies from 'js-cookie';
 
-import reducer from './reducer';
-import {setState, setCurrentPage, receiveUser, authFailed} from './actions';
+import reducer from './reducers';
+import {closeLeftDrawer, userFromCookie, receiveUser, authFailed} from './actions';
 
 import css from './stylesheets/index.scss';
 
@@ -24,21 +24,27 @@ import UserGamesIndex from './components/user_games/Index';
 
 import {Iterable, fromJS} from 'immutable';
 
-const stateTransformer = (state) => {
-  if (Iterable.isIterable(state)) return state.toJS();
-  else return state;
-};
-
 if (process.env.NODE_ENV === 'production'){
 	var store = createStore(
 		reducer,
 		applyMiddleware(thunkMiddleware)
 	);
 } else {
-	const loggerMiddleware = createLogger({
-		stateTransformer,
-		collapsed: true
-	});
+  const loggerMiddleware = createLogger({
+    stateTransformer: (state) => {
+      let newState = {};
+
+      for (var i of Object.keys(state)) {
+        if (Iterable.isIterable(state[i])) {
+          newState[i] = state[i].toJS();
+        } else {
+          newState[i] = state[i];
+        }
+      };
+      return newState;
+    }
+  });
+
 	// Initiate Redux store with logger and thunk middlewares
 	var store = createStore(
 		reducer,
@@ -47,22 +53,17 @@ if (process.env.NODE_ENV === 'production'){
 }
 
 // Grab user from cookies if available, dispatch initial state
-const userFromCookie = fromJS(Cookies.getJSON('user'));
-store.dispatch(setState({
-  ui: {leftDrawerOpen: false, loginDialogOpen: false},
-  user: userFromCookie
-}));
+store.dispatch(userFromCookie());
+store.dispatch(closeLeftDrawer());
 
 const routes = <Route path="/" component={App}>
  <IndexRoute component={GamesIndex}/>
   <Route
     path="/my_games"
-    component={UserGamesIndex}
-    onEnter={() => {store.dispatch(setCurrentPage('games'))}}/>
+    component={UserGamesIndex} />
   <Route
     path="/games"
-    component={GamesIndex}
-    onEnter={() => {store.dispatch(setCurrentPage('games'))}}/>
+    component={GamesIndex} />
   <Route
     path="/auth_success"
     component={GamesIndex}
@@ -76,10 +77,6 @@ const routes = <Route path="/" component={App}>
     onEnter={() => {
       store.dispatch(authFailed());
     }}/>
-  <Route
-    path="/profile"
-    component={GamesIndex}
-    onEnter={() => {store.dispatch(setCurrentPage('profile'))}}/>
 </Route>;
 
 ReactDOM.render(
