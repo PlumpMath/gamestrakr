@@ -22,42 +22,32 @@ const styles = {
 const Grid = React.createClass({
   mixins: [PureRenderMixin],
 
-	getItems: function(){
-    return this.props.items || [];
-	},
-
   render(){
+    const {items} = this.props;
+    var grid;
+
+    if (items.size > 0){
+      grid = (
+          <GridList
+            cellHeight={200}
+            cols={4}
+            style={styles.gridList}>
+
+            {items.map((item, i) => (
+              <TileContainer key={i} item={item}/>
+            ))}
+
+          </GridList>
+      );
+    }
 
     return (
       <div style={styles.root}>
-        <GridList
-          cellHeight={200}
-          cols={4}
-          style={styles.gridList}>
-
-          {this.getItems().map((item, i) => (
-            <TileContainer key={i} item={item}/>
-          ))}
-
-        </GridList>
+        {grid}
       </div>
     );
   }
 
 });
 
-const mapStateToProps = (state, ownProps) => {
-  if (state.gamesByType.hasIn(['user', 'items'])){
-    return {
-      items: state.gamesByType.getIn(['user', 'items']).filter((item) => {
-        return item.get('status') === ownProps.status;
-      })
-    };
-  } else {
-    return {items: []};
-  }
-};
-
-const GridContainer = connect(mapStateToProps)(Grid);
-
-export default GridContainer;
+export default Grid;

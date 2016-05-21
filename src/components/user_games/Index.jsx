@@ -27,6 +27,16 @@ const Index = React.createClass({
     this.props.fetchGames();
   },
 
+  itemsByStatus: function(status){
+    if (this.props.items){
+      return this.props.items.filter((item) => {
+          return item.get('status') === status;
+      });
+    } else {
+      return {items: List()};
+    }
+  },
+
   render() {
     const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped'];
 
@@ -35,7 +45,7 @@ const Index = React.createClass({
         <Tabs>
           {statuses.map((status) => (
             <Tab key={status} label={status}>
-              <Grid status={status} />
+              <Grid items={this.itemsByStatus(status)} status={status} />
             </Tab>
           ))}
         </Tabs>
@@ -46,7 +56,7 @@ const Index = React.createClass({
 
 const mapStateToProps = (state) => {
 	return {
-    items: state.user.getIn(['games', 'items'])
+    items: state.gamesByType.getIn(['user', 'items'])
 	};
 };
 
