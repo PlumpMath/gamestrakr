@@ -130,6 +130,23 @@ export function fetchGames(state, gamesType){
 	}
 }
 
+export function saveGames(){
+	return (dispatch, getState) => {
+		const state = getState();
+		const token = state.user.get('token');
+    const games = state.games.getIn('user', 'items');
+    if (token){
+      request
+        .post(`${process.env.SERVER_URL}/games/user`)
+        .send({games: games})
+        .set('X-Access-Token', token)
+        .end((err, res) => {
+          if(err) console.log('err', err);
+        });
+    }
+  }
+};
+
 export function saveGame(name, imageUrl, giantBombUrl, status){
 	const game = {name, imageUrl, giantBombUrl, status};
 	return (dispatch, getState) => {
