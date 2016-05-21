@@ -12,14 +12,9 @@ state = {
 	selectedGamesType: string
  },
  user: {
- 	token: String,
-    name: String,
-    isFetching: bool,
-    games: {
-    	isFetching: bool
-		items: []
-    }
-  },
+   token: String,
+   name: String,
+ },
  gamesByType: {
 	upcoming: {
     page: 0,
@@ -27,6 +22,10 @@ state = {
 		items: []
 	},
 	recent: {
+		isFetching: bool
+		items: []
+	},
+	user: {
 		isFetching: bool
 		items: []
 	},
@@ -40,6 +39,7 @@ state = {
 
 
 ## TODOS
+* Enable persisting of games saved before signing in
 * Add pagination
 * Add loader animation
 * Add game detail component

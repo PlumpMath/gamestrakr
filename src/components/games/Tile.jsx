@@ -8,7 +8,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Popover from 'material-ui/Popover';
 
-import {addUserGame} from '../../actions';
+import {saveGame} from '../../actions';
 
 const placeholderImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=38&txt=GamesTrackr&w=450&h=300&txttrack=0'
 
@@ -47,7 +47,7 @@ const Tile = React.createClass({
 
 	onAddGame: function(status){
 		const {item} = this.props;
-    this.props.addUserGame(item.get('name'), this.state.imageUrl, item.get('api_detail_url'), status);
+    this.props.saveGame(item.get('name'), this.state.imageUrl, item.get('api_detail_url'), status);
 	},
 
 	getUserGame: function(){
@@ -99,14 +99,14 @@ const Tile = React.createClass({
 
 const mapStateToProps = (state) => {
   return {
-    userGames: state.user.getIn(['games', 'items'])
+    userGames: state.gamesByType.getIn(['user', 'items'])
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addUserGame: (name, imageUrl, giantBombUrl, status) => {
-      dispatch(addUserGame(name, imageUrl, giantBombUrl, status));
+    saveGame: (name, imageUrl, giantBombUrl, status) => {
+      dispatch(saveGame(name, imageUrl, giantBombUrl, status));
     }
   };
 };
