@@ -15,7 +15,6 @@ const styles = {
     justifyContent: 'space-around'
   },
   gridCtr: {
-
   },
   h2: {
     textTransform: 'capitalize'
@@ -48,7 +47,7 @@ const Index = React.createClass({
 
     return (
       <div className="home-ctr">
-        {this.props.userName ? tabs : signedOutMsg}
+        {this.props.user.get('token')? tabs : signedOutMsg}
       </div>
     );
   }
@@ -56,8 +55,8 @@ const Index = React.createClass({
 
 const mapStateToProps = (state) => {
 	return {
-    items: state.getIn(['user', 'games', 'items']),
-    userName: state.getIn(['user', 'name'])
+    items: state.user.getIn(['games', 'items']),
+    user: state.user
 	};
 };
 

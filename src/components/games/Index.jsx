@@ -24,11 +24,12 @@ const Index = React.createClass({
 });
 
 const mapStateToProps = (state) => {
-  var gamesType = state.getIn(['ui', 'selectedGamesType']) || defaultGamesType;
+  var gamesType = state.app.get('selectedGamesType') || defaultGamesType;
 
   return {
     gamesType: gamesType,
-    items: state.getIn(['gamesByType', gamesType, 'items'])
+    items: state.gamesByType.getIn([gamesType, 'items']),
+    page: state.gamesByType.getIn([gamesType, 'page'])
   };
 };
 
@@ -42,6 +43,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setGamesType: (gamesType) => {
       dispatch(setGamesType(gamesType));
+    },
+    nextPage: (gamesType) => {
+      dispatch(nextPage(gamesType));
     }
   };
 };

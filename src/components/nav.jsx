@@ -31,14 +31,14 @@ const Nav =  React.createClass({
 	render() {
     const {leftDrawerOpen, navTitle, user} = this.props;
     const signUpButton = (<MenuItem primaryText='Sign In' onTouchTap={this.props.openLoginDialog}/>);
-    const signOutButotn= (<MenuItem primaryText='Sign Out' onTouchTap={this.props.signOut}/>);
+    const signOutButton= (<MenuItem primaryText='Sign Out' onTouchTap={this.props.signOut}/>);
 
     const accountNavElement = (
       <IconMenu iconButtonElement={
         <IconButton>
           <FontIcon className="material-icons">account_circle</FontIcon>
         </IconButton>}>
-        {user ? signOutButotn : signUpButton}
+        {user.get('token') ? signOutButton : signUpButton}
       </IconMenu>
     );
 
@@ -64,9 +64,9 @@ const Nav =  React.createClass({
 
 function mapStateToProps(state){
   return {
-    leftDrawerOpen: state.getIn(['ui', 'leftDrawerOpen']),
-    navTitle: state.getIn(['ui', 'currentPage']),
-    user: state.get('user')
+    leftDrawerOpen: state.app.get('leftDrawerOpen'),
+    navTitle: state.app.get(['app', 'currentPage']),
+    user: state.user
   };
 }
 

@@ -6,7 +6,7 @@ webpack-dev-server --inline
 ### Example redux state map
 ```javascript
 state = {
- ui: {
+ app: {
 	currentPage: string,
 	leftDrawerOpen: bool,
 	selectedGamesType: string
@@ -22,6 +22,7 @@ state = {
   },
  gamesByType: {
 	upcoming: {
+    page: 0,
 		isFetching: bool
 		items: []
 	},

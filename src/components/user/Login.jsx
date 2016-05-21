@@ -37,7 +37,7 @@ const Login = React.createClass({
 
 function mapStateToProps(state){
   return {
-    loginDialogOpen: state.getIn(['ui', 'loginDialogOpen'])
+    loginDialogOpen: state.app.get('loginDialogOpen')
   };
 }
 
