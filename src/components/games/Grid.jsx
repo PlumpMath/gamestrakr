@@ -4,6 +4,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {GridList} from 'material-ui/GridList';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
+import CircularProgress from 'material-ui/CircularProgress';
 
 import {gameActions} from '../../actions/';
 import css from  '../../stylesheets/games_grid.scss';
@@ -17,12 +18,25 @@ const styles = {
   gridList: {
     width: '100%',
     height: '100%',
-    overflowY: 'auto'
+    overflowY: 'auto',
+    position: 'relative'
   },
   floatingBtn: {
     float: 'right',
     top: '-50%',
     translate: 'transformY(-50%)'
+  },
+  gridCtr: {
+    width: '100%',
+    overflowY: 'auto',
+    position: 'relative'
+  },
+  loader: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    margin: 0
   }
 };
 
@@ -39,6 +53,7 @@ const Grid = React.createClass({
   },
 
   render(){
+    const {isFetching} = this.props;
     const items = this.itemsByPage();
     var grid;
 
@@ -57,6 +72,12 @@ const Grid = React.createClass({
       );
     }
 
+    const loader = (
+      <div style={styles.loaderCtr}>
+        <CircularProgress style={styles.loader} size={2} />
+      </div>
+    );
+
     const bottomNav= (
       <div className="bottom-nav">
         <div onTouchTap={this.props.prevPage} className="prev-page-ctr">
@@ -72,7 +93,10 @@ const Grid = React.createClass({
 
     return (
       <div style={styles.root}>
-        {grid}
+        <div style={styles.gridCtr}>
+          {grid}
+          {isFetching ? loader : ''}
+        </div>
         {bottomNav}
       </div>
     );
@@ -83,6 +107,7 @@ const Grid = React.createClass({
 const mapStateToProps = (state, ownProps) => {
   return {
     page: state.gamesByType.getIn([ownProps.gamesType, 'page']),
+    isFetching: state.gamesByType.getIn([ownProps.gamesType, 'isFetching']),
     itemsPerPage: state.app.get('itemsPerPage')
   };
 };
