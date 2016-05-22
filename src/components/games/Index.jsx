@@ -5,6 +5,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import {connect} from 'react-redux';
 import {gameActions} from '../../actions/';
+import {List} from  'immutable';
 
 import Grid from './Grid';
 import Tile from './Tile';
@@ -30,6 +31,19 @@ const Index = React.createClass({
     this.props.fetchGames(v);
   },
 
+  // sortedItems: function(){
+  //   const items = this.props.items;
+
+  //   if (items){
+  //     return items
+  //       .sort((a, b) =>
+  //         new Date(a.get('original_release_date')) < new Date(b.get('original_release_date')))
+  //   } else {
+  //     return List();
+  //   }
+  // },
+  //
+
   render() {
     const toolbar = (
       <Toolbar style={styles.toolbar}>
@@ -45,7 +59,7 @@ const Index = React.createClass({
     return (
       <div className="home-ctr">
         {toolbar}
-        <Grid tile={Tile} {...this.props} />
+        <Grid tile={Tile} items={this.props.items} gamesType={this.props.gamesType}/>
       </div>
     );
   }

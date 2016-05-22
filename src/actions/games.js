@@ -7,9 +7,9 @@ export function requestGames(gamesType){
   }
 }
 
-export function receiveGame(gamesType, game){
+export function saveGame(gamesType, game){
   return {
-    type: 'RECEIVE_GAME',
+    type: 'SAVE_GAME',
     gamesType,
     game
   }
@@ -31,9 +31,8 @@ export function setGamesType(gamesType){
   }
 }
 
-export function fetchGames(state, gamesType, opts){
+export function fetchGames(state, gamesType, page){
   const token = state.user.get('token');
-  const page = state.gamesByType.getIn([gamesType, 'page']);
 
   return new Promise((resolve, reject) => {
     request
@@ -48,27 +47,27 @@ export function fetchGames(state, gamesType, opts){
   });
 }
 
-export function saveGames(){
-	return (dispatch, getState) => {
-		const state = getState();
-		const token = state.user.get('token');
-    const games = state.games.getIn('user', 'items');
-    if (token){
-      request
-        .post(`${process.env.SERVER_URL}/games/user`)
-        .send({games: games})
-        .set('X-Access-Token', token)
-        .end((err, res) => {
-          if(err) console.log('err', err);
-        });
-    }
-  }
-};
+// export function saveGames(){
+// 	return (dispatch, getState) => {
+// 		const state = getState();
+// 		const token = state.user.get('token');
+//     const games = state.games.getIn('user', 'items');
+//     if (token){
+//       request
+//         .post(`${process.env.SERVER_URL}/games/user`)
+//         .send({games: games})
+//         .set('X-Access-Token', token)
+//         .end((err, res) => {
+//           if(err) console.log('err', err);
+//         });
+//     }
+//   }
+// };
 
-export function saveGame(name, imageUrl, giantBombUrl, status){
+export function requestSaveGame(name, imageUrl, giantBombUrl, status){
 	const game = {name, imageUrl, giantBombUrl, status};
 	return (dispatch, getState) => {
-    dispatch(receiveGame('user', game));
+    dispatch(saveGame('user', game));
 		const state = getState();
 		const token = state.user.get('token');
     if (token){
@@ -83,21 +82,22 @@ export function saveGame(name, imageUrl, giantBombUrl, status){
   }
 };
 
-function shouldFetchGames(state, gamesType, opts) {
-  if(gamesType === 'user' && !state.user.get('token')) return false;
+function shouldFetchGames(state, gamesType, page) {
+  if(gamesType === 'user' && !state.user.get('token')) return Promise.reject();
   const numItemsPerPage = 16;
 	const games = state.gamesByType.getIn([gamesType, 'items']);
 	const isFetching = state.gamesByType.getIn([gamesType, 'isFetching']);
-  const page = state.gamesByType.getIn([gamesType, 'page']);
 
 	if (!games) return Promise.resolve();
   else if (games.size <= (page * numItemsPerPage)) return Promise.resolve();
   else if (isFetching) return Promise.reject();
+
+  return Promise.reject();
 }
 
 export function fetchGamesIfNeeded(gamesType) {
   return (dispatch, getState) => {
-    shouldFetchGames(getState(), gamesType, {})
+    shouldFetchGames(getState(), gamesType)
       .then(() => dispatch(requestGames(gamesType)))
       .then(() => fetchGames(getState(), gamesType))
       .then((res) => dispatch(receiveGames(gamesType, res.body)));
@@ -106,24 +106,21 @@ export function fetchGamesIfNeeded(gamesType) {
 
 export function requestNextPage(gamesType){
   return (dispatch, getState) => {
-    shouldFetchGames(getState(), gamesType, {nextPage: true})
+    var page = getState().gamesByType.getIn([gamesType, 'page']);
+    var nextPage = page ? (page + 1) : 1;
+    shouldFetchGames(getState(), gamesType, nextPage)
+      .then(() => dispatch(setPage(gamesType, nextPage)))
       .then(() => dispatch(requestGames(gamesType)))
-      .then(() => fetchGames(getState(), gamesType, {nextPage: true}))
-      .then(() => disptach(setNextPage()))
+      .then(() => fetchGames(getState(), gamesType, nextPage))
+      .then((res) => dispatch(receiveGames(gamesType, res.body)));
     };
   }
 
-export function setNextPage(gamesType){
+export function setPage(gamesType, page){
   return {
-    type: 'NEXT_PAGE',
-    gamesType
+    type: 'SET_PAGE',
+    gamesType,
+    page
   }
 }
-
-// export function prevPage(gamesType){
-//   return {
-//     type: 'PREV_PAGE',
-//     gamesType
-//   }
-// }
 

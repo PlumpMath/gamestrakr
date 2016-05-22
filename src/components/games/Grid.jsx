@@ -29,6 +29,10 @@ const styles = {
 const Grid = React.createClass({
   mixins: [PureRenderMixin],
 
+  // itemsByPage(): function(){
+  //   // get range calculated using num on page(16) and page number
+  // },
+
   render(){
     const {items} = this.props;
     var grid;
