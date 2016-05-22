@@ -11,7 +11,7 @@ import IconButton from 'material-ui/IconButton';
 import MenuItem from 'material-ui/MenuItem';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 
-import {openLeftDrawer, closeLeftDrawer, openLoginDialog, signOut} from '../actions';
+import {appActions, userActions} from '../actions/';
 import css from '../stylesheets/nav.scss';
 
 // Home - where users can view currently playing, their own collection, recently viewed etc
@@ -73,16 +73,16 @@ function mapStateToProps(state){
 const mapDispatchToProps = (dispatch) => {
   return {
     openLeftDrawer: () => {
-      dispatch(openLeftDrawer());
+      dispatch(appActions.openLeftDrawer());
     },
     closeLeftDrawer: () => {
-      dispatch(closeLeftDrawer());
+      dispatch(appActions.closeLeftDrawer());
     },
     openLoginDialog: () => {
-      dispatch(openLoginDialog());
+      dispatch(appActions.openLoginDialog());
     },
     signOut: () => {
-      dispatch(signOut());
+      dispatch(userActions.signOut());
     }
   };
 }

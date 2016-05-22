@@ -5,7 +5,7 @@ import {GridList} from 'material-ui/GridList';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 
-import {nextPage, prevPage} from '../../actions';
+import {gameActions} from '../../actions/';
 import css from  '../../stylesheets/games_grid.scss';
 
 const styles = {
@@ -80,10 +80,10 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     nextPage: () => {
-      dispatch(nextPage(ownProps.gamesType));
+      dispatch(gameActions.requestNextPage(ownProps.gamesType));
     },
     prevPage: () => {
-      dispatch(prevPage(ownProps.gamesType));
+      dispatch(gameActions.requestPrevPage(ownProps.gamesType));
     }
   };
 };

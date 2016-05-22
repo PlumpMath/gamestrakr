@@ -8,7 +8,7 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Popover from 'material-ui/Popover';
 
-import {saveGame} from '../../actions';
+import {gameActions} from '../../actions/';
 
 const placeholderImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=38&txt=GamesTrackr&w=450&h=300&txttrack=0'
 
@@ -106,7 +106,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     saveGame: (name, imageUrl, giantBombUrl, status) => {
-      dispatch(saveGame(name, imageUrl, giantBombUrl, status));
+      dispatch(gameActions.saveGame(name, imageUrl, giantBombUrl, status));
     }
   };
 };

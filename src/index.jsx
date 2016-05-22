@@ -14,7 +14,7 @@ import {Provider} from 'react-redux';
 import Cookies from 'js-cookie';
 
 import reducer from './reducers';
-import {closeLeftDrawer, userFromCookie, userFromAuth, authFailed} from './actions';
+import {appActions, userActions} from './actions/';
 
 import css from './stylesheets/index.scss';
 
@@ -53,8 +53,8 @@ if (process.env.NODE_ENV === 'production'){
 }
 
 // Grab user from cookies if available, dispatch initial state
-store.dispatch(userFromCookie());
-store.dispatch(closeLeftDrawer());
+store.dispatch(userActions.userFromCookie());
+store.dispatch(appActions.closeLeftDrawer());
 
 const routes = <Route path="/" component={App}>
  <IndexRoute component={GamesIndex}/>
@@ -70,13 +70,13 @@ const routes = <Route path="/" component={App}>
     onEnter={(nextState, replace) => {
       const {name, token} = queryString.parse(nextState.location.search);
       // store.disptach(uploadSavedGames());
-      store.dispatch(userFromAuth(name, token));
+      store.dispatch(userActions.userFromAuth(name, token));
     }}/>
   <Route
     path="/auth_failure"
     component={GamesIndex}
     onEnter={() => {
-      store.dispatch(authFailed());
+      store.dispatch(userActions.authFailed());
     }}/>
 </Route>;
 

@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import {openLoginDialog, fetchGamesIfNeeded} from '../../actions';
+import {gameActions} from '../../actions/';
 import Grid from '../games/Grid';
 import Tile from './Tile';
 
@@ -64,7 +64,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		fetchGames: () => {
-			dispatch(fetchGamesIfNeeded('user'));
+			dispatch(gameActions.fetchGamesIfNeeded('user'));
 		}
 	};
 };

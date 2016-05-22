@@ -4,7 +4,7 @@ import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import {connect} from 'react-redux';
-import {fetchGamesIfNeeded, setGamesType} from '../../actions';
+import {gameActions} from '../../actions/';
 
 import Grid from './Grid';
 import Tile from './Tile';
@@ -64,10 +64,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchGames: (gamesType) => {
-      dispatch(fetchGamesIfNeeded(gamesType));
+      dispatch(gameActions.fetchGamesIfNeeded(gamesType));
     },
     setGamesType: (gamesType) => {
-      dispatch(setGamesType(gamesType));
+      dispatch(gameActions.setGamesType(gamesType));
     }
   };
 };

@@ -5,8 +5,9 @@ function requestGames(state, gamesType){
 }
 
 function receiveGames(state, gamesType, json){
-	return state.set(gamesType,
-										 fromJS({items: json, isFetching: false}));
+  return state
+    .updateIn([gamesType, 'items'], List(), items => items.mergeDeep(json))
+    .setIn([gamesType, 'isFetching'], false);
 }
 
 function receiveGame(state, gamesType, game){
