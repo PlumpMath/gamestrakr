@@ -28,6 +28,12 @@ const Tile = React.createClass({
     };
   },
 
+  componentWillReceiveProps: function(nextProps){
+    if(nextProps.item){
+      this.setState({imageUrl: this.getGameImageUrl(nextProps.item)});
+    }
+  },
+
   getGameImageUrl: function(item){
     return item.getIn(['image', 'small_url']) || item.getIn(['image', 'medium_url']) || placeholderImageUrl;
   },

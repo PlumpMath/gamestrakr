@@ -106,15 +106,35 @@ export function fetchGamesIfNeeded(gamesType) {
 
 export function requestNextPage(gamesType){
   return (dispatch, getState) => {
-    var page = getState().gamesByType.getIn([gamesType, 'page']);
+    var page = getState().gamesByType.getIn([gamesType, 'page'], 0);
     var nextPage = page ? (page + 1) : 1;
     shouldFetchGames(getState(), gamesType, nextPage)
-      .then(() => dispatch(setPage(gamesType, nextPage)))
-      .then(() => dispatch(requestGames(gamesType)))
+      .then(
+        () => dispatch(requestGames(gamesType)),
+        () => dispatch(setPage(gamesType, nextPage))
+      )
       .then(() => fetchGames(getState(), gamesType, nextPage))
-      .then((res) => dispatch(receiveGames(gamesType, res.body)));
-    };
-  }
+      .then((res) => dispatch(receiveGames(gamesType, res.body)))
+      .then(() => dispatch(setPage(gamesType, nextPage)));
+  };
+}
+
+export function requestPrevPage(gamesType){
+  return (dispatch, getState) => {
+    var page = getState().gamesByType.getIn([gamesType, 'page'], 0);
+    var prevPage = page ? (page - 1) : 0;
+    if(prevPage !== page){
+      shouldFetchGames(getState(), gamesType, prevPage)
+        .then(
+          () => dispatch(requestGames(gamesType)),
+          () => dispatch(setPage(gamesType, prevPage))
+        )
+        .then(() => fetchGames(getState(), gamesType, prevPage))
+        .then((res) => dispatch(receiveGames(gamesType, res.body)))
+        .then(() => dispatch(setPage(gamesType, prevPage)));
+    }
+  };
+}
 
 export function setPage(gamesType, page){
   return {

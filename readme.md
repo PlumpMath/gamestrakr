@@ -43,7 +43,7 @@ state = {
 
 ## TODOS
 * Add pagination
-* Add loader animation
+* Add loader animation(min grid height, center loader)
 * Add game detail component
 * Add search
 * Render recently viewed list and currently playing list of games in nav
