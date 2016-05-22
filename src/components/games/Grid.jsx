@@ -29,12 +29,17 @@ const styles = {
 const Grid = React.createClass({
   mixins: [PureRenderMixin],
 
-  // itemsByPage(): function(){
-  //   // get range calculated using num on page(16) and page number
-  // },
+  itemsByPage: function(){
+    const {items, page, itemsPerPage} = this.props;
+    if (items && items.size > 0){
+      const i = (itemsPerPage * page) || 0;
+      const j = i + itemsPerPage;
+      return items.slice(i, j);
+    }
+  },
 
   render(){
-    const {items} = this.props;
+    const items = this.itemsByPage();
     var grid;
 
     if (items && items.size > 0){
@@ -78,6 +83,7 @@ const Grid = React.createClass({
 const mapStateToProps = (state, ownProps) => {
   return {
     page: state.gamesByType.getIn([ownProps.gamesType, 'page']),
+    itemsPerPage: state.app.get('itemsPerPage')
   };
 };
 

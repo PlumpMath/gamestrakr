@@ -28,6 +28,10 @@ function setGamesType(state, gamesType){
   return state.set('selectedGamesType', gamesType);
 }
 
+function setItemsPerPage(state, num){
+  return state.set('itemsPerPage', num);
+}
+
 export default function app(state = Map(), action){
   switch (action.type) {
     case 'SET_STATE':
@@ -42,6 +46,8 @@ export default function app(state = Map(), action){
       return closeLoginDialog(state);
     case 'SET_GAMES_TYPE':
       return setGamesType(state, action.gamesType);
+    case 'ITEMS_PER_PAGE':
+      return setItemsPerPage(state, action.num);
     default:
       return state;
   }

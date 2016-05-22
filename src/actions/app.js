@@ -29,3 +29,9 @@ export function closeLoginDialog(){
   }
 }
 
+export function setItemsPerPage(num){
+  return {
+    type: 'ITEMS_PER_PAGE',
+    num
+  }
+}
