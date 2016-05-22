@@ -12,7 +12,7 @@ export default React.createClass({
   render() {
     return (
       <MuiThemeProvider muiTheme={darkMuiTheme}>
-        <div>
+        <div className="app-ctr">
           <NavContainer/>
           <LoginContainer/>
           {this.props.children}

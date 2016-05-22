@@ -13,11 +13,11 @@ const styles = {
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    height: '100%'
   },
   gridList: {
     width: '100%',
-    height: '100%',
     overflowY: 'auto',
     position: 'relative'
   },
@@ -29,7 +29,8 @@ const styles = {
   gridCtr: {
     width: '100%',
     overflowY: 'auto',
-    position: 'relative'
+    position: 'relative',
+    minHeight: '815px'
   },
   loader: {
     position: 'absolute',
@@ -92,7 +93,7 @@ const Grid = React.createClass({
     );
 
     return (
-      <div style={styles.root}>
+      <div className="grid-root" style={styles.root}>
         <div style={styles.gridCtr}>
           {grid}
           {isFetching ? loader : ''}

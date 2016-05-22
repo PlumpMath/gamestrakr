@@ -42,8 +42,8 @@ const Index = React.createClass({
     const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped'];
 
     return (
-      <div className="home-ctr">
-        <Tabs>
+      <div className="app-ctr">
+        <Tabs className="tabs-ctr app-ctr" contentContainerClassName="tabs-content-ctr app-ctr">
           {statuses.map((status) => (
             <Tab key={status} label={status}>
               <Grid items={this.itemsByStatus(status)} tile={Tile} status={status} />
