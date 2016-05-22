@@ -47,23 +47,6 @@ export function fetchGames(state, gamesType, page){
   });
 }
 
-// export function saveGames(){
-// 	return (dispatch, getState) => {
-// 		const state = getState();
-// 		const token = state.user.get('token');
-//     const games = state.games.getIn('user', 'items');
-//     if (token){
-//       request
-//         .post(`${process.env.SERVER_URL}/games/user`)
-//         .send({games: games})
-//         .set('X-Access-Token', token)
-//         .end((err, res) => {
-//           if(err) console.log('err', err);
-//         });
-//     }
-//   }
-// };
-
 export function requestSaveGame(name, imageUrl, giantBombUrl, status){
 	const game = {name, imageUrl, giantBombUrl, status};
 	return (dispatch, getState) => {
@@ -92,7 +75,7 @@ function shouldFetchGames(state, gamesType, page) {
   else if (games.size <= (page * itemsPerPage)) return Promise.resolve();
   else if (isFetching) return Promise.reject();
 
-  return Promise.reject();
+  return Promise.resolve();
 }
 
 export function fetchGamesIfNeeded(gamesType) {
@@ -109,13 +92,11 @@ export function requestNextPage(gamesType){
     var page = getState().gamesByType.getIn([gamesType, 'page'], 0);
     var nextPage = page ? (page + 1) : 1;
     shouldFetchGames(getState(), gamesType, nextPage)
-      .then(
-        () => dispatch(requestGames(gamesType)),
-        () => dispatch(setPage(gamesType, nextPage))
-      )
+      .then(() => dispatch(setPage(gamesType, nextPage)))
+      .then(() => dispatch(requestGames(gamesType)))
       .then(() => fetchGames(getState(), gamesType, nextPage))
       .then((res) => dispatch(receiveGames(gamesType, res.body)))
-      .then(() => dispatch(setPage(gamesType, nextPage)));
+      .catch((err) => console.log(err));
   };
 }
 
@@ -125,13 +106,11 @@ export function requestPrevPage(gamesType){
     var prevPage = page ? (page - 1) : 0;
     if(prevPage !== page){
       shouldFetchGames(getState(), gamesType, prevPage)
-        .then(
-          () => dispatch(requestGames(gamesType)),
-          () => dispatch(setPage(gamesType, prevPage))
-        )
+        .then(() => dispatch(setPage(gamesType, prevPage)))
+        .then(() => dispatch(requestGames(gamesType)))
         .then(() => fetchGames(getState(), gamesType, prevPage))
         .then((res) => dispatch(receiveGames(gamesType, res.body)))
-        .then(() => dispatch(setPage(gamesType, prevPage)));
+        .catch((err) => console.log(err));
     }
   };
 }
@@ -144,3 +123,19 @@ export function setPage(gamesType, page){
   }
 }
 
+// export function saveGames(){
+// 	return (dispatch, getState) => {
+// 		const state = getState();
+// 		const token = state.user.get('token');
+//     const games = state.games.getIn('user', 'items');
+//     if (token){
+//       request
+//         .post(`${process.env.SERVER_URL}/games/user`)
+//         .send({games: games})
+//         .set('X-Access-Token', token)
+//         .end((err, res) => {
+//           if(err) console.log('err', err);
+//         });
+//     }
+//   }
+// };

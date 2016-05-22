@@ -46,10 +46,12 @@ const Grid = React.createClass({
 
   itemsByPage: function(){
     const {items, page, itemsPerPage} = this.props;
-    if (items && items.size > 0){
-      const i = (itemsPerPage * page) || 0;
-      const j = i + itemsPerPage;
+    const i = (itemsPerPage * page) || 0;
+    const j = i + itemsPerPage;
+    if (items && items.size > i){
       return items.slice(i, j);
+    } else {
+      return items;
     }
   },
 
