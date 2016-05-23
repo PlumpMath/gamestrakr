@@ -81,7 +81,8 @@ export function fetchGamesIfNeeded(gamesType) {
     shouldFetchGames(getState(), gamesType)
       .then(() => dispatch(requestGames(gamesType)))
       .then(() => fetchGames(getState(), gamesType))
-      .then((res) => dispatch(receiveGames(gamesType, res.body)));
+      .then((res) => dispatch(receiveGames(gamesType, res.body)))
+      .catch((err) => console.log(err));
   };
 }
 
