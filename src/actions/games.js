@@ -65,8 +65,9 @@ export function requestSaveGame(name, imageUrl, giantBombUrl, status){
   }
 };
 
+const userGamesTypes= ['playing', 'planning', 'completed', 'onHold', 'dropped'];
 function shouldFetchGames(state, gamesType, page) {
-  if(gamesType === 'user' && !state.user.get('token')) return Promise.reject();
+  if(userGamesTypes.includes(gamesType) && !state.user.get('token')) return Promise.reject();
   const itemsPerPage = state.app.get('itemsPerPage');
 	const games = state.gamesByType.getIn([gamesType, 'items']);
 	const isFetching = state.gamesByType.getIn([gamesType, 'isFetching']);
@@ -75,6 +76,17 @@ function shouldFetchGames(state, gamesType, page) {
 	else if (!games || (games.size <= (page * itemsPerPage))) return Promise.resolve();
   return Promise.reject("Shouldn't fetch games");
 }
+
+function shouldSetPage(state, gamesType, page){
+  const itemsPerPage = state.app.get('itemsPerPage');
+  const currentPage = state.gamesByType.getIn([gamesType, 'page']);
+	const games = state.gamesByType.getIn([gamesType, 'items']);
+
+  if(currentPage == page || (games && (games.size < itemsPerPage)))
+    return Promise.reject("Shouldn't set page");
+  return Promise.resolve();
+}
+
 
 export function fetchGamesIfNeeded(gamesType) {
   return (dispatch, getState) => {
@@ -88,14 +100,16 @@ export function fetchGamesIfNeeded(gamesType) {
 
 export function requestPage(page, gamesType){
   return (dispatch, getState) => {
-    dispatch(setPage(getState(), gamesType, page));
-    shouldFetchGames(getState(), gamesType, page)
+    shouldSetPage(getState(), gamesType, page)
+      .then(() => dispatch(setPage(getState(), gamesType, page)))
+      .then(() => shouldFetchGames(getState(), gamesType, page))
       .then(() => dispatch(requestGames(gamesType)))
       .then(() => fetchGames(getState(), gamesType, page))
       .then((res) => dispatch(receiveGames(gamesType, res.body)))
       .catch((err) => console.log(err));
   };
 }
+
 
 export function setPage(state, gamesType, page){
   return {
