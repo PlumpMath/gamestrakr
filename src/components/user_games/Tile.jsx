@@ -82,7 +82,7 @@ const Tile = React.createClass({
 const mapDispatchToProps = (dispatch) => {
   return {
     saveGame: (name, imageUrl, giantBombUrl, status) => {
-      dispatch(gameActions.saveGame(name, imageUrl, giantBombUrl, status));
+      dispatch(gameActions.requestSaveGame(name, imageUrl, giantBombUrl, status));
     }
   };
 };

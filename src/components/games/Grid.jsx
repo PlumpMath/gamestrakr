@@ -48,11 +48,9 @@ const Grid = React.createClass({
     const {items, page, itemsPerPage} = this.props;
     const i = (itemsPerPage * page) || 0;
     const j = i + itemsPerPage;
-    if (items && items.size > i){
+    if (items){
       return items.slice(i, j);
-    } else {
-      return items;
-    }
+    };
   },
 
   render(){
@@ -83,11 +81,11 @@ const Grid = React.createClass({
 
     const bottomNav= (
       <div className="bottom-nav">
-        <div onTouchTap={this.props.prevPage} className="prev-page-ctr">
+        <div onTouchTap={this.props.prevPage.bind(this, this.props.page)} className="prev-page-ctr">
           <FontIcon color={'#fff'} className="material-icons">arrow_back</FontIcon>
           <span>Previous Page</span>
         </div>
-        <div onTouchTap={this.props.nextPage} className="next-page-ctr">
+        <div onTouchTap={this.props.nextPage.bind(this, this.props.page)} className="next-page-ctr">
           <span>Next Page</span>
           <FontIcon color={'#fff'} className="material-icons">arrow_forward</FontIcon>
         </div>
@@ -117,11 +115,13 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    nextPage: () => {
-      dispatch(gameActions.requestNextPage(ownProps.gamesType));
+    nextPage: (page) => {
+      var nextPage = page ? (page + 1) : 1;
+      dispatch(gameActions.requestPage(nextPage, ownProps.gamesType));
     },
-    prevPage: () => {
-      dispatch(gameActions.requestPrevPage(ownProps.gamesType));
+    prevPage: (page) => {
+      var prevPage = page ? (page - 1) : 0;
+      dispatch(gameActions.requestPage(prevPage, ownProps.gamesType));
     }
   };
 };
