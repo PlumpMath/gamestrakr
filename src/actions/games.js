@@ -71,12 +71,9 @@ function shouldFetchGames(state, gamesType, page) {
 	const games = state.gamesByType.getIn([gamesType, 'items']);
 	const isFetching = state.gamesByType.getIn([gamesType, 'isFetching']);
 
-	if (!games) return Promise.resolve();
-  else if (isFetching) return Promise.reject();
-  else if (page !== 0 && !page) return Promise.reject();
-  else if (games.size < (page * itemsPerPage)) return Promise.resolve();
-
-  return Promise.resolve();
+  if (isFetching) return Promise.reject();
+	else if (!games || (games.size <= (page * itemsPerPage))) return Promise.resolve();
+  return Promise.reject();
 }
 
 export function fetchGamesIfNeeded(gamesType) {
@@ -90,8 +87,8 @@ export function fetchGamesIfNeeded(gamesType) {
 
 export function requestPage(page, gamesType){
   return (dispatch, getState) => {
+    dispatch(setPage(getState(), gamesType, page));
     shouldFetchGames(getState(), gamesType, page)
-      .then(() => dispatch(setPage(gamesType, page)))
       .then(() => dispatch(requestGames(gamesType)))
       .then(() => fetchGames(getState(), gamesType, page))
       .then((res) => dispatch(receiveGames(gamesType, res.body)))
@@ -99,7 +96,7 @@ export function requestPage(page, gamesType){
   };
 }
 
-export function setPage(gamesType, page){
+export function setPage(state, gamesType, page){
   return {
     type: 'SET_PAGE',
     gamesType,

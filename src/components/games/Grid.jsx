@@ -53,6 +53,18 @@ const Grid = React.createClass({
     };
   },
 
+  nextPage: function(){
+    const {isFetching, page} = this.props;
+    if(isFetching) return;
+    this.props.nextPage(page);
+  },
+
+  prevPage: function(){
+    const {isFetching, page} = this.props;
+    if(isFetching) return;
+    this.props.prevPage(page);
+  },
+
   render(){
     const {isFetching} = this.props;
     const items = this.itemsByPage();
@@ -81,11 +93,11 @@ const Grid = React.createClass({
 
     const bottomNav= (
       <div className="bottom-nav">
-        <div onTouchTap={this.props.prevPage.bind(this, this.props.page)} className="prev-page-ctr">
+        <div onTouchTap={this.prevPage} className="prev-page-ctr">
           <FontIcon color={'#fff'} className="material-icons">arrow_back</FontIcon>
           <span>Previous Page</span>
         </div>
-        <div onTouchTap={this.props.nextPage.bind(this, this.props.page)} className="next-page-ctr">
+        <div onTouchTap={this.nextPage} className="next-page-ctr">
           <span>Next Page</span>
           <FontIcon color={'#fff'} className="material-icons">arrow_forward</FontIcon>
         </div>
@@ -120,7 +132,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(gameActions.requestPage(nextPage, ownProps.gamesType));
     },
     prevPage: (page) => {
-      var prevPage = page ? (page - 1) : 0;
+      var prevPage = (page && page !== 0) ? (page - 1) : 0;
       dispatch(gameActions.requestPage(prevPage, ownProps.gamesType));
     }
   };
