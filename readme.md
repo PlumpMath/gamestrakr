@@ -63,6 +63,7 @@ state = {
 
 ## TODOS
 * Add game detail component
+* Add message when no games underneath user games tab
 * Add search
 * Render recently viewed list and currently playing list of games in nav
 * Make fetching of games more customizeable(genre, search, platform, etc)

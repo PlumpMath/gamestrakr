@@ -33,12 +33,13 @@ export function setGamesType(gamesType){
 
 export function fetchGames(state, gamesType, page){
   const token = state.user.get('token');
+  const itemsPerPage = state.app.get('itemsPerPage');
 
   return new Promise((resolve, reject) => {
     request
       .get(`${process.env.SERVER_URL}/games/${gamesType}`)
       .set('X-Access-Token', token)
-      .query({limit: 16})
+      .query({limit: itemsPerPage})
       .query({page: page})
       .end((err, res) => {
         if(err) reject(err);
