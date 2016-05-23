@@ -26,24 +26,42 @@ state = {
 		isFetching: bool
 		items: []
 	},
-	user: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
 	searchedFor: {
     page: Integer,
 		isFetching: bool
 		items: []
-	}
+	},
+	playing: {
+    page: Integer,
+		isFetching: bool
+		items: []
+	},
+	planning: {
+    page: Integer,
+		isFetching: bool
+		items: []
+	},
+	completed: {
+    page: Integer,
+		isFetching: bool
+		items: []
+	},
+	onHold: {
+    page: Integer,
+		isFetching: bool
+		items: []
+	},
+	dropped: {
+    page: Integer,
+		isFetching: bool
+		items: []
+	},
  }
 }
 ```
 
 
 ## TODOS
-* Add pagination
-* Add loader animation(min grid height, center loader)
 * Add game detail component
 * Add search
 * Render recently viewed list and currently playing list of games in nav

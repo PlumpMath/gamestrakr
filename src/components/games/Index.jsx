@@ -22,7 +22,6 @@ const Index = React.createClass({
   mixins: [PureRenderMixin],
   componentDidMount: function(){
     this.props.fetchGames(this.props.gamesType);
-    this.props.fetchGames('user');
   },
 
   setGamesType: function(e, k, v){
@@ -30,19 +29,6 @@ const Index = React.createClass({
     this.props.setGamesType(v);
     this.props.fetchGames(v);
   },
-
-  // sortedItems: function(){
-  //   const items = this.props.items;
-
-  //   if (items){
-  //     return items
-  //       .sort((a, b) =>
-  //         new Date(a.get('original_release_date')) < new Date(b.get('original_release_date')))
-  //   } else {
-  //     return List();
-  //   }
-  // },
-  //
 
   render() {
     const toolbar = (
@@ -70,8 +56,7 @@ const mapStateToProps = (state) => {
 
   return {
     gamesType: gamesType,
-    items: state.gamesByType.getIn([gamesType, 'items']),
-    page: state.gamesByType.getIn([gamesType, 'page'])
+    items: state.gamesByType.getIn([gamesType, 'items'])
   };
 };
 
@@ -89,3 +74,18 @@ const mapDispatchToProps = (dispatch) => {
 const IndexContainer = connect(mapStateToProps, mapDispatchToProps)(Index);
 
 export default IndexContainer
+
+// Might use in future
+// sortedItems: function(){
+//   const items = this.props.items;
+
+//   if (items){
+//     return items
+//       .sort((a, b) =>
+//         new Date(a.get('original_release_date')) < new Date(b.get('original_release_date')))
+//   } else {
+//     return List();
+//   }
+// },
+//
+

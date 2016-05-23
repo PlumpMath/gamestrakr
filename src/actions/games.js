@@ -50,7 +50,7 @@ export function fetchGames(state, gamesType, page){
 export function requestSaveGame(name, imageUrl, giantBombUrl, status){
 	const game = {name, imageUrl, giantBombUrl, status};
 	return (dispatch, getState) => {
-    dispatch(saveGame('user', game));
+    dispatch(saveGame(status, game));
 		const state = getState();
 		const token = state.user.get('token');
     if (token){
