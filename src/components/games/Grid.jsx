@@ -1,77 +1,143 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {GridList} from 'material-ui/GridList';
-import IconMenu from 'material-ui/IconMenu';
-import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
-import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import IconButton from 'material-ui/IconButton';
+import CircularProgress from 'material-ui/CircularProgress';
 
-import TileContainer from './Tile';
+import {gameActions} from '../../actions/';
+import css from  '../../stylesheets/games_grid.scss';
 
 const styles = {
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    height: '100%'
   },
   gridList: {
     width: '100%',
-    height: '100%',
     overflowY: 'auto',
-    marginBottom: 24,
+    position: 'relative'
   },
-  toolbar: {
+  floatingBtn: {
+    float: 'right',
+    top: '-50%',
+    translate: 'transformY(-50%)'
+  },
+  gridCtr: {
     width: '100%',
-    backgroundColor: '#212121'
+    overflowY: 'auto',
+    position: 'relative',
+    minHeight: '815px'
+  },
+  loader: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    margin: 0
   }
 };
 
 const Grid = React.createClass({
   mixins: [PureRenderMixin],
 
-	getItems: function(){
-		return this.props.items || [];
-	},
+  itemsByPage: function(){
+    const {items, page, itemsPerPage} = this.props;
+    const i = (itemsPerPage * page) || 0;
+    const j = i + itemsPerPage;
+    if (items && items.size){
+      return items.slice(i, j);
+    };
+  },
 
-  setGamesType: function(e, k, v){
-    e.preventDefault();
-    this.props.setGamesType(v);
-    this.props.fetchGames(v);
+  nextPage: function(){
+    const {isFetching, page} = this.props;
+    if(isFetching) return;
+    this.props.nextPage(page);
+  },
+
+  prevPage: function(){
+    const {isFetching, page} = this.props;
+    if(isFetching) return;
+    this.props.prevPage(page);
   },
 
   render(){
-    const toolbar = (
-      <Toolbar style={styles.toolbar}>
-        <ToolbarGroup firstChild={true}>
-          <DropDownMenu onChange={this.setGamesType} value={this.props.gamesType}>
-            <MenuItem value={'recent'} primaryText='Recent Releases'/>
-            <MenuItem value={'upcoming'} primaryText='Upcoming Releases'/>
-          </DropDownMenu>
-        </ToolbarGroup>
-      </Toolbar>
-    );
+    const {isFetching} = this.props;
+    const items = this.itemsByPage();
+    var grid;
 
-    return (
-      <div style={styles.root}>
-        {toolbar}
+    if (items && items.size > 0){
+      grid = (
         <GridList
           cellHeight={200}
           cols={4}
           style={styles.gridList}>
 
-          {this.getItems().map((item, i) => (
-            <TileContainer key={`${item.get('name')}${i}`} item={item}/>
+          {items.map((item, i) => (
+            <this.props.tile key={i} item={item}/>
           ))}
 
         </GridList>
+      );
+    }
+
+    const loader = (
+      <div style={styles.loaderCtr}>
+        <CircularProgress style={styles.loader} size={2} />
+      </div>
+    );
+
+    const bottomNav= (
+      <div className="bottom-nav">
+        <div onTouchTap={this.prevPage} className="prev-page-ctr">
+          <FontIcon color={'#fff'} className="material-icons">arrow_back</FontIcon>
+          <span>Previous Page</span>
+        </div>
+        <div onTouchTap={this.nextPage} className="next-page-ctr">
+          <span>Next Page</span>
+          <FontIcon color={'#fff'} className="material-icons">arrow_forward</FontIcon>
+        </div>
+      </div>
+    );
+
+    return (
+      <div className="grid-root" style={styles.root}>
+        <div style={styles.gridCtr}>
+          {grid}
+          {isFetching ? loader : ''}
+        </div>
+        {bottomNav}
       </div>
     );
   }
 
 });
 
-export default Grid;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    page: state.gamesByType.getIn([ownProps.gamesType, 'page']),
+    isFetching: state.gamesByType.getIn([ownProps.gamesType, 'isFetching']),
+    itemsPerPage: state.app.get('itemsPerPage')
+  };
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    nextPage: (page) => {
+      var nextPage = page ? (page + 1) : 1;
+      dispatch(gameActions.requestPage(nextPage, ownProps.gamesType));
+    },
+    prevPage: (page) => {
+      var prevPage = (page && page !== 0) ? (page - 1) : 0;
+      dispatch(gameActions.requestPage(prevPage, ownProps.gamesType));
+    }
+  };
+};
+
+const GridContainer = connect(mapStateToProps, mapDispatchToProps)(Grid);
+
+export default GridContainer;

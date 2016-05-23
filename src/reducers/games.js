@@ -5,11 +5,12 @@ function requestGames(state, gamesType){
 }
 
 function receiveGames(state, gamesType, json){
-	return state.set(gamesType,
-										 fromJS({items: json, isFetching: false}));
+  return state
+    .updateIn([gamesType, 'items'], List(), items => items.concat(fromJS(json)))
+    .setIn([gamesType, 'isFetching'], false);
 }
 
-function receiveGame(state, gamesType, game){
+function saveGame(state, gamesType, game){
 	return state.updateIn([gamesType, 'items'], List(), arr => {
 		const duplicate = arr.find((v, k) => { return v.get('name') === game.name});
 		if(!duplicate) return arr.push(fromJS(game));
@@ -18,9 +19,11 @@ function receiveGame(state, gamesType, game){
 			return arr.set(index, fromJS(game));
 		}
 	});
-	// return state.mergeIn([gamesType, 'items'], game);
 }
 
+function setPage(state, gamesType, page){
+  return state.setIn([gamesType, 'page'], page);
+}
 
 export default function(state = Map(), action) {
   switch (action.type) {
@@ -28,10 +31,10 @@ export default function(state = Map(), action) {
       return requestGames(state, action.gamesType);
     case 'RECEIVE_GAMES':
       return receiveGames(state, action.gamesType, action.json);
-    case 'RECEIVE_GAME':
-      return receiveGame(state, action.gamesType, action.game);
-    case 'NEXT_PAGE':
-      return nextPage(state, action.gamesType);
+    case 'SAVE_GAME':
+      return saveGame(state, action.gamesType, action.game);
+    case 'SET_PAGE':
+      return setPage(state, action.gamesType, action.page);
     default:
       return state;
   }

@@ -1,10 +1,32 @@
+html, body{
+  height: 100%;
+  width: 100%;
+}
+
 body{
   font-family: 'Roboto', sans-serif;
+}
+
+#app{
+  height: 100%;
+  width: 100%;
 }
 
 .content-ctr{
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
+}
+
+.app-ctr{
+  height: 100%;
+  width: 100%;
+}
+
+.tabs-content-ctr{
+  >div{
+    height: 100%;
+    width: 100%;
+  }
 }
 

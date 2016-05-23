@@ -5,9 +5,11 @@ import {connect} from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import {openLoginDialog, fetchGamesIfNeeded} from '../../actions';
-import Grid from './Grid';
+import {gameActions} from '../../actions/';
+import Grid from '../games/Grid';
+import Tile from './Tile';
 
+const defaultGamesType = 'playing';
 const styles = {
   root: {
     display: 'flex',
@@ -24,18 +26,27 @@ const styles = {
 const Index = React.createClass({
   mixins: [PureRenderMixin],
   componentDidMount: function(){
-    this.props.fetchGames();
+    this.props.setGamesType(defaultGamesType);
+    this.props.fetchGames(this.props.gamesType);
+  },
+
+  setGamesType: function(e, k, v){
+    this.props.setGamesType(e.props.label);
+    this.props.fetchGames(e.props.label);
   },
 
   render() {
-    const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped'];
+    const statuses = ['playing', 'planning', 'completed', 'onHold', 'dropped'];
 
     return (
-      <div className="home-ctr">
-        <Tabs>
+      <div className="app-ctr">
+        <Tabs className="tabs-ctr app-ctr" contentContainerClassName="tabs-content-ctr app-ctr">
           {statuses.map((status) => (
-            <Tab key={status} label={status}>
-              <Grid status={status} />
+            <Tab onActive={this.setGamesType} key={status} label={status}>
+              <Grid
+                gamesType={status}
+                tile={Tile}
+                items={this.props.items} />
             </Tab>
           ))}
         </Tabs>
@@ -45,16 +56,22 @@ const Index = React.createClass({
 });
 
 const mapStateToProps = (state) => {
+  var gamesType = state.app.get('selectedGamesType') || defaultGamesType;
+
 	return {
-    items: state.user.getIn(['games', 'items'])
+    gamesType: gamesType,
+    items: state.gamesByType.getIn([gamesType, 'items'])
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		fetchGames: () => {
-			dispatch(fetchGamesIfNeeded('user'));
-		}
+		fetchGames: (gamesType) => {
+			dispatch(gameActions.fetchGamesIfNeeded(gamesType));
+		},
+    setGamesType: (gamesType) => {
+      dispatch(gameActions.setGamesType(gamesType));
+    }
 	};
 };
 

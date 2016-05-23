@@ -4,7 +4,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-import {openLoginDialog, closeLoginDialog} from '../../actions';
+import {appActions} from '../../actions/';
 
 const Login = React.createClass({
   mixins: [PureRenderMixin],
@@ -45,10 +45,10 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
   return {
     openLoginDialog: () => {
-      dispatch(openLoginDialog());
+      dispatch(appActions.openLoginDialog());
     },
     closeLoginDialog: () => {
-      dispatch(closeLoginDialog());
+      dispatch(appActions.closeLoginDialog());
     }
   };
 }
