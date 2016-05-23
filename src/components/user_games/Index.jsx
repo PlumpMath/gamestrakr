@@ -26,6 +26,7 @@ const styles = {
 const Index = React.createClass({
   mixins: [PureRenderMixin],
   componentDidMount: function(){
+    this.props.setGamesType(defaultGamesType);
     this.props.fetchGames(this.props.gamesType);
   },
 
