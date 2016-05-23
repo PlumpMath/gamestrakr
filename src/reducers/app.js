@@ -32,6 +32,10 @@ function setItemsPerPage(state, num){
   return state.set('itemsPerPage', num);
 }
 
+function setGridCols(state, cols){
+  return state.set('gridCols', cols);
+}
+
 export default function app(state = Map(), action){
   switch (action.type) {
     case 'SET_STATE':
@@ -48,6 +52,8 @@ export default function app(state = Map(), action){
       return setGamesType(state, action.gamesType);
     case 'ITEMS_PER_PAGE':
       return setItemsPerPage(state, action.num);
+    case 'SET_GRID_COLS':
+      return setGridCols(state, action.cols);
     default:
       return state;
   }

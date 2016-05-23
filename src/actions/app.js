@@ -35,3 +35,25 @@ export function setItemsPerPage(num){
     num
   }
 }
+
+export function windowResized(size){
+  return (dispatch) => {
+    switch (true){
+      case (size < 800):
+        return dispatch(setGridCols(2))
+      case (size < 1000):
+        return dispatch(setGridCols(3))
+      case (size < 1500):
+        return dispatch(setGridCols(4))
+      default:
+        return dispatch(setGridCols(6))
+    }
+  };
+}
+
+export function setGridCols(cols){
+  return {
+    type: 'SET_GRID_COLS',
+    cols
+  }
+}

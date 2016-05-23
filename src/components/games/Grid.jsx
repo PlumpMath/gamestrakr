@@ -43,7 +43,6 @@ const styles = {
 
 const Grid = React.createClass({
   mixins: [PureRenderMixin],
-
   itemsByPage: function(){
     const {items, page, itemsPerPage} = this.props;
     const i = (itemsPerPage * page) || 0;
@@ -74,7 +73,7 @@ const Grid = React.createClass({
       grid = (
         <GridList
           cellHeight={200}
-          cols={4}
+          cols={this.props.gridCols || 6}
           style={styles.gridList}>
 
           {items.map((item, i) => (
@@ -106,7 +105,7 @@ const Grid = React.createClass({
 
     return (
       <div className="grid-root" style={styles.root}>
-        <div style={styles.gridCtr}>
+        <div className="grid-ctr" style={styles.gridCtr}>
           {grid}
           {isFetching ? loader : ''}
         </div>
@@ -121,7 +120,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     page: state.gamesByType.getIn([ownProps.gamesType, 'page']),
     isFetching: state.gamesByType.getIn([ownProps.gamesType, 'isFetching']),
-    itemsPerPage: state.app.get('itemsPerPage')
+    itemsPerPage: state.app.get('itemsPerPage'),
+    gridCols: state.app.get('gridCols')
   };
 };
 

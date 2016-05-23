@@ -95,9 +95,11 @@ const Tile = React.createClass({
 								</Menu>
 							</Popover>
 						</IconButton>}>
-						<img
-							src={this.state.imageUrl}
-							onError={this.onImageError}/>
+            <div className="tile-img-ctr">
+              <img
+                src={this.state.imageUrl}
+                onError={this.onImageError}/>
+            </div>
 				</GridTile>
     );
   }

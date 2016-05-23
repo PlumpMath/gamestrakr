@@ -23,6 +23,19 @@ const navLinks =  [{name: 'All Games', route: 'games', icon: 'videogame_asset'},
 const Nav =  React.createClass({
 	mixins: [PureRenderMixin],
 
+  componentDidMount: function() {
+    window.addEventListener('resize', this.handleResize);
+    this.props.windowResized(window.innerWidth);
+  },
+
+  componentWillUnmount: function() {
+    window.removeEventListener('resize', this.handleResize);
+  },
+
+  handleResize: function(e) {
+    this.props.windowResized(window.innerWidth);
+  },
+
 	triggerRoute(route){
 		hashHistory.push(route);
 		this.props.closeLeftDrawer();
@@ -80,6 +93,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     openLoginDialog: () => {
       dispatch(appActions.openLoginDialog());
+    },
+    windowResized: (width) => {
+      dispatch(appActions.windowResized(width));
     },
     signOut: () => {
       dispatch(userActions.signOut());
