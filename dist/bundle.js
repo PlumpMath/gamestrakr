@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "8879a99ed3c396336867"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "78c1cdc58b415cbcc06c"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -704,7 +704,7 @@
 	// Grab user from cookies if available, dispatch initial state
 	store.dispatch(_actions.userActions.userFromCookie());
 	store.dispatch(_actions.appActions.closeLeftDrawer());
-	store.dispatch(_actions.appActions.setItemsPerPage(16));
+	store.dispatch(_actions.appActions.setItemsPerPage(42));
 
 	var routes = _react2.default.createElement(
 	  _reactRouter.Route,
@@ -28077,6 +28077,10 @@
 	  return state.set('itemsPerPage', num);
 	}
 
+	function setGridCols(state, cols) {
+	  return state.set('gridCols', cols);
+	}
+
 	function app() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? (0, _immutable.Map)() : arguments[0];
 	  var action = arguments[1];
@@ -28096,6 +28100,8 @@
 	      return setGamesType(state, action.gamesType);
 	    case 'ITEMS_PER_PAGE':
 	      return setItemsPerPage(state, action.num);
+	    case 'SET_GRID_COLS':
+	      return setGridCols(state, action.cols);
 	    default:
 	      return state;
 	  }
@@ -33230,6 +33236,8 @@
 	exports.openLoginDialog = openLoginDialog;
 	exports.closeLoginDialog = closeLoginDialog;
 	exports.setItemsPerPage = setItemsPerPage;
+	exports.windowResized = windowResized;
+	exports.setGridCols = setGridCols;
 	function setState(state) {
 	  return {
 	    type: 'SET_STATE',
@@ -33265,6 +33273,28 @@
 	  return {
 	    type: 'ITEMS_PER_PAGE',
 	    num: num
+	  };
+	}
+
+	function windowResized(size) {
+	  return function (dispatch) {
+	    switch (true) {
+	      case size < 800:
+	        return dispatch(setGridCols(2));
+	      case size < 1000:
+	        return dispatch(setGridCols(3));
+	      case size < 1500:
+	        return dispatch(setGridCols(4));
+	      default:
+	        return dispatch(setGridCols(6));
+	    }
+	  };
+	}
+
+	function setGridCols(cols) {
+	  return {
+	    type: 'SET_GRID_COLS',
+	    cols: cols
 	  };
 	}
 
@@ -33321,9 +33351,10 @@
 
 	function fetchGames(state, gamesType, page) {
 	  var token = state.user.get('token');
+	  var itemsPerPage = state.app.get('itemsPerPage');
 
 	  return new Promise(function (resolve, reject) {
-	    request.get(("https://gamestrakr-server.herokuapp.com") + '/games/' + gamesType).set('X-Access-Token', token).query({ limit: 16 }).query({ page: page }).end(function (err, res) {
+	    request.get(("https://gamestrakr-server.herokuapp.com") + '/games/' + gamesType).set('X-Access-Token', token).query({ limit: itemsPerPage }).query({ page: page }).end(function (err, res) {
 	      if (err) reject(err);else return resolve(res);
 	    });
 	  });
@@ -36068,6 +36099,19 @@
 
 	  mixins: [_reactAddonsPureRenderMixin2.default],
 
+	  componentDidMount: function componentDidMount() {
+	    window.addEventListener('resize', this.handleResize);
+	    this.props.windowResized(window.innerWidth);
+	  },
+
+	  componentWillUnmount: function componentWillUnmount() {
+	    window.removeEventListener('resize', this.handleResize);
+	  },
+
+	  handleResize: function handleResize(e) {
+	    this.props.windowResized(window.innerWidth);
+	  },
+
 	  triggerRoute: function triggerRoute(route) {
 	    _reactRouter.hashHistory.push(route);
 	    this.props.closeLeftDrawer();
@@ -36149,6 +36193,9 @@
 	    },
 	    openLoginDialog: function openLoginDialog() {
 	      dispatch(_actions.appActions.openLoginDialog());
+	    },
+	    windowResized: function windowResized(width) {
+	      dispatch(_actions.appActions.windowResized(width));
 	    },
 	    signOut: function signOut() {
 	      dispatch(_actions.userActions.signOut());
@@ -56947,7 +56994,6 @@
 	  displayName: 'Grid',
 
 	  mixins: [_reactAddonsPureRenderMixin2.default],
-
 	  itemsByPage: function itemsByPage() {
 	    var _props = this.props;
 	    var items = _props.items;
@@ -56992,7 +57038,7 @@
 	        _GridList.GridList,
 	        {
 	          cellHeight: 200,
-	          cols: 4,
+	          cols: this.props.gridCols || 6,
 	          style: styles.gridList },
 	        items.map(function (item, i) {
 	          return _react2.default.createElement(_this.props.tile, { key: i, item: item });
@@ -57044,7 +57090,7 @@
 	      { className: 'grid-root', style: styles.root },
 	      _react2.default.createElement(
 	        'div',
-	        { style: styles.gridCtr },
+	        { className: 'grid-ctr', style: styles.gridCtr },
 	        grid,
 	        isFetching ? loader : ''
 	      ),
@@ -57057,7 +57103,8 @@
 	  return {
 	    page: state.gamesByType.getIn([ownProps.gamesType, 'page']),
 	    isFetching: state.gamesByType.getIn([ownProps.gamesType, 'isFetching']),
-	    itemsPerPage: state.app.get('itemsPerPage')
+	    itemsPerPage: state.app.get('itemsPerPage'),
+	    gridCols: state.app.get('gridCols')
 	  };
 	};
 
@@ -57829,7 +57876,7 @@
 
 
 	// module
-	exports.push([module.id, "/*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */\nprogress, sub, sup {\n  vertical-align: baseline; }\n\nbutton, hr, input {\n  overflow: visible; }\n\n[type=checkbox], [type=radio], legend {\n  box-sizing: border-box;\n  padding: 0; }\n\nhtml {\n  font-family: sans-serif;\n  -ms-text-size-adjust: 100%;\n  -webkit-text-size-adjust: 100%; }\n\nbody {\n  margin: 0; }\n\narticle, aside, details, figcaption, figure, footer, header, main, menu, nav, section, summary {\n  display: block; }\n\naudio, canvas, progress, video {\n  display: inline-block; }\n\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n[hidden], template {\n  display: none; }\n\na {\n  background-color: transparent;\n  -webkit-text-decoration-skip: objects; }\n\na:active, a:hover {\n  outline-width: 0; }\n\nabbr[title] {\n  border-bottom: none;\n  text-decoration: underline;\n  text-decoration: underline dotted; }\n\nb, strong {\n  font-weight: bolder; }\n\ndfn {\n  font-style: italic; }\n\nh1 {\n  font-size: 2em;\n  margin: .67em 0; }\n\nmark {\n  background-color: #ff0;\n  color: #000; }\n\nsmall {\n  font-size: 80%; }\n\nsub, sup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative; }\n\nsub {\n  bottom: -.25em; }\n\nsup {\n  top: -.5em; }\n\nimg {\n  border-style: none; }\n\nsvg:not(:root) {\n  overflow: hidden; }\n\ncode, kbd, pre, samp {\n  font-family: monospace,monospace;\n  font-size: 1em; }\n\nfigure {\n  margin: 1em 40px; }\n\nhr {\n  box-sizing: content-box;\n  height: 0; }\n\nbutton, input, select, textarea {\n  font: inherit;\n  margin: 0; }\n\noptgroup {\n  font-weight: 700; }\n\nbutton, select {\n  text-transform: none; }\n\n[type=reset], [type=submit], button, html [type=button] {\n  -webkit-appearance: button; }\n\n[type=button]::-moz-focus-inner, [type=reset]::-moz-focus-inner, [type=submit]::-moz-focus-inner, button::-moz-focus-inner {\n  border-style: none;\n  padding: 0; }\n\n[type=button]:-moz-focusring, [type=reset]:-moz-focusring, [type=submit]:-moz-focusring, button:-moz-focusring {\n  outline: ButtonText dotted 1px; }\n\nfieldset {\n  border: 1px solid silver;\n  margin: 0 2px;\n  padding: .35em .625em .75em; }\n\nlegend {\n  color: inherit;\n  display: table;\n  max-width: 100%;\n  white-space: normal; }\n\ntextarea {\n  overflow: auto; }\n\n[type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {\n  height: auto; }\n\n[type=search] {\n  -webkit-appearance: textfield;\n  outline-offset: -2px; }\n\n[type=search]::-webkit-search-cancel-button, [type=search]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n::-webkit-input-placeholder {\n  color: inherit;\n  opacity: .54; }\n\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  font: inherit; }\n\nspan[type=\"button\"] {\n  -webkit-appearance: none; }\n\n.bottom-nav {\n  width: 100%;\n  height: 150px;\n  background-color: #212121;\n  position: relative;\n  color: #fff; }\n\n.bottom-nav .next-page-ctr, .bottom-nav .prev-page-ctr {\n  position: absolute;\n  top: 50%;\n  -webkit-transform: translateY(-50%);\n  transform: translateY(-50%);\n  cursor: pointer; }\n\n.bottom-nav .next-page-ctr span, .bottom-nav .prev-page-ctr span {\n  vertical-align: middle;\n  padding: 0 10px; }\n\n.bottom-nav .next-page-ctr {\n  right: 20px; }\n\n.bottom-nav .prev-page-ctr {\n  left: 20px; }\n", ""]);
+	exports.push([module.id, "/*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */\nprogress, sub, sup {\n  vertical-align: baseline; }\n\nbutton, hr, input {\n  overflow: visible; }\n\n[type=checkbox], [type=radio], legend {\n  box-sizing: border-box;\n  padding: 0; }\n\nhtml {\n  font-family: sans-serif;\n  -ms-text-size-adjust: 100%;\n  -webkit-text-size-adjust: 100%; }\n\nbody {\n  margin: 0; }\n\narticle, aside, details, figcaption, figure, footer, header, main, menu, nav, section, summary {\n  display: block; }\n\naudio, canvas, progress, video {\n  display: inline-block; }\n\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n[hidden], template {\n  display: none; }\n\na {\n  background-color: transparent;\n  -webkit-text-decoration-skip: objects; }\n\na:active, a:hover {\n  outline-width: 0; }\n\nabbr[title] {\n  border-bottom: none;\n  text-decoration: underline;\n  text-decoration: underline dotted; }\n\nb, strong {\n  font-weight: bolder; }\n\ndfn {\n  font-style: italic; }\n\nh1 {\n  font-size: 2em;\n  margin: .67em 0; }\n\nmark {\n  background-color: #ff0;\n  color: #000; }\n\nsmall {\n  font-size: 80%; }\n\nsub, sup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative; }\n\nsub {\n  bottom: -.25em; }\n\nsup {\n  top: -.5em; }\n\nimg {\n  border-style: none; }\n\nsvg:not(:root) {\n  overflow: hidden; }\n\ncode, kbd, pre, samp {\n  font-family: monospace,monospace;\n  font-size: 1em; }\n\nfigure {\n  margin: 1em 40px; }\n\nhr {\n  box-sizing: content-box;\n  height: 0; }\n\nbutton, input, select, textarea {\n  font: inherit;\n  margin: 0; }\n\noptgroup {\n  font-weight: 700; }\n\nbutton, select {\n  text-transform: none; }\n\n[type=reset], [type=submit], button, html [type=button] {\n  -webkit-appearance: button; }\n\n[type=button]::-moz-focus-inner, [type=reset]::-moz-focus-inner, [type=submit]::-moz-focus-inner, button::-moz-focus-inner {\n  border-style: none;\n  padding: 0; }\n\n[type=button]:-moz-focusring, [type=reset]:-moz-focusring, [type=submit]:-moz-focusring, button:-moz-focusring {\n  outline: ButtonText dotted 1px; }\n\nfieldset {\n  border: 1px solid silver;\n  margin: 0 2px;\n  padding: .35em .625em .75em; }\n\nlegend {\n  color: inherit;\n  display: table;\n  max-width: 100%;\n  white-space: normal; }\n\ntextarea {\n  overflow: auto; }\n\n[type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {\n  height: auto; }\n\n[type=search] {\n  -webkit-appearance: textfield;\n  outline-offset: -2px; }\n\n[type=search]::-webkit-search-cancel-button, [type=search]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n::-webkit-input-placeholder {\n  color: inherit;\n  opacity: .54; }\n\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  font: inherit; }\n\nspan[type=\"button\"] {\n  -webkit-appearance: none; }\n\n.grid-ctr .tile-img-ctr {\n  height: auto;\n  max-width: 100%; }\n\n.grid-ctr .tile-img-ctr img {\n  height: auto;\n  max-width: 100%; }\n\n.bottom-nav {\n  width: 100%;\n  height: 150px;\n  background-color: #212121;\n  position: relative;\n  color: #fff; }\n\n.bottom-nav .next-page-ctr, .bottom-nav .prev-page-ctr {\n  position: absolute;\n  top: 50%;\n  -webkit-transform: translateY(-50%);\n  transform: translateY(-50%);\n  cursor: pointer; }\n\n.bottom-nav .next-page-ctr span, .bottom-nav .prev-page-ctr span {\n  vertical-align: middle;\n  padding: 0 10px; }\n\n.bottom-nav .next-page-ctr {\n  right: 20px; }\n\n.bottom-nav .prev-page-ctr {\n  left: 20px; }\n", ""]);
 
 	// exports
 
@@ -57984,9 +58031,13 @@
 							)
 						)
 					) },
-				_react2.default.createElement('img', {
-					src: this.state.imageUrl,
-					onError: this.onImageError })
+				_react2.default.createElement(
+					'div',
+					{ className: 'tile-img-ctr' },
+					_react2.default.createElement('img', {
+						src: this.state.imageUrl,
+						onError: this.onImageError })
+				)
 			);
 		}
 	});
