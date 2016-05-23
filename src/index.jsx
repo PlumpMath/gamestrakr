@@ -55,7 +55,7 @@ if (process.env.NODE_ENV === 'production'){
 // Grab user from cookies if available, dispatch initial state
 store.dispatch(userActions.userFromCookie());
 store.dispatch(appActions.closeLeftDrawer());
-store.dispatch(appActions.setItemsPerPage(42));
+store.dispatch(appActions.setItemsPerPage(24));
 
 const routes = <Route path="/" component={App}>
  <IndexRoute component={GamesIndex}/>
