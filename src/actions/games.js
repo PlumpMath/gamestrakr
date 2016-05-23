@@ -71,9 +71,9 @@ function shouldFetchGames(state, gamesType, page) {
 	const games = state.gamesByType.getIn([gamesType, 'items']);
 	const isFetching = state.gamesByType.getIn([gamesType, 'isFetching']);
 
-  if (isFetching) return Promise.reject();
+  if (isFetching) return Promise.reject("Shouldn't fetch games");
 	else if (!games || (games.size <= (page * itemsPerPage))) return Promise.resolve();
-  return Promise.reject();
+  return Promise.reject("Shouldn't fetch games");
 }
 
 export function fetchGamesIfNeeded(gamesType) {
