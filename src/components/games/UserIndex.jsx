@@ -7,8 +7,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import {gameActions} from '../../actions/';
-import Grid from '../all_games/Grid';
-import Tile from './Tile';
+import Grid from './Grid';
 
 const defaultGamesType = 'playing';
 const styles = {
