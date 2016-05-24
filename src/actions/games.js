@@ -68,7 +68,7 @@ export function requestSaveGame(name, imageUrl, giantBombUrl, status){
 
 const userGamesTypes= ['playing', 'planning', 'completed', 'onHold', 'dropped'];
 function shouldFetchGames(state, gamesType, page) {
-  if(userGamesTypes.includes(gamesType) && !state.user.get('token')) return Promise.reject();
+  if(userGamesTypes.includes(gamesType) && !state.user.get('token')) return Promise.reject("Shouldn't fetch games");
   const itemsPerPage = state.app.get('itemsPerPage');
 	const games = state.gamesByType.getIn([gamesType, 'items']);
 	const isFetching = state.gamesByType.getIn([gamesType, 'isFetching']);

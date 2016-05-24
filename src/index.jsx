@@ -8,21 +8,17 @@ import ReactDOM from 'react-dom';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import queryString from 'query-string';
-import {Router, Route, IndexRoute, hashHistory} from 'react-router';
+import {Router, hashHistory} from 'react-router';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import Cookies from 'js-cookie';
+import {Iterable, fromJS} from 'immutable';
 
 import reducer from './reducers';
 import {appActions, userActions} from './actions/';
 
 import css from './stylesheets/index.scss';
-
-import App from './components/App';
-import GamesIndex from './components/games/Index';
-import UserGamesIndex from './components/user_games/Index';
-
-import {Iterable, fromJS} from 'immutable';
+import routes from './routes';
 
 if (process.env.NODE_ENV === 'production'){
 	var store = createStore(
@@ -55,31 +51,8 @@ if (process.env.NODE_ENV === 'production'){
 // Grab user from cookies if available, dispatch initial state
 store.dispatch(userActions.userFromCookie());
 store.dispatch(appActions.closeLeftDrawer());
-store.dispatch(appActions.setItemsPerPage(42));
+store.dispatch(appActions.setItemsPerPage(24));
 
-const routes = <Route path="/" component={App}>
- <IndexRoute component={GamesIndex}/>
-  <Route
-    path="/my_games"
-    component={UserGamesIndex} />
-  <Route
-    path="/games"
-    component={GamesIndex} />
-  <Route
-    path="/auth_success"
-    component={GamesIndex}
-    onEnter={(nextState, replace) => {
-      const {name, token} = queryString.parse(nextState.location.search);
-      // store.disptach(uploadSavedGames());
-      store.dispatch(userActions.userFromAuth(name, token));
-    }}/>
-  <Route
-    path="/auth_failure"
-    component={GamesIndex}
-    onEnter={() => {
-      store.dispatch(userActions.authFailed());
-    }}/>
-</Route>;
 
 ReactDOM.render(
   <Provider store={store}>

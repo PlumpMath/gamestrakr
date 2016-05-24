@@ -1,14 +1,14 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {List} from  'immutable';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+
 import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
-import {connect} from 'react-redux';
-import {gameActions} from '../../actions/';
-import {List} from  'immutable';
 
 import Grid from './Grid';
-import Tile from './Tile';
+import {gameActions} from '../../actions/';
 
 const defaultGamesType = 'recent';
 const styles = {
@@ -22,7 +22,7 @@ const Index = React.createClass({
   mixins: [PureRenderMixin],
   componentDidMount: function(){
     this.props.setGamesType(defaultGamesType);
-    this.props.fetchGames(this.props.gamesType);
+    this.props.fetchGames(defaultGamesType);
   },
 
   setGamesType: function(e, k, v){
@@ -46,7 +46,8 @@ const Index = React.createClass({
     return (
       <div className="app-ctr">
         {toolbar}
-        <Grid tile={Tile} items={this.props.items} gamesType={this.props.gamesType}/>
+        <Grid {...this.props} />
+        {this.props.children}
       </div>
     );
   }

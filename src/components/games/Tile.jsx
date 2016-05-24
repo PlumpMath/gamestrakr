@@ -1,6 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import {hashHistory} from 'react-router';
+import _ from 'lodash';
+import {List} from 'immutable';
+
 import {GridTile} from 'material-ui/GridList';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
@@ -35,7 +39,8 @@ const Tile = React.createClass({
   },
 
   getGameImageUrl: function(item){
-    return item.getIn(['image', 'small_url']) || item.getIn(['image', 'medium_url']) || placeholderImageUrl;
+    return item.get('imageUrl') ||
+      item.getIn(['image', 'small_url']) || item.getIn(['image', 'medium_url']) || placeholderImageUrl;
   },
 
   onImageError: function(){
@@ -56,29 +61,29 @@ const Tile = React.createClass({
     this.props.saveGame(item.get('name'), this.state.imageUrl, item.get('api_detail_url'), status);
 	},
 
-	getUserGame: function(){
-		const {userGames, item} = this.props;
-		var game;
-		if (userGames){
-			game = userGames.find((v, k) => {
-				if(v.get('name') ==	item.get('name')) return true;
-			});
-		}
+  gameHasStatus: function(status){
+    return this.props.gamesByType.getIn([status, 'items'], List()).some((item) => {
+      return item.get('name') === this.props.item.get('name');
+    });
+  },
 
-		return game;
+	navigateToDetail(){
+    const route= `/${this.props.location.pathname.split('/')[1]}/${_.snakeCase(this.props.item.get('name'))}`;
+		hashHistory.push(route);
 	},
 
   render(){
-		const userGame = this.getUserGame();
     const {item} = this.props;
     const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped'];
 
     return (
 			<GridTile
+        className="tile-ctr"
 				title={item.get('name')}
+        onClick={this.navigateToDetail}
 				actionIcon={
 					<IconButton onTouchTap={this.onPlusTap}>
-						<FontIcon className="material-icons">{userGame ? 'check_circle' : 'add_circle'}</FontIcon>
+						<FontIcon className="material-icons">{false ? 'check_circle' : 'add_circle'}</FontIcon>
 						<Popover
 							open={this.state.popOverOpen}
 							anchorEl={this.state.popOverAnchor}
@@ -88,18 +93,16 @@ const Tile = React.createClass({
 									<MenuItem
 										key={i}
 										style={styles.menuItem}
-										disabled={userGame ? userGame.get('status') === status : false}
+										disabled={this.gameHasStatus(status)}
 										primaryText={status}
 										onTouchTap={this.onAddGame.bind(this, status)}/>
 									))}
 								</Menu>
 							</Popover>
 						</IconButton>}>
-            <div className="tile-img-ctr">
-              <img
-                src={this.state.imageUrl}
-                onError={this.onImageError}/>
-            </div>
+            <img
+              src={this.state.imageUrl}
+              onError={this.onImageError}/>
 				</GridTile>
     );
   }
@@ -107,7 +110,7 @@ const Tile = React.createClass({
 
 const mapStateToProps = (state) => {
   return {
-    userGames: state.gamesByType.getIn(['user', 'items'])
+    gamesByType: state.gamesByType
   };
 };
 
