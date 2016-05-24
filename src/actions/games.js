@@ -1,4 +1,4 @@
-const request = require('superagent-cache')();
+import { CALL_API, Schemas } from '../middleware/api'
 
 export function requestGames(gamesType){
   return {

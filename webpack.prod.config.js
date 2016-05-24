@@ -2,12 +2,12 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: [
-    './src/index.jsx'
+    './src/index.js'
   ],
   module: {
     loaders: [
       {
-        test: /\.jsx?$/,
+        test: /\.js?$/,
         exclude: /node_modules/,
         loader: 'babel'
       },
@@ -26,7 +26,7 @@ module.exports = {
     ];
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.css']
+    extensions: ['', '.js', '.css']
   },
   output: {
     path: __dirname + '/dist',
