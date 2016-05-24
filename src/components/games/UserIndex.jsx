@@ -44,7 +44,7 @@ const Index = React.createClass({
         <Tabs className="tabs-ctr app-ctr" contentContainerClassName="tabs-content-ctr app-ctr">
           {statuses.map((status) => (
             <Tab onActive={this.setGamesType} key={status} label={status}>
-              <Grid gamesType={status} items={this.props.items} location={this.props.location}/>
+              <Grid gamesType={status} items={this.props.items} baseUrl={'my_games'} />
             </Tab>
           ))}
         </Tabs>

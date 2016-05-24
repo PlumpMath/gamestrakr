@@ -46,7 +46,7 @@ const Index = React.createClass({
     return (
       <div className="app-ctr">
         {toolbar}
-        <Grid {...this.props} />
+        <Grid baseUrl={'games'} {...this.props} />
         {this.props.children}
       </div>
     );
