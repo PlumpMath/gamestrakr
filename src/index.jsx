@@ -19,8 +19,9 @@ import {appActions, userActions} from './actions/';
 import css from './stylesheets/index.scss';
 
 import App from './components/App';
-import GamesIndex from './components/games/Index';
+import AllGamesIndex from './components/all_games/Index';
 import UserGamesIndex from './components/user_games/Index';
+import GameDetailIndex from './components/game_detail/Index';
 
 import {Iterable, fromJS} from 'immutable';
 
@@ -58,27 +59,30 @@ store.dispatch(appActions.closeLeftDrawer());
 store.dispatch(appActions.setItemsPerPage(24));
 
 const routes = <Route path="/" component={App}>
- <IndexRoute component={GamesIndex}/>
-  <Route
-    path="/my_games"
-    component={UserGamesIndex} />
-  <Route
-    path="/games"
-    component={GamesIndex} />
-  <Route
-    path="/auth_success"
-    component={GamesIndex}
-    onEnter={(nextState, replace) => {
-      const {name, token} = queryString.parse(nextState.location.search);
-      // store.disptach(uploadSavedGames());
-      store.dispatch(userActions.userFromAuth(name, token));
-    }}/>
-  <Route
-    path="/auth_failure"
-    component={GamesIndex}
-    onEnter={() => {
-      store.dispatch(userActions.authFailed());
-    }}/>
+ <IndexRoute component={AllGamesIndex}/>
+
+ <Route path="my_games" component={UserGamesIndex}>
+   <Route path=":name" component={GameDetailIndex}/>
+ </Route>
+
+ <Route path="games" component={AllGamesIndex}>
+   <Route path=":name" component={GameDetailIndex}/>
+ </Route>
+
+ <Route
+   path="/auth_success"
+   component={AllGamesIndex}
+   onEnter={(nextState, replace) => {
+     const {name, token} = queryString.parse(nextState.location.search);
+       // store.disptach(uploadSavedGames());
+     store.dispatch(userActions.userFromAuth(name, token));
+   }}/>
+ <Route
+   path="/auth_failure"
+   component={AllGamesIndex}
+   onEnter={() => {
+     store.dispatch(userActions.authFailed());
+   }}/>
 </Route>;
 
 ReactDOM.render(

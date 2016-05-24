@@ -9,6 +9,8 @@ import CircularProgress from 'material-ui/CircularProgress';
 import {gameActions} from '../../actions/';
 import css from  '../../stylesheets/games_grid.scss';
 
+import Tile from './tile';
+
 const styles = {
   root: {
     display: 'flex',
@@ -77,7 +79,7 @@ const Grid = React.createClass({
           style={styles.gridList}>
 
           {items.map((item, i) => (
-            <this.props.tile key={i} item={item}/>
+            <Tile key={i} item={item}/>
           ))}
 
         </GridList>

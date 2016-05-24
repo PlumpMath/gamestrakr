@@ -1,12 +1,13 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import { hashHistory } from 'react-router';
 import {List} from 'immutable';
 import {connect} from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import {gameActions} from '../../actions/';
-import Grid from '../games/Grid';
+import Grid from '../all_games/Grid';
 import Tile from './Tile';
 
 const defaultGamesType = 'playing';
