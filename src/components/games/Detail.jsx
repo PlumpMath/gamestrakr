@@ -18,7 +18,8 @@ const styles = {
 
 const Detail = React.createClass({
   navigateBack: function(){
-		hashHistory.pop();
+    const url = this.props.location.pathname.split('/')[1];
+		hashHistory.push(url);
   },
 
   render(){
@@ -27,7 +28,6 @@ const Detail = React.createClass({
         className="games-detail-ctr"
         title="Dialog With Custom Width"
         onRequestClose={this.navigateBack}
-        modal={true}
         open={true}>
           This dialog spans the entire width of the screen.
       </Dialog>

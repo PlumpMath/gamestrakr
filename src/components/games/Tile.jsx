@@ -78,6 +78,7 @@ const Tile = React.createClass({
 
     return (
 			<GridTile
+        className="tile-ctr"
 				title={item.get('name')}
         onClick={this.triggerRoute.bind(this, route)}
 				actionIcon={
