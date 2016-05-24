@@ -22,7 +22,7 @@ const Index = React.createClass({
   mixins: [PureRenderMixin],
   componentDidMount: function(){
     this.props.setGamesType(defaultGamesType);
-    this.props.fetchGames(this.props.gamesType);
+    this.props.fetchGames(defaultGamesType);
   },
 
   setGamesType: function(e, k, v){
