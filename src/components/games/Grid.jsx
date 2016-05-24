@@ -79,7 +79,7 @@ const Grid = React.createClass({
           style={styles.gridList}>
 
           {items.map((item, i) => (
-            <Tile key={i} item={item}/>
+            <Tile location={this.props.location} key={i} item={item}/>
           ))}
 
         </GridList>

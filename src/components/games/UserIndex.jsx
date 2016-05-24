@@ -3,6 +3,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 import { hashHistory } from 'react-router';
 import {List} from 'immutable';
 import {connect} from 'react-redux';
+
 import {Tabs, Tab} from 'material-ui/Tabs';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -43,13 +44,11 @@ const Index = React.createClass({
         <Tabs className="tabs-ctr app-ctr" contentContainerClassName="tabs-content-ctr app-ctr">
           {statuses.map((status) => (
             <Tab onActive={this.setGamesType} key={status} label={status}>
-              <Grid
-                gamesType={status}
-                tile={Tile}
-                items={this.props.items} />
+              <Grid gamesType={status} items={this.props.items} location={this.props.location}/>
             </Tab>
           ))}
         </Tabs>
+        {this.props.children}
       </div>
     );
   }

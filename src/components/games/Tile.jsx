@@ -67,20 +67,20 @@ const Tile = React.createClass({
     });
   },
 
-	triggerRoute(route){
+	navigateToDetail(){
+    const route= `/${this.props.location.pathname.split('/')[1]}/${_.snakeCase(this.props.item.get('name'))}`;
 		hashHistory.push(route);
 	},
 
   render(){
     const {item} = this.props;
     const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped'];
-    const route= `/games/${_.snakeCase(item.get('name'))}`;
 
     return (
 			<GridTile
         className="tile-ctr"
 				title={item.get('name')}
-        onClick={this.triggerRoute.bind(this, route)}
+        onClick={this.navigateToDetail}
 				actionIcon={
 					<IconButton onTouchTap={this.onPlusTap}>
 						<FontIcon className="material-icons">{false ? 'check_circle' : 'add_circle'}</FontIcon>
