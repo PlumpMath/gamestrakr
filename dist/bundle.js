@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "e30804f076fdb5262f82"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "8b76c92a2d90daa27172"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -56031,6 +56031,8 @@
 	  value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _react = __webpack_require__(26);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -56104,7 +56106,7 @@
 	      'div',
 	      { className: 'app-ctr' },
 	      toolbar,
-	      _react2.default.createElement(_Grid2.default, this.props),
+	      _react2.default.createElement(_Grid2.default, _extends({ baseUrl: 'games' }, this.props)),
 	      this.props.children
 	    );
 	  }
@@ -57076,7 +57078,7 @@
 	          cols: this.props.gridCols || 6,
 	          style: styles.gridList },
 	        items.map(function (item, i) {
-	          return _react2.default.createElement(_tile2.default, { location: _this.props.location, key: i, item: item });
+	          return _react2.default.createElement(_tile2.default, { key: i, item: item, baseUrl: _this.props.baseUrl });
 	        })
 	      );
 	    }
@@ -57985,7 +57987,7 @@
 
 	  getInitialState: function getInitialState() {
 	    return {
-	      imageUrl: this.getGameImageUrl(this.props.item),
+	      imageUrl: this.getGameImageUrl(),
 	      popOverOpen: false
 	    };
 	  },
@@ -57996,17 +57998,14 @@
 	    }
 	  },
 
-	  getGameImageUrl: function getGameImageUrl(item) {
+	  getGameImageUrl: function getGameImageUrl() {
+	    var item = this.props.item;
+
 	    return item.get('imageUrl') || item.getIn(['image', 'small_url']) || item.getIn(['image', 'medium_url']) || placeholderImageUrl;
 	  },
 
 	  onImageError: function onImageError() {
 	    this.setState({ imageUrl: placeholderImageUrl });
-	  },
-
-	  onPlusTap: function onPlusTap(e) {
-	    e.preventDefault();
-	    this.setState({ popOverOpen: true, popOverAnchor: e.currentTarget });
 	  },
 
 	  onClosePopOver: function onClosePopOver() {
@@ -58027,10 +58026,19 @@
 	    });
 	  },
 
-	  navigateToDetail: function navigateToDetail() {
-	    var route = '/' + this.props.location.pathname.split('/')[1] + '/' + _lodash2.default.snakeCase(this.props.item.get('name'));
-	    _reactRouter.hashHistory.push(route);
+	  onPlusTap: function onPlusTap(e) {
+	    e.preventDefault();
+	    e.stopPropagation();
+	    this.setState({ popOverOpen: true, popOverAnchor: e.currentTarget });
 	  },
+
+	  navigateToDetail: function navigateToDetail(e) {
+	    if (e.currentTarget.className == "tile-ctr") {
+	      var route = this.props.baseUrl + '/' + _lodash2.default.snakeCase(this.props.item.get('name'));
+	      _reactRouter.hashHistory.push(route);
+	    }
+	  },
+
 	  render: function render() {
 	    var _this2 = this;
 
@@ -58043,7 +58051,7 @@
 	      {
 	        className: 'tile-ctr',
 	        title: item.get('name'),
-	        onClick: this.navigateToDetail,
+	        onTouchTap: this.navigateToDetail,
 	        actionIcon: _react2.default.createElement(
 	          _IconButton2.default,
 	          { onTouchTap: this.onPlusTap },
@@ -74476,7 +74484,7 @@
 	          return _react2.default.createElement(
 	            _Tabs.Tab,
 	            { onActive: _this.setGamesType, key: status, label: status },
-	            _react2.default.createElement(_Grid2.default, { gamesType: status, items: _this.props.items, location: _this.props.location })
+	            _react2.default.createElement(_Grid2.default, { gamesType: status, items: _this.props.items, baseUrl: 'my_games' })
 	          );
 	        })
 	      ),
@@ -75208,8 +75216,6 @@
 	var _reactAddonsPureRenderMixin2 = _interopRequireDefault(_reactAddonsPureRenderMixin);
 
 	var _reactRouter = __webpack_require__(174);
-
-	var _reactRedux = __webpack_require__(247);
 
 	var _Dialog = __webpack_require__(358);
 
