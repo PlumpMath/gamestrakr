@@ -1,7 +1,6 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import {hashHistory} from 'react-router';
-import {connect} from 'react-redux';
 
 import Dialog from 'material-ui/Dialog';
 

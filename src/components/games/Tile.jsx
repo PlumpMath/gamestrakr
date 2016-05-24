@@ -27,7 +27,7 @@ const Tile = React.createClass({
 
   getInitialState: function(){
     return {
-      imageUrl: this.getGameImageUrl(this.props.item),
+      imageUrl: this.getGameImageUrl(),
 			popOverOpen: false
     };
   },
@@ -38,7 +38,8 @@ const Tile = React.createClass({
     }
   },
 
-  getGameImageUrl: function(item){
+  getGameImageUrl: function(){
+    const {item} = this.props;
     return item.get('imageUrl') ||
       item.getIn(['image', 'small_url']) || item.getIn(['image', 'medium_url']) || placeholderImageUrl;
   },
@@ -47,17 +48,12 @@ const Tile = React.createClass({
     this.setState({imageUrl: placeholderImageUrl});
   },
 
-	onPlusTap: function(e){
-		e.preventDefault();
-    this.setState({popOverOpen: true, popOverAnchor: e.currentTarget});
-	},
-
 	onClosePopOver: function(){
 		this.setState({popOverOpen: false});
 	},
 
 	onAddGame: function(status){
-		const {item} = this.props;
+    const {item} = this.props;
     this.props.saveGame(item.get('name'), this.state.imageUrl, item.get('api_detail_url'), status);
 	},
 
@@ -67,9 +63,17 @@ const Tile = React.createClass({
     });
   },
 
-	navigateToDetail(){
-    const route= `/${this.props.location.pathname.split('/')[1]}/${_.snakeCase(this.props.item.get('name'))}`;
-		hashHistory.push(route);
+	onPlusTap: function(e){
+		e.preventDefault();
+    e.stopPropagation();
+    this.setState({popOverOpen: true, popOverAnchor: e.currentTarget});
+	},
+
+	navigateToDetail: function(e){
+    if(e.currentTarget.className == "tile-ctr"){
+      const route= `${this.props.baseUrl}/${_.snakeCase(this.props.item.get('name'))}`;
+      hashHistory.push(route);
+    }
 	},
 
   render(){
@@ -80,7 +84,7 @@ const Tile = React.createClass({
 			<GridTile
         className="tile-ctr"
 				title={item.get('name')}
-        onClick={this.navigateToDetail}
+        onTouchTap={this.navigateToDetail}
 				actionIcon={
 					<IconButton onTouchTap={this.onPlusTap}>
 						<FontIcon className="material-icons">{false ? 'check_circle' : 'add_circle'}</FontIcon>
