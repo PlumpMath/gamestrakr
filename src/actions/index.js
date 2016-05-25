@@ -29,7 +29,7 @@ export function loadGamesByType(type, nextPage) {
     const {
       nextPageUrl = `games/${type}`,
       pageCount = 0
-    } = getState().pagination.gamesByType.get('type') || {}
+    } = getState().getIn(['pagination', 'gamesByType', type]) || {}
 
     if (pageCount > 0 && !nextPage) {
       return null

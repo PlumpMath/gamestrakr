@@ -31,11 +31,6 @@ const Index = React.createClass({
     this.props.fetchGames(defaultGamesType);
   },
 
-  setGamesType: function(e, k, v){
-    this.props.setGamesType(e.props.label);
-    this.props.fetchGames(e.props.label);
-  },
-
   render() {
     const statuses = ['playing', 'planning', 'completed', 'onHold', 'dropped'];
 
@@ -55,7 +50,7 @@ const Index = React.createClass({
 });
 
 const mapStateToProps = (state) => {
-  var gamesType = state.app.get('selectedGamesType') || defaultGamesType;
+  var gamesType = state.getIn(['app', 'selectedGamesType']) || defaultGamesType;
 
 	return {
     gamesType: gamesType,

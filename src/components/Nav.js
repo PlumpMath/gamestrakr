@@ -77,9 +77,9 @@ const Nav =  React.createClass({
 
 function mapStateToProps(state){
   return {
-    leftDrawerOpen: state.app.get('leftDrawerOpen'),
-    navTitle: state.app.get(['app', 'currentPage']),
-    user: state.user
+    leftDrawerOpen: state.getIn(['app', 'leftDrawerOpen']),
+    navTitle: state.getIn(['app', 'currentPage']),
+    user: state.get('user')
   };
 }
 

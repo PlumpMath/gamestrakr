@@ -53,7 +53,7 @@ export default function paginate({ types, mapActionToKey }) {
           throw new Error('Expected key to be a string.')
         }
         return state.merge({
-          [key]: updatePagination(state[key], action)
+          [key]: updatePagination(state.get(key), action)
         })
       default:
         return state

@@ -21,7 +21,7 @@ const Login = React.createClass({
         primary={true}
         linkButton={true}
         href={`${process.env.SERVER_URL}/auth/facebook`}/>
-    ];
+    ]
 
     return (
       <Dialog
@@ -32,14 +32,14 @@ const Login = React.createClass({
         onRequestClose={this.props.closeLoginDialog}>
         <div>Sign in to persist saved games</div>
       </Dialog>
-    );
+    )
   }
-});
+})
 
 function mapStateToProps(state){
   return {
-    loginDialogOpen: state.app.get('loginDialogOpen')
-  };
+    loginDialogOpen: state.getIn(['app', 'loginDialogOpen'])
+  }
 }
 
 function mapDispatchToProps(dispatch){

@@ -30,7 +30,7 @@ const Index = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.fullName !== this.props.fullName) {
+    if (nextProps.gamesType !== this.props.gamesType) {
       loadData(nextProps)
     }
   },
@@ -38,7 +38,7 @@ const Index = React.createClass({
   render() {
     return (
       <div className="app-ctr">
-        <Grid baseUrl={'games'} {...this.props} />
+        <Grid baseUrl={'games'} items={this.props.gamesByTypes} />
         {this.props.children}
       </div>
     );
@@ -49,9 +49,9 @@ function mapStateToProps(state, ownProps) {
   // We need to lower case the login/name due to the way GitHub's API behaves.
   // Have a look at ../middleware/api.js for more details.
   const gamesType = ownProps.params.gamesType.toLowerCase()
-  const games = state.entities.get('games');
+  const games = state.getIn(['entities', 'games']);
 
-  const gamesByTypePagination = state.pagination.gamesByType.get(gamesType) || Map({ids: []})
+  const gamesByTypePagination = state.getIn(['pagination', 'gamesByType', gamesType]) || Map({ids: []})
   const gamesByTypes = gamesByTypePagination.get('ids').map(id => games[id])
 
   return {gamesType, gamesByTypes, gamesByTypePagination}

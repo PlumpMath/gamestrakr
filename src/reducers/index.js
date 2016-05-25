@@ -1,5 +1,5 @@
 import * as ActionTypes from '../actions'
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux-immutable'
 import paginate from './paginate'
 import app from './app'
 import user from './user'

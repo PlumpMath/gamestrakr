@@ -39,9 +39,12 @@ const Tile = React.createClass({
   },
 
   getGameImageUrl: function(){
-    const {item} = this.props;
-    return item.get('imageUrl') ||
-      item.getIn(['image', 'small_url']) || item.getIn(['image', 'medium_url']) || placeholderImageUrl;
+    const {item} = this.props
+    if(!item) return placeholderImageUrl
+    return item.get('imageUrl')
+      || item.getIn(['image', 'small_url'])
+      || item.getIn(['image', 'medium_url'])
+      || placeholderImageUrl
   },
 
   onImageError: function(){
@@ -79,6 +82,8 @@ const Tile = React.createClass({
   render(){
     const {item} = this.props;
     const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped'];
+
+    if (!item) return <div>Undefined item</div>
 
     return (
 			<GridTile

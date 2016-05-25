@@ -35,6 +35,7 @@ module.exports = {
     publicPath: '/gamestrakr/dist/',
     filename: 'bundle.js'
   },
+  devtool: 'source-map',
   devServer: {
     contentBase: './',
     hot: true

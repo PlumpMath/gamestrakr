@@ -99,8 +99,8 @@ const Grid = React.createClass({
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    itemsPerPage: state.app.get('itemsPerPage'),
-    gridCols: state.app.get('gridCols')
+    itemsPerPage: state.getIn(['app', 'itemsPerPage']),
+    gridCols: state.getIn(['app', 'gridCols'])
   };
 };
 
