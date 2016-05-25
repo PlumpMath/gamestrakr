@@ -52,7 +52,7 @@ function mapStateToProps(state, ownProps) {
   const games = state.getIn(['entities', 'games']);
 
   const gamesByTypePagination = state.getIn(['pagination', 'gamesByType', gamesType]) || Map({ids: []})
-  const gamesByTypes = gamesByTypePagination.get('ids').map(id => games[id])
+  const gamesByTypes = gamesByTypePagination.get('ids').map(id => games.get(id))
 
   return {gamesType, gamesByTypes, gamesByTypePagination}
 }

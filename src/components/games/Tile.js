@@ -61,9 +61,10 @@ const Tile = React.createClass({
 	},
 
   gameHasStatus: function(status){
-    return this.props.gamesByType.getIn([status, 'items'], List()).some((item) => {
-      return item.get('name') === this.props.item.get('name');
-    });
+    return false;
+    // return this.props.gamesByType.getIn([status, 'items'], List()).some((item) => {
+    //   return item.get('name') === this.props.item.get('name');
+    // });
   },
 
 	onPlusTap: function(e){
