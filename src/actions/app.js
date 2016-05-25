@@ -1,4 +1,8 @@
 export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
+export const OPEN_LEFT_DRAWER = 'OPEN_LEFT_DRAWER'
+export const CLOSE_LEFT_DRAWER = 'CLOSE_LEFT_DRAWER'
+export const ITEMS_PER_PAGE = 'ITEMS_PER_PAGE'
+export const SET_GRID_COLS = 'SET_GRID_COLS'
 
 // Resets the currently visible error message.
 export function resetErrorMessage() {
@@ -7,40 +11,21 @@ export function resetErrorMessage() {
   }
 }
 
-export function setState(state){
-  return {
-    type: 'SET_STATE',
-    state
-  }
-}
-
 export function openLeftDrawer(){
   return {
-    type: 'OPEN_LEFT_DRAWER'
+    type: OPEN_LEFT_DRAWER
   }
 }
 
 export function closeLeftDrawer(){
   return {
-    type: 'CLOSE_LEFT_DRAWER'
-  }
-}
-
-export function openLoginDialog(){
-  return {
-    type: 'OPEN_LOGIN_DIALOG'
-  }
-}
-
-export function closeLoginDialog(){
-  return {
-    type: 'CLOSE_LOGIN_DIALOG'
+    type: CLOSE_LEFT_DRAWER
   }
 }
 
 export function setItemsPerPage(num){
   return {
-    type: 'ITEMS_PER_PAGE',
+    type: ITEMS_PER_PAGE,
     num
   }
 }
@@ -62,7 +47,7 @@ export function windowResized(size){
 
 export function setGridCols(cols){
   return {
-    type: 'SET_GRID_COLS',
+    type: SET_GRID_COLS,
     cols
   }
 }
