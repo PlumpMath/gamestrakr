@@ -45,30 +45,9 @@ const styles = {
 
 const Grid = React.createClass({
   mixins: [PureRenderMixin],
-  itemsByPage: function(){
-    const {items, page, itemsPerPage} = this.props;
-    const i = (itemsPerPage * page) || 0;
-    const j = i + itemsPerPage;
-    if (items && items.size){
-      return items.slice(i, j);
-    };
-  },
-
-  nextPage: function(){
-    const {isFetching, page} = this.props;
-    if(isFetching) return;
-    this.props.nextPage(page);
-  },
-
-  prevPage: function(){
-    const {isFetching, page} = this.props;
-    if(isFetching) return;
-    this.props.prevPage(page);
-  },
 
   render(){
-    const {isFetching} = this.props;
-    const items = this.itemsByPage();
+    const {items, isFetching} = this.props;
     var grid;
 
     if (items && items.size > 0){
@@ -94,11 +73,11 @@ const Grid = React.createClass({
 
     const bottomNav= (
       <div className="bottom-nav">
-        <div onTouchTap={this.prevPage} className="prev-page-ctr">
+        <div className="prev-page-ctr">
           <FontIcon color={'#fff'} className="material-icons">arrow_back</FontIcon>
           <span>Previous Page</span>
         </div>
-        <div onTouchTap={this.nextPage} className="next-page-ctr">
+        <div className="next-page-ctr">
           <span>Next Page</span>
           <FontIcon color={'#fff'} className="material-icons">arrow_forward</FontIcon>
         </div>
@@ -120,26 +99,11 @@ const Grid = React.createClass({
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    page: state.gamesByType.getIn([ownProps.gamesType, 'page']),
-    isFetching: state.gamesByType.getIn([ownProps.gamesType, 'isFetching']),
     itemsPerPage: state.app.get('itemsPerPage'),
     gridCols: state.app.get('gridCols')
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    nextPage: (page) => {
-      var nextPage = page ? (page + 1) : 1;
-      dispatch(gameActions.requestPage(nextPage, ownProps.gamesType));
-    },
-    prevPage: (page) => {
-      var prevPage = (page && page !== 0) ? (page - 1) : 0;
-      dispatch(gameActions.requestPage(prevPage, ownProps.gamesType));
-    }
-  };
-};
-
-const GridContainer = connect(mapStateToProps, mapDispatchToProps)(Grid);
+const GridContainer = connect(mapStateToProps)(Grid);
 
 export default GridContainer;

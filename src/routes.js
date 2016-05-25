@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, IndexRoute} from 'react-router';
+import {Route, IndexRedirect} from 'react-router';
 import App from './components/App';
 import GamesIndex from './components/games/Index';
 import UserGamesIndex from './components/games/UserIndex';
@@ -8,13 +8,13 @@ import GamesDetail from './components/games/Detail';
 import {appActions, userActions} from './actions/';
 
 const routes = <Route path="/" component={App}>
- <IndexRoute component={GamesIndex}/>
+ <IndexRedirect to="/games/recent" />
 
- <Route path="my_games" component={UserGamesIndex}>
+ <Route path="/my_games/:gamesType" component={UserGamesIndex}>
    <Route path=":name" component={GamesDetail}/>
  </Route>
 
- <Route path="games" component={GamesIndex}>
+ <Route path="/games/:gamesType" component={GamesIndex}>
    <Route path=":name" component={GamesDetail}/>
  </Route>
 

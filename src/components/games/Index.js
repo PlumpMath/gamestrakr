@@ -1,51 +1,43 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import {List} from  'immutable';
-import PureRenderMixin from 'react-addons-pure-render-mixin';
+import React from 'react'
+import {connect} from 'react-redux'
+import {List, Map} from  'immutable'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 
-import MenuItem from 'material-ui/MenuItem';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import MenuItem from 'material-ui/MenuItem'
+import DropDownMenu from 'material-ui/DropDownMenu'
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar'
 
-import Grid from './Grid';
-import {gameActions} from '../../actions/';
+import Grid from './Grid'
+import { loadGamesByType } from '../../actions'
 
-const defaultGamesType = 'recent';
 const styles = {
   toolbar: {
     width: '100%',
     backgroundColor: '#212121'
   }
-};
+}
+
+function loadData(props) {
+  const { gamesType } = props
+  props.loadGamesByType(gamesType)
+}
 
 const Index = React.createClass({
   mixins: [PureRenderMixin],
-  componentDidMount: function(){
-    this.props.setGamesType(defaultGamesType);
-    this.props.fetchGames(defaultGamesType);
+
+  componentWillMount() {
+    loadData(this.props)
   },
 
-  setGamesType: function(e, k, v){
-    e.preventDefault();
-    this.props.setGamesType(v);
-    this.props.fetchGames(v);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.fullName !== this.props.fullName) {
+      loadData(nextProps)
+    }
   },
 
   render() {
-    const toolbar = (
-      <Toolbar style={styles.toolbar}>
-        <ToolbarGroup firstChild={true}>
-          <DropDownMenu onChange={this.setGamesType} value={this.props.gamesType}>
-            <MenuItem value={'recent'} primaryText='Recent Releases'/>
-            <MenuItem value={'upcoming'} primaryText='Upcoming Releases'/>
-          </DropDownMenu>
-        </ToolbarGroup>
-      </Toolbar>
-    );
-
     return (
       <div className="app-ctr">
-        {toolbar}
         <Grid baseUrl={'games'} {...this.props} />
         {this.props.children}
       </div>
@@ -53,29 +45,22 @@ const Index = React.createClass({
   }
 });
 
-const mapStateToProps = (state) => {
-  var gamesType = state.app.get('selectedGamesType') || defaultGamesType;
+function mapStateToProps(state, ownProps) {
+  // We need to lower case the login/name due to the way GitHub's API behaves.
+  // Have a look at ../middleware/api.js for more details.
+  const gamesType = ownProps.params.gamesType.toLowerCase()
+  const games = state.entities.get('games');
 
-  return {
-    gamesType: gamesType,
-    items: state.gamesByType.getIn([gamesType, 'items'])
-  };
-};
+  const gamesByTypePagination = state.pagination.gamesByType.get(gamesType) || Map({ids: []})
+  const gamesByTypes = gamesByTypePagination.get('ids').map(id => games[id])
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchGames: (gamesType) => {
-      dispatch(gameActions.fetchGamesIfNeeded(gamesType));
-    },
-    setGamesType: (gamesType) => {
-      dispatch(gameActions.setGamesType(gamesType));
-    }
-  };
-};
+  return {gamesType, gamesByTypes, gamesByTypePagination}
+}
 
-const IndexContainer = connect(mapStateToProps, mapDispatchToProps)(Index);
+export default connect(mapStateToProps, {
+  loadGamesByType
+})(Index)
 
-export default IndexContainer
 
 // Might use in future
 // sortedItems: function(){
