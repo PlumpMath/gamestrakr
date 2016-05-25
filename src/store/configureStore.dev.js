@@ -11,10 +11,10 @@ const logger= createLogger({
     let newState = {}
 
     for (var i of Object.keys(state.toJS())) {
-      if (Iterable.isIterable(state[i])) {
-        newState[i] = state[i].toJS()
+      if (Iterable.isIterable(state.get(i))) {
+        newState[i] = state.get(i).toJS()
       } else {
-        newState[i] = state[i]
+        newState[i] = state.get(i)
       }
     };
     return newState
