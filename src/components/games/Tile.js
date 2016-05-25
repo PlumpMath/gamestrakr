@@ -1,18 +1,18 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import PureRenderMixin from 'react-addons-pure-render-mixin';
-import {hashHistory} from 'react-router';
-import _ from 'lodash';
-import {List} from 'immutable';
+import React from 'react'
+import {connect} from 'react-redux'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
+import {hashHistory} from 'react-router'
+import _ from 'lodash'
+import {List} from 'immutable'
 
-import {GridTile} from 'material-ui/GridList';
-import FontIcon from 'material-ui/FontIcon';
-import IconButton from 'material-ui/IconButton';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-import Popover from 'material-ui/Popover';
+import {GridTile} from 'material-ui/GridList'
+import FontIcon from 'material-ui/FontIcon'
+import IconButton from 'material-ui/IconButton'
+import Menu from 'material-ui/Menu'
+import MenuItem from 'material-ui/MenuItem'
+import Popover from 'material-ui/Popover'
 
-import {gameActions} from '../../actions/';
+import {gameActions} from '../../actions/'
 
 const placeholderImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=38&txt=GamesTrackr&w=450&h=300&txttrack=0'
 
@@ -29,12 +29,12 @@ const Tile = React.createClass({
     return {
       imageUrl: this.getGameImageUrl(),
 			popOverOpen: false
-    };
+    }
   },
 
   componentWillReceiveProps: function(nextProps){
     if(nextProps.item){
-      this.setState({imageUrl: this.getGameImageUrl(nextProps.item)});
+      this.setState({imageUrl: this.getGameImageUrl(nextProps.item)})
     }
   },
 
@@ -48,41 +48,41 @@ const Tile = React.createClass({
   },
 
   onImageError: function(){
-    this.setState({imageUrl: placeholderImageUrl});
+    this.setState({imageUrl: placeholderImageUrl})
   },
 
 	onClosePopOver: function(){
-		this.setState({popOverOpen: false});
+		this.setState({popOverOpen: false})
 	},
 
 	onAddGame: function(status){
-    const {item} = this.props;
-    this.props.saveGame(item.get('name'), this.state.imageUrl, item.get('api_detail_url'), status);
+    const {item} = this.props
+    this.props.saveGame(item.get('name'), this.state.imageUrl, item.get('api_detail_url'), status)
 	},
 
   gameHasStatus: function(status){
-    return false;
+    return false
     // return this.props.gamesByType.getIn([status, 'items'], List()).some((item) => {
-    //   return item.get('name') === this.props.item.get('name');
-    // });
+    //   return item.get('name') === this.props.item.get('name')
+    // })
   },
 
 	onPlusTap: function(e){
-		e.preventDefault();
-    e.stopPropagation();
-    this.setState({popOverOpen: true, popOverAnchor: e.currentTarget});
+		e.preventDefault()
+    e.stopPropagation()
+    this.setState({popOverOpen: true, popOverAnchor: e.currentTarget})
 	},
 
 	navigateToDetail: function(e){
     if(e.currentTarget.className == "tile-ctr"){
-      const route= `${this.props.baseUrl}/${_.snakeCase(this.props.item.get('name'))}`;
-      hashHistory.push(route);
+      const route= `${this.props.baseUrl}/${_.snakeCase(this.props.item.get('name'))}`
+      hashHistory.push(route)
     }
 	},
 
   render(){
-    const {item} = this.props;
-    const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped'];
+    const {item} = this.props
+    const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped']
 
     if (!item) return <div>Undefined item</div>
 
@@ -114,24 +114,24 @@ const Tile = React.createClass({
               src={this.state.imageUrl}
               onError={this.onImageError}/>
 				</GridTile>
-    );
+    )
   }
-});
+})
 
 const mapStateToProps = (state) => {
   return {
     gamesByType: state.gamesByType
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
     saveGame: (name, imageUrl, giantBombUrl, status) => {
-      dispatch(gameActions.requestSaveGame(name, imageUrl, giantBombUrl, status));
+      dispatch(gameActions.requestSaveGame(name, imageUrl, giantBombUrl, status))
     }
-  };
-};
+  }
+}
 
-const TileContainer = connect(mapStateToProps, mapDispatchToProps)(Tile);
+const TileContainer = connect(mapStateToProps, mapDispatchToProps)(Tile)
 
-export default TileContainer;
+export default TileContainer

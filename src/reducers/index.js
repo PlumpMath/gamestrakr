@@ -1,4 +1,4 @@
-import * as ActionTypes from '../actions'
+import {gamesActions, appActions} from '../actions'
 import { combineReducers } from 'redux-immutable'
 import paginate from './paginate'
 import app from './app'
@@ -18,7 +18,7 @@ function entities(state = Map({games: {}}), action) {
 function errorMessage(state = null, action) {
   const { type, error } = action
 
-  if (type === ActionTypes.RESET_ERROR_MESSAGE) {
+  if (type === appActions.RESET_ERROR_MESSAGE) {
     return null
   } else if (error) {
     return action.error
@@ -32,9 +32,9 @@ const pagination = combineReducers({
   gamesByType: paginate({
     mapActionToKey: action => action.gamesType,
     types: [
-      ActionTypes.GAMES_REQUEST,
-      ActionTypes.GAMES_SUCCESS,
-      ActionTypes.GAMES_FAILURE
+      gamesActions.GAMES_REQUEST,
+      gamesActions.GAMES_SUCCESS,
+      gamesActions.GAMES_FAILURE
     ]
   })
 })

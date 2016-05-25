@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie';
 
+export const RECEIVE_USER = 'RECEIVE_USER';
 export function receiveUser(name, token){
   return {
     type: 'RECEIVE_USER',
@@ -27,15 +28,10 @@ export function userFromAuth(name, token){
   }
 }
 
+export const SIGN_OUT = 'SIGN_OUT';
 export function signOut(){
   return {
     type: 'SIGN_OUT'
-  }
-}
-
-export function authFailed(){
-  return {
-    type: 'AUTH_FAILED'
   }
 }
 

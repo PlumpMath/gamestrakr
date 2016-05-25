@@ -8,7 +8,9 @@ import DropDownMenu from 'material-ui/DropDownMenu'
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar'
 
 import Grid from './Grid'
-import { loadGamesByType } from '../../actions'
+import { gamesActions } from '../../actions'
+
+const loadGamesByType = gamesActions.loadGamesByType;
 
 const styles = {
   toolbar: {
@@ -41,15 +43,15 @@ const Index = React.createClass({
         <Grid baseUrl={'games'} items={this.props.gamesByTypes} />
         {this.props.children}
       </div>
-    );
+    )
   }
-});
+})
 
 function mapStateToProps(state, ownProps) {
   // We need to lower case the login/name due to the way GitHub's API behaves.
   // Have a look at ../middleware/api.js for more details.
   const gamesType = ownProps.params.gamesType.toLowerCase()
-  const games = state.getIn(['entities', 'games']);
+  const games = state.getIn(['entities', 'games'])
 
   const gamesByTypePagination = state.getIn(['pagination', 'gamesByType', gamesType]) || Map({ids: []})
   const gamesByTypes = gamesByTypePagination.get('ids').map(id => games.get(id))
@@ -64,14 +66,14 @@ export default connect(mapStateToProps, {
 
 // Might use in future
 // sortedItems: function(){
-//   const items = this.props.items;
+//   const items = this.props.items
 
 //   if (items){
 //     return items
 //       .sort((a, b) =>
 //         new Date(a.get('original_release_date')) < new Date(b.get('original_release_date')))
 //   } else {
-//     return List();
+//     return List()
 //   }
 // },
 //

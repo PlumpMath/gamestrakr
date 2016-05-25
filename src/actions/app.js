@@ -1,3 +1,12 @@
+export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
+
+// Resets the currently visible error message.
+export function resetErrorMessage() {
+  return {
+    type: RESET_ERROR_MESSAGE
+  }
+}
+
 export function setState(state){
   return {
     type: 'SET_STATE',
@@ -48,7 +57,7 @@ export function windowResized(size){
       default:
         return dispatch(setGridCols(6))
     }
-  };
+  }
 }
 
 export function setGridCols(cols){
