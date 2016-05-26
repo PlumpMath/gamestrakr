@@ -38,8 +38,7 @@ const Index = React.createClass({
   render() {
     return (
       <div className="app-ctr">
-        <Grid baseUrl={'games'} items={this.props.gamesByTypes} />
-        {this.props.children}
+        <Grid items={this.props.gamesByTypes} />
       </div>
     )
   }
@@ -51,6 +50,9 @@ function mapStateToProps(state, ownProps) {
   const gamesByTypePagination =
     state.getIn(['pagination', 'gamesByType', gamesType]) || Map({ids: []})
   const gamesByTypes = gamesByTypePagination.get('ids').map(id => games.get(id))
+
+  const itemsPerPage =  state.getIn(['app', 'itemsPerPage'])
+  const gridCols = state.getIn(['app', 'gridCols'])
 
   return {gamesType, gamesByTypes, gamesByTypePagination}
 }

@@ -29,36 +29,36 @@ export default class Nav extends Component {
     const accountNavElement = (
       <IconMenu iconButtonElement={
         <IconButton>
-        <FontIcon className="material-icons">account_circle</FontIcon>
+          <FontIcon className="material-icons">account_circle</FontIcon>
         </IconButton>}>
         {user.get('token') ? signOutButton : signInButton}
-        </IconMenu>
+      </IconMenu>
     )
 
     return(
       <div className="nav-ctr">
-      <AppBar
-      onLeftIconButtonTouchTap={this.props.openLeftDrawer}
-      title={navTitle || ''}
-      iconElementRight={accountNavElement}/>
+        <AppBar
+          onLeftIconButtonTouchTap={this.props.openLeftDrawer}
+          title={navTitle || ''}
+          iconElementRight={accountNavElement}/>
 
-      <Drawer open={leftDrawerOpen}>
-      <AppBar
-      title={<Link to="home" style={{textDecoration: 'none', color: '#fff'}}>GamesTrakr</Link>}
-      iconElementLeft={
-        <IconButton
-        onClick={closeLeftDrawer}>
-        <FontIcon className="material-icons">arrow_back</FontIcon>
-        </IconButton>}/>
+        <Drawer open={leftDrawerOpen}>
+          <AppBar
+            title={<Link to="home" style={{textDecoration: 'none', color: '#fff'}}>GamesTrakr</Link>}
+            iconElementLeft={
+              <IconButton
+                onClick={closeLeftDrawer}>
+                <FontIcon className="material-icons">arrow_back</FontIcon>
+            </IconButton>}/>
 
-        {navLinks.map((item) => {
-          return (
-            <MenuItem key={item.name} onTouchTap={() => triggerRoute(item.route)}>
-            {item.name}
-            </MenuItem>
-          )
-        })}
-        </Drawer>
+            {navLinks.map((item) => {
+              return (
+                <MenuItem key={item.name} onTouchTap={() => triggerRoute(item.route)}>
+                  {item.name}
+                </MenuItem>
+                )
+            })}
+          </Drawer>
         </div>
     )
   }
