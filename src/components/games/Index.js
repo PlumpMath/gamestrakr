@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {List, Map} from  'immutable'
+import {Map} from  'immutable'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import MenuItem from 'material-ui/MenuItem'
@@ -9,8 +9,6 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 
 import Grid from './Grid'
 import { gamesActions } from '../../actions'
-
-const loadGamesByType = gamesActions.loadGamesByType;
 
 const styles = {
   toolbar: {
@@ -50,15 +48,15 @@ const Index = React.createClass({
 function mapStateToProps(state, ownProps) {
   const gamesType = ownProps.params.gamesType.toLowerCase()
   const games = state.getIn(['entities', 'games'])
-
-  const gamesByTypePagination = state.getIn(['pagination', 'gamesByType', gamesType]) || Map({ids: []})
+  const gamesByTypePagination =
+    state.getIn(['pagination', 'gamesByType', gamesType]) || Map({ids: []})
   const gamesByTypes = gamesByTypePagination.get('ids').map(id => games.get(id))
 
   return {gamesType, gamesByTypes, gamesByTypePagination}
 }
 
 export default connect(mapStateToProps, {
-  loadGamesByType
+  loadGamesByType: gamesActions.loadGamesByType
 })(Index)
 
 

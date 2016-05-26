@@ -21,10 +21,10 @@ const API_ROOT = process.env.SERVER_URL
 
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
-function callApi(endpoint, schema) {
+function callApi(endpoint, schema, token) {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
 
-  return fetch(fullUrl)
+  return fetch(fullUrl, {headers: {'X-Access-Token': token}})
     .then(response =>
       response.json().then(json => ({ json, response }))
     ).then(({ json, response }) => {
@@ -89,10 +89,11 @@ export default store => next => action => {
     return finalAction
   }
 
+  const token = store.getState().getIn(['user', 'token'])
   const [ requestType, successType, failureType ] = types
   next(actionWith({ type: requestType }))
 
-  return callApi(endpoint, schema).then(
+  return callApi(endpoint, schema, token).then(
     response => next(actionWith({
       response,
       type: successType

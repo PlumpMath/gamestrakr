@@ -1,16 +1,12 @@
 import React from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-import { hashHistory } from 'react-router';
-import {List} from 'immutable';
+import {Map} from  'immutable'
 import {connect} from 'react-redux';
-
 import {Tabs, Tab} from 'material-ui/Tabs';
-import RaisedButton from 'material-ui/RaisedButton';
 
-import {gameActions} from '../../actions/';
 import Grid from './Grid';
+import { gamesActions } from '../../actions'
 
-const defaultGamesType = 'playing';
 const styles = {
   root: {
     display: 'flex',
@@ -24,11 +20,22 @@ const styles = {
   }
 };
 
+function loadData(props) {
+  const { gamesType } = props
+  props.loadGamesByType(gamesType)
+}
+
 const Index = React.createClass({
   mixins: [PureRenderMixin],
-  componentDidMount: function(){
-    this.props.setGamesType(defaultGamesType);
-    this.props.fetchGames(defaultGamesType);
+
+  componentWillMount() {
+    loadData(this.props)
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.gamesType !== this.props.gamesType) {
+      loadData(nextProps)
+    }
   },
 
   render() {
@@ -49,26 +56,17 @@ const Index = React.createClass({
   }
 });
 
-const mapStateToProps = (state) => {
-  var gamesType = state.getIn(['app', 'selectedGamesType']) || defaultGamesType;
+function mapStateToProps(state, ownProps) {
+  const gamesType = ownProps.params.gamesType.toLowerCase()
+  const games = state.getIn(['entities', 'games'])
+  const gamesByTypePagination =
+    state.getIn(['pagination', 'gamesByType', gamesType]) || Map({ids: []})
+  const gamesByTypes = gamesByTypePagination.get('ids').map(id => games.get(id))
 
-	return {
-    gamesType: gamesType,
-    items: state.gamesByType.getIn([gamesType, 'items'])
-	};
-};
+  return {gamesType, gamesByTypes, gamesByTypePagination}
+}
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		fetchGames: (gamesType) => {
-			dispatch(gameActions.fetchGamesIfNeeded(gamesType));
-		},
-    setGamesType: (gamesType) => {
-      dispatch(gameActions.setGamesType(gamesType));
-    }
-	};
-};
 
-const IndexContainer = connect(mapStateToProps, mapDispatchToProps)(Index);
-
-export default IndexContainer;
+export default connect(mapStateToProps, {
+  loadGamesByType: gamesActions.loadGamesByType
+})(Index)
