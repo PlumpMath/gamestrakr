@@ -1,6 +1,6 @@
 import React from 'react'
 import {Route, IndexRedirect, Redirect} from 'react-router'
-import App from './components/App'
+import App from './containers/App'
 import GamesIndex from './components/games/Index'
 import UserGamesIndex from './components/games/UserIndex'
 import GamesDetail from './components/games/Detail'

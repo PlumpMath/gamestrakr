@@ -7,8 +7,6 @@ import IconButton from 'material-ui/IconButton';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import {gameActions} from '../../actions/';
-import css from  '../../stylesheets/games.scss';
-
 import Tile from './tile';
 
 const styles = {

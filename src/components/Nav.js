@@ -12,7 +12,6 @@ import MenuItem from 'material-ui/MenuItem';
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 
 import {appActions, userActions} from '../actions/';
-import css from '../stylesheets/nav.scss';
 
 // Home - where users can view currently playing, their own collection, recently viewed etc
 // Games - where users can search for and sort through upcoming and recently released games
@@ -100,7 +99,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 }
 
-export const NavContainer = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Nav);
