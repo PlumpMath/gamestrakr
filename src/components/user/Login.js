@@ -10,12 +10,12 @@ const Login = React.createClass({
         label={"Sign in With Twitter"}
         primary={true}
         linkButton={true}
-        href={`${process.env.SERVER_URL}/auth/twitter`}/>,
+        href={`${process.env.SERVER_URL}auth/twitter`}/>,
       <FlatButton
         label={"Sign in With Facebook"}
         primary={true}
         linkButton={true}
-        href={`${process.env.SERVER_URL}/auth/facebook`}/>
+        href={`${process.env.SERVER_URL}auth/facebook`}/>
     ]
 
     return (
