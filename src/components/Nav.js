@@ -44,7 +44,7 @@ export default class Nav extends Component {
 
         <Drawer open={leftDrawerOpen}>
           <AppBar
-            title={<Link to="home" style={{textDecoration: 'none', color: '#fff'}}>GamesTrakr</Link>}
+            title={<Link to="/" style={{textDecoration: 'none', color: '#000'}}>GamesTrakr</Link>}
             iconElementLeft={
               <IconButton
                 onClick={closeLeftDrawer}>

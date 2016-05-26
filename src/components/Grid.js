@@ -4,7 +4,7 @@ import {GridList} from 'material-ui/GridList'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
 import CircularProgress from 'material-ui/CircularProgress'
-import Tile from './tile'
+import Tile from './Tile'
 
 const styles = {
   root: {

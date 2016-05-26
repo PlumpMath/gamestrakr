@@ -3,9 +3,9 @@ import {Route, IndexRedirect, Redirect} from 'react-router'
 import App from './containers/App'
 import User from './containers/User'
 import Games from './containers/Games'
-import GamesDetail from './components/games/Detail'
-import Login from './components/user/Login'
-import AuthSucess from './components/user/AuthSucess'
+import GamesDetail from './components/Detail'
+import Login from './components/Login'
+import AuthSucess from './components/AuthSucess'
 
 import {appActions, userActions} from './actions/'
 

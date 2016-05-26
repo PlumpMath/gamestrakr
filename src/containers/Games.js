@@ -7,7 +7,7 @@ import MenuItem from 'material-ui/MenuItem'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar'
 
-import Grid from '../components/games/Grid'
+import Grid from '../components/Grid'
 import { gamesActions } from '../actions'
 
 const styles = {

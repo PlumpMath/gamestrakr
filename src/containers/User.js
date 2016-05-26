@@ -4,7 +4,7 @@ import {Map} from  'immutable'
 import {connect} from 'react-redux'
 import {Tabs, Tab} from 'material-ui/Tabs'
 
-import Grid from '../components/games/Grid'
+import Grid from '../components/Grid'
 import { gamesActions } from '../actions'
 
 const styles = {

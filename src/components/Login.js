@@ -1,9 +1,9 @@
-import React from 'react'
+import React, {Component} from 'react'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
-import {appActions} from '../../actions/'
+import {appActions} from '../actions/'
 
-const Login = React.createClass({
+export default class Login extends Component{
   render(){
     const actions = [
       <FlatButton
@@ -11,11 +11,11 @@ const Login = React.createClass({
         primary={true}
         linkButton={true}
         href={`${process.env.SERVER_URL}auth/twitter`}/>,
-      <FlatButton
-        label={"Sign in With Facebook"}
-        primary={true}
-        linkButton={true}
-        href={`${process.env.SERVER_URL}auth/facebook`}/>
+          <FlatButton
+            label={"Sign in With Facebook"}
+            primary={true}
+            linkButton={true}
+            href={`${process.env.SERVER_URL}auth/facebook`}/>
     ]
 
     return (
@@ -29,6 +29,4 @@ const Login = React.createClass({
       </Dialog>
     )
   }
-})
-
-export default Login
+}

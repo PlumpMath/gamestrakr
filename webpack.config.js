@@ -4,6 +4,7 @@ module.exports = {
   entry: [
     'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
+    'babel-polyfill',
     './src/index.js'
   ],
   module: {
@@ -11,7 +12,7 @@ module.exports = {
       {
         test: /\.js?$/,
         exclude: /node_modules/,
-        loader: 'react-hot!babel'
+        loader: 'react-hot!babel',
       },
       {
         test: /\.scss$/,
@@ -42,7 +43,7 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.DefinePlugin({'process.env.SERVER_URL': JSON.stringify('http://127.0.0.1:3000/')})
+    new webpack.DefinePlugin({'process.env.SERVER_URL': JSON.stringify('http://127.0.0.1:3000/')}),
     new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify('development')})
   ]
 }
