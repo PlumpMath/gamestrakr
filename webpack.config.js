@@ -1,4 +1,5 @@
-var webpack = require('webpack');
+var webpack = require('webpack')
+var path = require('path')
 
 module.exports = {
   entry: [
@@ -12,7 +13,8 @@ module.exports = {
       {
         test: /\.js?$/,
         exclude: /node_modules/,
-        loader: 'react-hot!babel',
+        include: path.join(__dirname, 'src'),
+        loader: 'react-hot!babel'
       },
       {
         test: /\.scss$/,
@@ -26,7 +28,7 @@ module.exports = {
       require('autoprefixer'),
       require('precss'),
       require('postcss-normalize')
-    ];
+    ]
   },
   resolve: {
     extensions: ['', '.js', '.css']

@@ -23,7 +23,7 @@ export default class Nav extends Component {
 
   render() {
     const {leftDrawerOpen, closeLeftDrawer, openLeftDrawer, navTitle, user, triggerRoute, signOut} = this.props
-    const signInButton = <MenuItem primaryText='Sign In' onTouchTap={() => triggerRoute('/sign_in')}/>
+    const signInButton = <MenuItem primaryText='Sign In' onTouchTap={() => triggerRoute('/auth/login')}/>
     const signOutButton= <MenuItem primaryText='Sign Out' onTouchTap={signOut}/>
 
     const accountNavElement = (
