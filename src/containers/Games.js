@@ -60,7 +60,17 @@ function mapStateToProps(state, ownProps) {
   return {gamesType, gamesByTypes, gamesByTypePagination}
 }
 
-export default connect(mapStateToProps, {
-  loadGamesByType: gamesActions.loadGamesByType
-})(Games)
+function mapDispatchToProps(dispatch, ownProps){
+  const loadGamesByType = gamesActions.loadGamesByType
+  const saveGame = (game, status) => {
+    dispatch(gameActions.saveGame(game, status))
+  }
+
+  return {loadGamesByType, saveGame}
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Games)
 

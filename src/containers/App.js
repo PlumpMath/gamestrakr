@@ -22,7 +22,7 @@ class App extends Component {
     this.props.windowResized(window.innerWidth)
   }
 
-  triggerRoute = (route) => {
+  navigate = (route) => {
     hashHistory.push(route)
     this.props.closeLeftDrawer()
   }
@@ -31,7 +31,7 @@ class App extends Component {
     return (
       <MuiThemeProvider muiTheme={darkMuiTheme}>
         <div className="app-ctr">
-          <Nav {...this.props} triggerRoute={this.triggerRoute} />
+          <Nav {...this.props} navigate={this.navigate} />
           {this.props.children}
         </div>
       </MuiThemeProvider>

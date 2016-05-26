@@ -45,21 +45,14 @@ export default class Grid extends Component{
   }
 
   render(){
-    const {items, isFetching, gridCols} = this.props
+    const {items, isFetching, gridCols, saveGame} = this.props
     var grid
 
     if (items && items.size > 0){
       grid = (
-        <GridList
-          cellHeight={200}
-          cols={gridCols || 6}
-          style={styles.gridList}>
-
-          {items.map((item, i) => (
-            <Tile key={i} item={item} />
-            ))}
-
-          </GridList>
+        <GridList cellHeight={200} cols={gridCols || 6} style={styles.gridList}>
+          {items.map((item, i) => <Tile key={i} item={item} saveGame={saveGame} />)}
+        </GridList>
       )
     }
 

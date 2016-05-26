@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import {hashHistory} from 'react-router'
 import _ from 'lodash'
 import {List} from 'immutable'
 
@@ -11,8 +10,6 @@ import IconButton from 'material-ui/IconButton'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 import Popover from 'material-ui/Popover'
-
-import {gameActions} from '../actions/'
 
 const placeholderImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=38&txt=GamesTrackr&w=450&h=300&txttrack=0'
 
@@ -74,17 +71,15 @@ export default class Tile extends Component{
   }
 
   navigateToDetail = (e) => {
+    const {item, navigate} = this.props
     if(e.currentTarget.className == "tile-ctr"){
-      const route= `${this.props.baseUrl}/${_.snakeCase(this.props.item.get('name'))}`
-      hashHistory.push(route)
+      navigate(item.get('name'))
     }
   }
 
   render(){
-    const {item} = this.props
+    const {item, saveGame} = this.props
     const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped']
-
-    if (!item) return <div>Undefined item</div>
 
     return (
       <GridTile
@@ -105,7 +100,7 @@ export default class Tile extends Component{
                     style={styles.menuItem}
                     disabled={this.gameHasStatus(status)}
                     primaryText={status}
-                    onTouchTap={this.onAddGame.bind(this, status)}/>
+                    onTouchTap={() => saveGame(item, status)}/>
                   ))}
                 </Menu>
               </Popover>
@@ -117,21 +112,3 @@ export default class Tile extends Component{
     )
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    gamesByType: state.gamesByType
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    saveGame: (name, imageUrl, giantBombUrl, status) => {
-      dispatch(gameActions.requestSaveGame(name, imageUrl, giantBombUrl, status))
-    }
-  }
-}
-
-const TileContainer = connect(mapStateToProps, mapDispatchToProps)(Tile)
-
-export default TileContainer

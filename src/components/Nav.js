@@ -22,8 +22,8 @@ export default class Nav extends Component {
   }
 
   render() {
-    const {leftDrawerOpen, closeLeftDrawer, openLeftDrawer, navTitle, user, triggerRoute, signOut} = this.props
-    const signInButton = <MenuItem primaryText='Sign In' onTouchTap={() => triggerRoute('/auth/login')}/>
+    const {leftDrawerOpen, closeLeftDrawer, openLeftDrawer, navTitle, user, navigate, signOut} = this.props
+    const signInButton = <MenuItem primaryText='Sign In' onTouchTap={() => navigate('/auth/login')}/>
     const signOutButton= <MenuItem primaryText='Sign Out' onTouchTap={signOut}/>
 
     const accountNavElement = (
@@ -53,7 +53,7 @@ export default class Nav extends Component {
 
             {navLinks.map((item) => {
               return (
-                <MenuItem key={item.name} onTouchTap={() => triggerRoute(item.route)}>
+                <MenuItem key={item.name} onTouchTap={() => navigate(item.route)}>
                   {item.name}
                 </MenuItem>
                 )
