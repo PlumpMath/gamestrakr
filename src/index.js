@@ -5,6 +5,8 @@ import {appActions, userActions} from './actions/'
 import Root from './containers/Root'
 import configureStore from './store/configureStore'
 import css from './stylesheets/index.scss'
+import injectTapEventPlugin from 'react-tap-event-plugin'
+injectTapEventPlugin()
 
 const store = configureStore()
 

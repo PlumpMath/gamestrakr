@@ -4,7 +4,7 @@ import createLogger from 'redux-logger'
 import api from '../middleware/api'
 import rootReducer from '../reducers'
 import {Iterable} from 'immutable'
-// import DevTools from '../containers/DevTools'
+import DevTools from '../containers/DevTools'
 
 const logger= createLogger({
   stateTransformer: (state) => {
@@ -21,21 +21,19 @@ const logger= createLogger({
   }
 })
 
+const enhancer = compose(
+  applyMiddleware(thunk, api, logger),
+  DevTools.instrument()
+);
+
 export default function configureStore(initialState) {
-  const store = createStore(
-    rootReducer,
-    initialState,
-    applyMiddleware(thunk, api, logger)
-  )
+  const store = createStore(rootReducer, initialState, enhancer);
 
   if (module.hot) {
-    // Enable Webpack hot module replacement for reducers
-    module.hot.accept('../reducers', () => {
-      const nextRootReducer = require('../reducers').default
-      store.replaceReducer(nextRootReducer)
-    })
+    module.hot.accept('../reducers', () =>
+      store.replaceReducer(require('../reducers')/*.default if you use Babel 6+ */)
+    );
   }
 
-  return store
+  return store;
 }
-
