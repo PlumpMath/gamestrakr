@@ -18,11 +18,11 @@ class App extends Component {
     window.removeEventListener('resize', this.handleResize)
   }
 
-  handleResize(e) {
+  handleResize = (e) => {
     this.props.windowResized(window.innerWidth)
   }
 
-  triggerRoute(route) {
+  triggerRoute = (route) => {
     hashHistory.push(route)
     this.props.closeLeftDrawer()
   }

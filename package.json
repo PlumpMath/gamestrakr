@@ -17,7 +17,9 @@
       "es2015",
       "react"
     ],
-    "plugins": ["transform-class-properties"]
+    "plugins": [
+      "transform-class-properties"
+    ]
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
@@ -58,7 +60,7 @@
     "react-addons-pure-render-mixin": "^15.0.2",
     "react-dom": "^15.0.2",
     "react-redux": "^4.4.5",
-    "react-router": "^2.4.0",
+    "react-router": "^2.4.1",
     "react-tap-event-plugin": "^1.0.0",
     "redux": "^3.5.2",
     "redux-immutable": "^3.0.6",
