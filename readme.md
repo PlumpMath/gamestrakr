@@ -5,58 +5,28 @@ webpack-dev-server --inline
 
 ### Redux state map
 ```javascript
-state = {
- app: {
-	currentPage: string,
-	leftDrawerOpen: bool,
-	selectedGamesType: string
- },
- user: {
-   token: String,
-   name: String,
- },
- gamesByType: {
-	upcoming: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
-	recent: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
-	searchedFor: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
-	playing: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
-	planning: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
-	completed: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
-	onHold: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
-	dropped: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
- }
+app: {
+  currentPage: String,
+  leftDrawerOpen: Boolean,
+  selectedGamesType: String
+},
+user: {
+  token: String,
+  name: String,
+},
+entities: {
+  games: Array
+},
+errorMessage: String,
+paginate:{
+  gamesByType: {
+    type: {
+      isFetching: Boolean
+      nexPageUrl: String,
+      pageCount: Number,
+      ids: Array
+    }
+  }
 }
 ```
 
