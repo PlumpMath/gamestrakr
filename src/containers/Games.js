@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {Map} from  'immutable'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
@@ -7,8 +7,8 @@ import MenuItem from 'material-ui/MenuItem'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar'
 
-import Grid from './Grid'
-import { gamesActions } from '../../actions'
+import Grid from '../components/games/Grid'
+import { gamesActions } from '../actions'
 
 const styles = {
   toolbar: {
@@ -22,18 +22,21 @@ function loadData(props) {
   props.loadGamesByType(gamesType)
 }
 
-const Index = React.createClass({
-  mixins: [PureRenderMixin],
+class Games extends Component{
+  constructor(props) {
+    super(props)
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+  }
 
   componentWillMount() {
     loadData(this.props)
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.gamesType !== this.props.gamesType) {
       loadData(nextProps)
     }
-  },
+  }
 
   render() {
     return (
@@ -42,7 +45,7 @@ const Index = React.createClass({
       </div>
     )
   }
-})
+}
 
 function mapStateToProps(state, ownProps) {
   const gamesType = ownProps.params.gamesType.toLowerCase()
@@ -59,20 +62,5 @@ function mapStateToProps(state, ownProps) {
 
 export default connect(mapStateToProps, {
   loadGamesByType: gamesActions.loadGamesByType
-})(Index)
-
-
-// Might use in future
-// sortedItems: function(){
-//   const items = this.props.items
-
-//   if (items){
-//     return items
-//       .sort((a, b) =>
-//         new Date(a.get('original_release_date')) < new Date(b.get('original_release_date')))
-//   } else {
-//     return List()
-//   }
-// },
-//
+})(Games)
 

@@ -48,7 +48,7 @@ class Index extends Component{
 
   render() {
     const statuses = ['playing', 'planning', 'completed', 'onHold', 'dropped']
-    const {children} = this.props;
+    const {children} = this.props
 
     return (
       <div className="app-ctr">
@@ -81,3 +81,4 @@ function mapStateToProps(state, ownProps) {
 export default connect(mapStateToProps, {
   loadGamesByType: gamesActions.loadGamesByType
 })(Index)
+
