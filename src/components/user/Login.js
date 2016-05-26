@@ -1,14 +1,9 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import PureRenderMixin from 'react-addons-pure-render-mixin';
-import {appActions} from '../../actions/';
+import React from 'react'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import {appActions} from '../../actions/'
 
 const Login = React.createClass({
-  mixins: [PureRenderMixin],
-
   render(){
     const actions = [
       <FlatButton
@@ -28,32 +23,12 @@ const Login = React.createClass({
         title="Log In"
         actions={actions}
         modal={false}
-        open={this.props.loginDialogOpen || false}
-        onRequestClose={this.props.closeLoginDialog}>
+        open={true}
+        onRequestClose={this.props.history.goBack}>
         <div>Sign in to persist saved games</div>
       </Dialog>
     )
   }
 })
 
-function mapStateToProps(state){
-  return {
-    loginDialogOpen: state.getIn(['app', 'loginDialogOpen'])
-  }
-}
-
-function mapDispatchToProps(dispatch){
-  return {
-    openLoginDialog: () => {
-      dispatch(appActions.openLoginDialog());
-    },
-    closeLoginDialog: () => {
-      dispatch(appActions.closeLoginDialog());
-    }
-  };
-}
-
-export const LoginContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login);
+export default Login

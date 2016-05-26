@@ -22,15 +22,6 @@ const Detail = React.createClass({
 		hashHistory.push(url);
   },
 
-  // componentDidMount: function(){
-  //   const game = this.props.location.pathname.split('/')[2];
-  //   this.fetchGameInfo();
-  // },
-
-  // fetchGameInfo: function(){
-
-  // },
-
   render(){
     return (
       <Dialog

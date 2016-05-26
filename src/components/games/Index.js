@@ -48,8 +48,6 @@ const Index = React.createClass({
 })
 
 function mapStateToProps(state, ownProps) {
-  // We need to lower case the login/name due to the way GitHub's API behaves.
-  // Have a look at ../middleware/api.js for more details.
   const gamesType = ownProps.params.gamesType.toLowerCase()
   const games = state.getIn(['entities', 'games'])
 

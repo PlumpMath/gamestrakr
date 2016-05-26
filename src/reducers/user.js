@@ -12,7 +12,7 @@ function userFromCookie(state){
 
 function signOut(state){
   Cookies.remove('user')
-  return state.set({})
+  return state.delete('name').delete('token')
 }
 
 export default function(state = Map(), action) {

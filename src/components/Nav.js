@@ -43,7 +43,7 @@ const Nav =  React.createClass({
 
 	render() {
     const {leftDrawerOpen, navTitle, user} = this.props;
-    const signUpButton = (<MenuItem primaryText='Sign In' onTouchTap={this.props.openLoginDialog}/>);
+    const signInButton = (<MenuItem primaryText='Sign In' onTouchTap={this.triggerRoute.bind(this, '/sign_in')}/>);
     const signOutButton= (<MenuItem primaryText='Sign Out' onTouchTap={this.props.signOut}/>);
 
     const accountNavElement = (
@@ -51,7 +51,7 @@ const Nav =  React.createClass({
         <IconButton>
           <FontIcon className="material-icons">account_circle</FontIcon>
         </IconButton>}>
-        {user.get('token') ? signOutButton : signUpButton}
+        {user.get('token') ? signOutButton : signInButton}
       </IconMenu>
     );
 
@@ -90,9 +90,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     closeLeftDrawer: () => {
       dispatch(appActions.closeLeftDrawer());
-    },
-    openLoginDialog: () => {
-      dispatch(appActions.openLoginDialog());
     },
     windowResized: (width) => {
       dispatch(appActions.windowResized(width));

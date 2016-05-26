@@ -7,7 +7,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Router, hashHistory} from 'react-router';
 import {Provider} from 'react-redux';
-import Cookies from 'js-cookie';
 import {appActions, userActions} from './actions/';
 
 import configureStore from './store/configureStore'

@@ -4,6 +4,7 @@ import App from './components/App'
 import GamesIndex from './components/games/Index'
 import UserGamesIndex from './components/games/UserIndex'
 import GamesDetail from './components/games/Detail'
+import Login from './components/user/Login'
 
 import {appActions, userActions} from './actions/'
 
@@ -18,11 +19,13 @@ const routes = <Route path="/" component={App}>
    <Route path=":name" component={GamesDetail}/>
  </Route>
 
+ <Route path="/sign_in" component={Login}/>
+
  <Route
    path="/auth_success"
    component={GamesIndex}
    onEnter={(nextState, replace) => {
-     //TODO: dont user queryString
+     //TODO: dont use queryString
      const {name, token} = queryString.parse(nextState.location.search)
      store.dispatch(userActions.userFromAuth(name, token))
    }}/>
