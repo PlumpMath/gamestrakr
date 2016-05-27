@@ -63,7 +63,7 @@ export function saveGameByType(game, gamesType) {
     if (!['name', 'image', 'apiDetailUrl'].every((k) => game.has(k))){
       return null
     }
-    const postUrl = `games/${gamesType}`
+    const postUrl = `/games/${gamesType}`
 
     return dispatch(postGame(game, gamesType, postUrl))
   }
