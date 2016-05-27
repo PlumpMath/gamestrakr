@@ -25,7 +25,7 @@ function loadData(props) {
   props.loadGamesByType(gamesType)
 }
 
-class Index extends Component{
+class User extends Component{
   constructor(props) {
     super(props)
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
@@ -42,20 +42,23 @@ class Index extends Component{
   }
 
   setGamesType(type) {
-    hashHistory.push(route)
-    this.props.closeLeftDrawer()
+    this.context.router.push(`user/${type}`)
   }
 
   render() {
-    const statuses = ['playing', 'planning', 'completed', 'onHold', 'dropped']
-    const {children} = this.props
+    const types = ['playing', 'planning', 'completed', 'onHold', 'dropped']
+    const {children, gamesType, gamesByTypes} = this.props
 
     return (
       <div className="app-ctr">
-        <Tabs className="tabs-ctr app-ctr" contentContainerClassName="tabs-content-ctr app-ctr">
-          {statuses.map((status) => (
-            <Tab onActive={() => this.setGamesType(status)} key={status} label={status}>
-              <Grid gamesType={status} items={this.props.items} />
+        <Tabs
+          onChange={(v) => this.setGamesType(v)}
+          value={gamesType}
+          className="tabs-ctr app-ctr"
+          contentContainerClassName="tabs-content-ctr app-ctr">
+          {types.map((type) => (
+            <Tab key={type} value={type} label={type}>
+              {React.cloneElement(children, {items: gamesByTypes})}
             </Tab>
             ))}
           </Tabs>
@@ -64,8 +67,12 @@ class Index extends Component{
   }
 }
 
+User.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};
+
 function mapStateToProps(state, ownProps) {
-  const gamesType = ownProps.params.gamesType.toLowerCase()
+  const gamesType = ownProps.params.gamesType
   const games = state.getIn(['entities', 'games'])
   const gamesByTypePagination =
     state.getIn(['pagination', 'gamesByType', gamesType]) || Map({ids: []})
@@ -80,5 +87,5 @@ function mapStateToProps(state, ownProps) {
 
 export default connect(mapStateToProps, {
   loadGamesByType: gamesActions.loadGamesByType
-})(Index)
+})(User)
 

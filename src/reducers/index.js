@@ -8,7 +8,7 @@ import {Map, List, fromJS} from 'immutable'
 // Updates an entity cache in response to any action with response.entities.
 function entities(state = Map({games: {}}), action) {
   if (action.response && action.response.entities) {
-    return state.merge(action.response.entities)
+    return state.mergeDeep(action.response.entities)
   }
 
   return state

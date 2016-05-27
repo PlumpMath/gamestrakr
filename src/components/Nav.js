@@ -13,7 +13,7 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 // Games - where users can search for and sort through upcoming and recently released games
 // Platforms - where users can look through platforms
 
-const navLinks =  [{name: 'All Games', route: 'games', icon: 'videogame_asset'}, {name: 'My Games', route: 'my_games', icon: 'videogame_asset'}]
+const navLinks =  [{name: 'All Games', route: 'games', icon: 'videogame_asset'}, {name: 'My Games', route: 'user', icon: 'videogame_asset'}]
 
 export default class Nav extends Component {
   constructor(props) {

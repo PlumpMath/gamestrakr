@@ -38,10 +38,7 @@ export default class Tile extends Component{
   getGameImageUrl = () => {
     const {item} = this.props
     if(!item) return placeholderImageUrl
-    return item.get('imageUrl')
-      || item.getIn(['image', 'small_url'])
-      || item.getIn(['image', 'medium_url'])
-      || placeholderImageUrl
+    return item.getIn(['image', 'smallUrl']) || item.getIn(['image', 'mediumUrl']) || placeholderImageUrl
   }
 
   onImageError = () => {
@@ -52,12 +49,12 @@ export default class Tile extends Component{
     this.setState({popOverOpen: false})
   }
 
-  onAddGame = (status) => {
+  onAddGame = (type) => {
     const {item} = this.props
-    this.props.saveGame(item.get('name'), this.state.imageUrl, item.get('api_detail_url'), status)
+    this.props.saveGame(item, type)
   }
 
-  gameHasStatus = (status) => {
+  gameHasType = (status) => {
     return false
     // return this.props.gamesByType.getIn([status, 'items'], List()).some((item) => {
     //   return item.get('name') === this.props.item.get('name')
@@ -79,7 +76,7 @@ export default class Tile extends Component{
 
   render(){
     const {item, saveGame} = this.props
-    const statuses = ['playing', 'planning', 'completed', 'on-hold', 'dropped']
+    const types = ['playing', 'planning', 'completed', 'onHold', 'dropped']
 
     return (
       <GridTile
@@ -94,13 +91,13 @@ export default class Tile extends Component{
               anchorEl={this.state.popOverAnchor}
               onRequestClose={this.onClosePopOver}>
               <Menu>
-                {statuses.map((status, i) => (
+                {types.map((type, i) => (
                   <MenuItem
                     key={i}
                     style={styles.menuItem}
-                    disabled={this.gameHasStatus(status)}
-                    primaryText={status}
-                    onTouchTap={() => saveGame(item, status)}/>
+                    disabled={this.gameHasType(type)}
+                    primaryText={type}
+                    onTouchTap={() => saveGame(item, type)}/>
                   ))}
                 </Menu>
               </Popover>

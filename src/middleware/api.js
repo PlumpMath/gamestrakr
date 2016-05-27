@@ -1,5 +1,5 @@
 import { Schema, arrayOf, normalize } from 'normalizr';
-import { camelCase } from 'lodash';
+import { camelizeKeys } from 'humps'
 import 'isomorphic-fetch';
 
 // Extracts the next page URL from API response.
@@ -21,7 +21,7 @@ const API_ROOT = process.env.SERVER_URL
 
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
-function callApi(endpoint, schema, token) {
+function getApi(endpoint, schema, token) {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
 
   return fetch(fullUrl, {headers: {'X-Access-Token': token}})
@@ -32,7 +32,7 @@ function callApi(endpoint, schema, token) {
         return Promise.reject(json)
       }
 
-      const camelizedJson = json
+      const camelizedJson = camelizeKeys(json)
       const nextPageUrl = getNextPageUrl(response)
 
       return Object.assign({},
@@ -42,8 +42,35 @@ function callApi(endpoint, schema, token) {
     })
 }
 
+function postApi(endpoint, schema, token, body) {
+  const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
+  if (!token) {
+    return Promise.reject('No token for post request')
+  }
+  return fetch(fullUrl, {
+    method: 'POST',
+    headers: {
+      'X-Access-Token': token,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)})
+    .then(response =>
+      response.json().then(json => ({ json, response }))
+    ).then(({ json, response }) => {
+      if (!response.ok) {
+        return Promise.reject(json)
+      }
+      let camelizedJson = camelizeKeys(json)
+
+      return Object.assign({},
+        normalize(camelizedJson, schema)
+      )
+    })
+}
+
 const gameSchema = new Schema('games', {
-  idAttribute: game => _.camelCase(game.name)
+  idAttribute: game => game.name
 })
 
 export const Schemas = {
@@ -64,7 +91,7 @@ export default store => next => action => {
   }
 
   let { endpoint } = callAPI
-  const { schema, types } = callAPI
+  const { schema, types, requestMethod, body = {}} = callAPI
 
   if (typeof endpoint === 'function') {
     endpoint = endpoint(store.getState())
@@ -93,14 +120,28 @@ export default store => next => action => {
   const [ requestType, successType, failureType ] = types
   next(actionWith({ type: requestType }))
 
-  return callApi(endpoint, schema, token).then(
-    response => next(actionWith({
-      response,
-      type: successType
-    })),
-    error => next(actionWith({
-      type: failureType,
-      error: error.message || 'Something bad happened'
-    }))
-  )
+  switch (requestMethod) {
+    case 'GET':
+      return getApi(endpoint, schema, token).then(
+        response => next(actionWith({
+          response,
+          type: successType
+        })),
+        error => next(actionWith({
+          type: failureType,
+          error: error.message || 'Something bad happened'
+        }))
+      )
+    case 'POST':
+      return postApi(endpoint, schema, token, body).then(
+        response => next(actionWith({
+          response,
+          type: successType
+        })),
+        error => next(actionWith({
+          type: failureType,
+          error: error.message || 'Something bad happened'
+        }))
+      )
+  }
 }

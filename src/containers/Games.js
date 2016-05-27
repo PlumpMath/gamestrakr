@@ -39,16 +39,18 @@ class Games extends Component{
   }
 
   render() {
+    const {gamesByTypes, saveGameByType} = this.props
+
     return (
       <div className="app-ctr">
-        <Grid items={this.props.gamesByTypes} />
+        <Grid saveGameByType={saveGameByType} items={gamesByTypes} />
       </div>
     )
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  const gamesType = ownProps.params.gamesType.toLowerCase()
+  const gamesType = ownProps.params.gamesType
   const games = state.getIn(['entities', 'games'])
   const gamesByTypePagination =
     state.getIn(['pagination', 'gamesByType', gamesType]) || Map({ids: []})
@@ -60,17 +62,9 @@ function mapStateToProps(state, ownProps) {
   return {gamesType, gamesByTypes, gamesByTypePagination}
 }
 
-function mapDispatchToProps(dispatch, ownProps){
-  const loadGamesByType = gamesActions.loadGamesByType
-  const saveGame = (game, status) => {
-    dispatch(gameActions.saveGame(game, status))
-  }
-
-  return {loadGamesByType, saveGame}
+export default connect(mapStateToProps, {
+  loadGamesByType: gamesActions.loadGamesByType,
+  saveGameByType: gamesActions.saveGameByType
 }
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
 )(Games)
 

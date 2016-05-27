@@ -12,6 +12,7 @@ function fetchGames(gamesType, nextPageUrl) {
     [CALL_API]: {
       types: [ GAMES_REQUEST, GAMES_SUCCESS, GAMES_FAILURE],
       endpoint: nextPageUrl,
+      requestMethod: 'GET',
       schema: Schemas.GAME_ARRAY
     }
   }
@@ -32,5 +33,29 @@ export function loadGamesByType(type, nextPage) {
     }
 
     return dispatch(fetchGames(type, nextPageUrl))
+  }
+}
+
+function postGame(game, gamesType, postUrl) {
+  return {
+    gamesType,
+    [CALL_API]: {
+      types: [ GAMES_REQUEST, GAMES_SUCCESS, GAMES_FAILURE],
+      endpoint: postUrl,
+      requestMethod: 'POST',
+      body: {game: game.toJS()},
+      schema: Schemas.GAME_ARRAY
+    }
+  }
+}
+
+export function saveGameByType(game, gamesType) {
+  return (dispatch, getState) => {
+    if (!['name', 'image', 'apiDetailUrl'].every((k) => game.has(k))){
+      return null
+    }
+    const postUrl = `games/${gamesType}`
+
+    return dispatch(postGame(game, gamesType, postUrl))
   }
 }
