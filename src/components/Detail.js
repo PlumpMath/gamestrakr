@@ -1,18 +1,12 @@
 import React, {Component} from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import Dialog from 'material-ui/Dialog'
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon'
+import IconButton from 'material-ui/IconButton'
 
 import {gameActions} from '../actions/'
-
-const styles = {
-  root: {
-    position: 'fixed',
-    height: '100%',
-    width: '100%',
-    zIndex: '100',
-    backgroundColor: 'white'
-  }
-}
 
 export default class Detail extends Component{
   constructor(props) {
@@ -22,14 +16,37 @@ export default class Detail extends Component{
 
   render(){
     return (
-      <Dialog
-        className="games-detail-ctr"
-        title="Game Detail Dialog"
-        onRequestClose={() => this.props.context.router.goBack()}
-        open={true}>
-        Trust fund listicle tumblr forage poutine slow-carb. Ramps chia four dollar toast, franzen cardigan swag mixtape farm-to-table heirloom hammock single-origin coffee put a bird on it. Tote bag occupy selfies put a bird on it food truck. Meggings gastropub helvetica pour-over lo-fi, asymmetrical locavore pinterest. Echo park deep v PBR&B, etsy marfa vegan meh cold-pressed semiotics seitan banh mi fingerstache irony tattooed tacos. XOXO raw denim small batch post-ironic, bespoke everyday carry fashion axe normcore marfa waistcoat green juice hashtag street art. Shoreditch chambray kale chips microdosing godard ramps, quinoa thundercats church-key yr.
-      </Dialog>
+      <div className="game-detail-ctr">
+        <IconButton className="detail-go-back-btn" onClick={() => this.context.router.goBack()}>
+          <FontIcon className="material-icons" color="black" >arrow_back</FontIcon>
+        </IconButton>
+
+        <Card className="game-detail-content">
+          <CardHeader
+            title="URL Avatar"
+            subtitle="Subtitle" />
+          <CardMedia
+            overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}>
+            <img src="http://lorempixel.com/600/337/nature/" />
+          </CardMedia>
+          <CardTitle title="Card title" subtitle="Card subtitle" />
+          <CardText>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
+            Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
+            Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+          </CardText>
+          <CardActions>
+            <FlatButton label="Action1" />
+            <FlatButton label="Action2" />
+          </CardActions>
+        </Card>
+        );
+      </div>
     )
   }
 }
 
+Detail.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};

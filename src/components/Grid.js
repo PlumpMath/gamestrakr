@@ -44,6 +44,10 @@ export default class Grid extends Component{
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
   }
 
+  handleTileTap = (name) => {
+    this.context.router.push(`game/${name}`)
+  }
+
   renderLoadMore = () => {
     const { isFetching, onLoadMoreClick } = this.props
 
@@ -78,7 +82,8 @@ export default class Grid extends Component{
       <div className="grid-root" style={styles.root}>
         <div className="grid-ctr" style={styles.gridCtr}>
           <GridList cellHeight={200} cols={gridCols || 6} style={styles.gridList}>
-            {items.map((item, i) => <Tile key={i} item={item} saveGame={saveGameByType} />)}
+            {items.map((item, i) =>
+              <Tile key={i} item={item} saveGame={saveGameByType} handleTileTap={this.handleTileTap} />)}
           </GridList>
         </div>
         {pageCount > 0 && !isLastPage && this.renderLoadMore()}
@@ -87,3 +92,6 @@ export default class Grid extends Component{
   }
 }
 
+Grid.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};

@@ -67,10 +67,10 @@ export default class Tile extends Component{
     this.setState({popOverOpen: true, popOverAnchor: e.currentTarget})
   }
 
-  navigateToDetail = (e) => {
+  onTileTap= (e) => {
     const {item, navigate} = this.props
     if(e.currentTarget.className == "tile-ctr"){
-      navigate(item.get('name'))
+      this.props.handleTileTap(item.get('name'))
     }
   }
 
@@ -82,7 +82,7 @@ export default class Tile extends Component{
       <GridTile
         className="tile-ctr"
         title={item.get('name')}
-        onTouchTap={this.navigateToDetail}
+        onTouchTap={this.onTileTap}
         actionIcon={
           <IconButton onTouchTap={this.onPlusTap}>
             <FontIcon className="material-icons">{false ? 'check_circle' : 'add_circle'}</FontIcon>

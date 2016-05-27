@@ -32,7 +32,14 @@ paginate:{
 
 
 ## TODOS
-* Add game detail component
+* fix loader animation
+* show games type in app bar
+* fix save game button and dropdown menu
+* improve show more button
+* fix css
+* MERGE TO MASTER
+
+* render info in detail component
 * Add message when no games underneath user games tab
 * Add search
 * Render recently viewed list and currently playing list of games in nav

@@ -21,8 +21,16 @@ body{
 }
 
 .app-ctr{
+  position: relative;
   height: 100%;
   width: 100%;
+  top: 64px;
+}
+
+.nav-ctr{
+  position: fixed;
+  width: 100%;
+  z-index: 1;
 }
 
 .tabs-content-ctr{

@@ -41,3 +41,30 @@
     left: 20px;
   }
 }
+
+.game-detail-ctr{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  background-color: #EEEEEE;
+
+  .game-detail-content{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    background: #fff;
+  }
+
+  .detail-go-back-btn{
+    position: relative;
+    cursor: pointer;
+    top: 10px;
+    left: 10px;
+  }
+}

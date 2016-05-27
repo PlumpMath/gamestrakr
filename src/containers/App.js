@@ -30,7 +30,7 @@ class App extends Component {
   render() {
     return (
       <MuiThemeProvider muiTheme={darkMuiTheme}>
-        <div className="app-ctr">
+        <div>
           <Nav {...this.props} navigate={this.navigate} />
           {this.props.children}
         </div>
