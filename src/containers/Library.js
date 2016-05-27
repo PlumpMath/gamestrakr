@@ -25,7 +25,7 @@ function loadData(props) {
   props.loadGamesByType(gamesType)
 }
 
-class User extends Component{
+class Library extends Component{
   constructor(props) {
     super(props)
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
@@ -42,7 +42,7 @@ class User extends Component{
   }
 
   setGamesType(type) {
-    this.context.router.push(`user/${type}`)
+    this.context.router.push(`library/${type}`)
   }
 
   render() {
@@ -67,7 +67,7 @@ class User extends Component{
   }
 }
 
-User.contextTypes = {
+Library.contextTypes = {
   router: React.PropTypes.object.isRequired
 };
 
@@ -87,5 +87,5 @@ function mapStateToProps(state, ownProps) {
 
 export default connect(mapStateToProps, {
   loadGamesByType: gamesActions.loadGamesByType
-})(User)
+})(Library)
 

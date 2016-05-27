@@ -13,8 +13,6 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 // Games - where users can search for and sort through upcoming and recently released games
 // Platforms - where users can look through platforms
 
-const navLinks =  [{name: 'All Games', route: 'games', icon: 'videogame_asset'}, {name: 'My Games', route: 'user', icon: 'videogame_asset'}]
-
 export default class Nav extends Component {
   constructor(props) {
     super(props)
@@ -25,6 +23,11 @@ export default class Nav extends Component {
     const {leftDrawerOpen, closeLeftDrawer, openLeftDrawer, navTitle, user, navigate, signOut} = this.props
     const signInButton = <MenuItem primaryText='Sign In' onTouchTap={() => navigate('/auth/login')}/>
     const signOutButton= <MenuItem primaryText='Sign Out' onTouchTap={signOut}/>
+    const navLinks =  [
+      {name: 'Recent', route: 'games/recent', icon: 'videogame_asset'},
+      {name: 'Upcoming', route: 'games/upcoming', icon: 'videogame_asset'},
+      {name: 'Library', route: 'library', icon: 'videogame_asset'}
+    ]
 
     const accountNavElement = (
       <IconMenu iconButtonElement={

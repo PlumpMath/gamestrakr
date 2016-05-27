@@ -1,7 +1,7 @@
 import React from 'react'
 import {Route, IndexRedirect, Redirect} from 'react-router'
 import App from './containers/App'
-import User from './containers/User'
+import Library from './containers/Library'
 import Games from './containers/Games'
 import Auth from './containers/Auth'
 import Grid from './components/Grid'
@@ -12,8 +12,8 @@ import {appActions, userActions} from './actions/'
 const routes = <Route path="/" component={App}>
  <IndexRedirect to="/games/recent" />
 
- <Redirect from="/user" to="user/playing"/>
- <Route path="user" component={User}>
+ <Redirect from="/library" to="library/playing"/>
+ <Route path="library" component={Library}>
    <Route path=":gamesType" component={Grid}/>
  </Route>
 
