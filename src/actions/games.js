@@ -4,6 +4,17 @@ export const GAMES_REQUEST = 'GAMES_REQUEST'
 export const GAMES_SUCCESS = 'GAMES_SUCCESS'
 export const GAMES_FAILURE = 'GAMES_FAILURE'
 
+function gamesUrl(baseUrl){
+  return (state) => {
+    if (state){
+      const itemsPerPage = state.getIn(['app', 'itemsPerPage'])
+      return `${baseUrl}?limit=${itemsPerPage}`
+    }
+
+    return baseUrl
+  }
+}
+
 // Fetches a page of games by a type.
 // Relies on the custom API middleware defined in ../middleware/api.js.
 function fetchGames(gamesType, nextPageUrl) {
@@ -11,7 +22,7 @@ function fetchGames(gamesType, nextPageUrl) {
     gamesType,
     [CALL_API]: {
       types: [ GAMES_REQUEST, GAMES_SUCCESS, GAMES_FAILURE],
-      endpoint: nextPageUrl,
+      endpoint: gamesUrl(nextPageUrl),
       requestMethod: 'GET',
       schema: Schemas.GAME_ARRAY
     }
