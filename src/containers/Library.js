@@ -50,19 +50,17 @@ class Library extends Component{
     const {children, gamesType, gamesByTypes} = this.props
 
     return (
-      <div className="app-ctr">
-        <Tabs
-          onChange={(v) => this.setGamesType(v)}
-          value={gamesType}
-          className="tabs-ctr app-ctr"
-          contentContainerClassName="tabs-content-ctr app-ctr">
-          {types.map((type) => (
-            <Tab key={type} value={type} label={type}>
-              {React.cloneElement(children, {items: gamesByTypes})}
-            </Tab>
-            ))}
-          </Tabs>
-        </div>
+      <Tabs
+        onChange={(v) => this.setGamesType(v)}
+        value={gamesType}
+        className="tabs-ctr app-ctr"
+        contentContainerClassName="tabs-content-ctr">
+        {types.map((type) => (
+          <Tab key={type} value={type} label={type}>
+            {React.cloneElement(children, {items: gamesByTypes})}
+          </Tab>
+          ))}
+        </Tabs>
     )
   }
 }
