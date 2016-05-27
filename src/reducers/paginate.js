@@ -1,4 +1,4 @@
-import {Map} from 'immutable';
+import {Map, Set} from 'immutable';
 import union from 'lodash/union'
 
 // Creates a reducer managing pagination, given the action types to handle,
@@ -20,7 +20,7 @@ export default function paginate({ types, mapActionToKey }) {
     isFetching: false,
     nextPageUrl: undefined,
     pageCount: 0,
-    ids: []
+    ids: Set()
   }), action) {
     switch (action.type) {
       case requestType:
@@ -30,9 +30,9 @@ export default function paginate({ types, mapActionToKey }) {
       case successType:
         return state.merge({
           isFetching: false,
-          ids: union(state.ids, action.response.result),
+          ids: state.get('ids').union(action.response.result),
           nextPageUrl: action.response.nextPageUrl,
-          pageCount: state.pageCount + 1
+          pageCount: state.get('pageCount') + 1
         })
       case failureType:
         return state.merge({

@@ -38,12 +38,20 @@ class Games extends Component{
     }
   }
 
+  handleLoadMoreClick = () => {
+    this.props.loadGamesByType(this.props.gamesType, true)
+  }
+
   render() {
-    const {gamesByTypes, saveGameByType} = this.props
+    const {gamesByTypes, saveGameByType, gamesByTypePagination} = this.props
 
     return (
       <div className="app-ctr">
-        <Grid saveGameByType={saveGameByType} items={gamesByTypes} />
+        <Grid
+          onLoadMoreClick={this.handleLoadMoreClick}
+          saveGameByType={saveGameByType}
+          items={gamesByTypes}
+          {...gamesByTypePagination.toJS()} />
       </div>
     )
   }

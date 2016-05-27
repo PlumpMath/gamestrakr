@@ -3,7 +3,7 @@ import { combineReducers } from 'redux-immutable'
 import paginate from './paginate'
 import app from './app'
 import user from './user'
-import {Map, List, fromJS} from 'immutable'
+import {Map} from 'immutable'
 
 // Updates an entity cache in response to any action with response.entities.
 function entities(state = Map({games: {}}), action) {

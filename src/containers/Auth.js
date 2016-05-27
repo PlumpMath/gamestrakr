@@ -25,8 +25,8 @@ class Auth extends Component {
         <FlatButton label={"Look at the hot new releases"} primary={true} linkButton={true} href={'#/games/recent'}/>
       ],
       login: [
-        <FlatButton label={"Sign in With Twitter"} primary={true} linkButton={true} href={`${process.env.SERVER_URL}auth/twitter`}/>,
-        <FlatButton label={"Sign in With Facebook"} primary={true} linkButton={true} href={`${process.env.SERVER_URL}auth/facebook`}/>
+        <FlatButton label={"Sign in With Twitter"} primary={true} linkButton={true} href={`${process.env.SERVER_URL}/auth/twitter`}/>,
+          <FlatButton label={"Sign in With Facebook"} primary={true} linkButton={true} href={`${process.env.SERVER_URL}/auth/facebook`}/>
       ]
     }
     const authText = {

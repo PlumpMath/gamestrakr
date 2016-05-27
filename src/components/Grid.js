@@ -44,40 +44,44 @@ export default class Grid extends Component{
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
   }
 
+  renderLoadMore = () => {
+    const { isFetching, onLoadMoreClick } = this.props
+
+    return (
+      <button style={{ fontSize: '150%' }}
+        onClick={onLoadMoreClick}
+        disabled={isFetching}>
+        {isFetching ? 'Loading...' : 'Load More'}
+      </button>
+    )
+  }
+
   render(){
-    const {items, isFetching, gridCols, saveGameByType} = this.props
-    var grid
+    const {
+      items, isFetching, gridCols, pageCount,
+      nextPageUrl, saveGameByType
+    } = this.props
 
-    if (items && items.size > 0){
-      grid = (
-        <GridList cellHeight={200} cols={gridCols || 6} style={styles.gridList}>
-          {items.map((item, i) => <Tile key={i} item={item} saveGame={saveGameByType} />)}
-        </GridList>
-      )
-    }
-
-    const loader = (
-      <div style={styles.loaderCtr}>
+    const isEmpty = items.length === 0
+    if (isEmpty && isFetching) {
+      return <div style={styles.loaderCtr}>
         <CircularProgress style={styles.loader} size={2} />
       </div>
-    )
+    }
+
+    const isLastPage = !nextPageUrl
+    if (isEmpty && isLastPage) {
+      return <h1><i>Nothing here!</i></h1>
+    }
 
     return (
       <div className="grid-root" style={styles.root}>
         <div className="grid-ctr" style={styles.gridCtr}>
-          {grid}
-          {isFetching ? loader : ''}
+          <GridList cellHeight={200} cols={gridCols || 6} style={styles.gridList}>
+            {items.map((item, i) => <Tile key={i} item={item} saveGame={saveGameByType} />)}
+          </GridList>
         </div>
-        <div className="bottom-nav">
-          <div className="prev-page-ctr">
-            <FontIcon color={'#fff'} className="material-icons">arrow_back</FontIcon>
-            <span>Previous Page</span>
-          </div>
-          <div className="next-page-ctr">
-            <span>Next Page</span>
-            <FontIcon color={'#fff'} className="material-icons">arrow_forward</FontIcon>
-          </div>
-        </div>
+        {pageCount > 0 && !isLastPage && this.renderLoadMore()}
       </div>
     )
   }

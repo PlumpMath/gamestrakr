@@ -8,7 +8,7 @@ function gamesUrl(baseUrl){
   return (state) => {
     if (state){
       const itemsPerPage = state.getIn(['app', 'itemsPerPage'])
-      return `${baseUrl}?limit=${itemsPerPage}`
+      return `${baseUrl}&limit=${itemsPerPage}`
     }
 
     return baseUrl
@@ -34,10 +34,8 @@ function fetchGames(gamesType, nextPageUrl) {
 // Relies on Redux Thunk middleware.
 export function loadGamesByType(type, nextPage) {
   return (dispatch, getState) => {
-    const {
-      nextPageUrl = `games/${type}`,
-      pageCount = 0
-    } = getState().getIn(['pagination', 'gamesByType', type]) || {}
+    const nextPageUrl = getState().getIn(['pagination', 'gamesByType', type, 'nextPageUrl'], `/games/${type}?`)
+    const pageCount = getState().getIn(['pagination', 'gamesByType', type, 'pageCount'], 0)
 
     if (pageCount > 0 && !nextPage) {
       return null
