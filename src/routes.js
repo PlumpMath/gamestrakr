@@ -14,13 +14,11 @@ const routes = <Route path="/" component={App}>
 
  <Redirect from="/library" to="library/playing"/>
  <Route path="library" component={Library}>
-   <Route path=":gamesType" component={Grid}/>
+   <Route path=":gamesType" component={Games}/>
  </Route>
 
  <Redirect from="/games" to="games/recent"/>
- <Route path="games" component={Games}>
-   <Route path=":gamesType" component={Grid}/>
- </Route>
+ <Route path="games/:gamesType" component={Games}/>
 
  <Route path="/game/:name" component={GameDetails}/>
 
