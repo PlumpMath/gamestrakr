@@ -9,22 +9,16 @@ body{
   font-family: 'Roboto', sans-serif;
 }
 
-#app{
-  height: 100%;
-  width: 100%;
-}
-
 .content-ctr{
-  max-width: 1200px;
   width: 100%;
-  margin: 0 auto;
+  height: 100%;
+  top: 64px;
 }
 
 .app-ctr{
   position: relative;
   height: 100%;
   width: 100%;
-  top: 64px;
 }
 
 .nav-ctr{
@@ -33,13 +27,7 @@ body{
   z-index: 1;
 }
 
-.tabs-content-ctr{
-  >div{
-    height: 100%;
-    width: 100%;
-  }
-}
-
 span[type="button"]{
   -webkit-appearance: none;
 }
+

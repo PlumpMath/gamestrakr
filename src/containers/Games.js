@@ -46,13 +46,11 @@ class Games extends Component{
     const {gamesByTypes, saveGameByType, gamesByTypePagination} = this.props
 
     return (
-      <div className="app-ctr">
-        <Grid
-          onLoadMoreClick={this.handleLoadMoreClick}
-          saveGameByType={saveGameByType}
-          items={gamesByTypes}
-          {...gamesByTypePagination.toJS()} />
-      </div>
+      <Grid
+        onLoadMoreClick={this.handleLoadMoreClick}
+        saveGameByType={saveGameByType}
+        items={gamesByTypes}
+        {...gamesByTypePagination.toJS()} />
     )
   }
 }

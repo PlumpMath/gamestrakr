@@ -52,9 +52,7 @@ class Library extends Component{
     return (
       <Tabs
         onChange={(v) => this.setGamesType(v)}
-        value={gamesType}
-        className="tabs-ctr app-ctr"
-        contentContainerClassName="tabs-content-ctr">
+        value={gamesType}>
         {types.map((type) => (
           <Tab key={type} value={type} label={type}>
             {React.cloneElement(children, {items: gamesByTypes})}

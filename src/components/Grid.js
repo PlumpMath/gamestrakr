@@ -16,7 +16,6 @@ const styles = {
   gridList: {
     width: '100%',
     overflowY: 'auto',
-    position: 'relative'
   },
   floatingBtn: {
     float: 'right',
@@ -26,7 +25,6 @@ const styles = {
   gridCtr: {
     width: '100%',
     overflowY: 'auto',
-    position: 'relative',
     minHeight: '815px'
   },
   loader: {
@@ -68,9 +66,7 @@ export default class Grid extends Component{
 
     const isEmpty = items.length === 0
     if (isEmpty && isFetching) {
-      return <div style={styles.loaderCtr}>
-        <CircularProgress style={styles.loader} size={2} />
-      </div>
+      return <CircularProgress style={styles.loader} size={2} />
     }
 
     const isLastPage = !nextPageUrl
@@ -79,7 +75,7 @@ export default class Grid extends Component{
     }
 
     return (
-      <div className="grid-root" style={styles.root}>
+      <div style={styles.root}>
         <div className="grid-ctr" style={styles.gridCtr}>
           <GridList cellHeight={200} cols={gridCols || 6} style={styles.gridList}>
             {items.map((item, i) =>

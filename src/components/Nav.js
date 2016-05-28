@@ -39,7 +39,7 @@ export default class Nav extends Component {
     )
 
     return(
-      <div className="nav-ctr">
+      <div>
         <AppBar
           onLeftIconButtonTouchTap={this.props.openLeftDrawer}
           title={navTitle || ''}

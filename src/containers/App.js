@@ -31,7 +31,7 @@ class App extends Component {
     return (
       <MuiThemeProvider muiTheme={darkMuiTheme}>
         <div>
-          <Nav {...this.props} navigate={this.navigate} />
+          <Nav {...this.props} className="nav-ctr" navigate={this.navigate} />
           {this.props.children}
         </div>
       </MuiThemeProvider>
