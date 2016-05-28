@@ -43,8 +43,11 @@ class GridPage extends Component{
     this.props.loadGamesByType(this.props.gamesType, true)
   }
 
-	gameHasType = (type, name) => {
-		return this.props.gamesByType.hasIn([type, 'ids', name])
+	libTypeOfGame = (name) => {
+    const types = ['playing', 'planning', 'completed', 'onHold', 'dropped']
+		return this.props.gamesByType
+      .filter((v, k) => types.includes(k))
+      .findKey((v, k) => v.hasIn(['ids', name]))
 	}
 
   handleTileTap = (name) => {
@@ -55,19 +58,17 @@ class GridPage extends Component{
 		return <Tile
 			key={game.get('name')}
 			item={game}
-			gameHasType={this.gameHasType}
+			libTypeOfItem={(name) => this.libTypeOfGame(name)}
 			saveGame={this.props.saveGameByType}
 			handleTileTap={this.handleTileTap} />
 	}
 
   render() {
-    const {gamesType, gamesByTypeGames, saveGameByType, gamesByTypePagination} = this.props
+    const {gamesType, gamesByTypeGames, gamesByTypePagination} = this.props
 
     return (
       <Grid
         onLoadMoreClick={this.handleLoadMoreClick}
-				gameHasType={this.gameHasType.bind(this)}
-        saveGameByType={saveGameByType}
         items={gamesByTypeGames}
 				renderItem={this.renderGame}
 				gamesType={gamesType}

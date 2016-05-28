@@ -69,7 +69,8 @@ export default class Tile extends Component{
 
   render(){
     const {item, saveGame} = this.props
-    const types = ['playing', 'planning', 'completed', 'onHold', 'dropped']
+    const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped']
+		const libTypeOfItem = this.props.libTypeOfItem(item.get('name'))
 
     return (
       <GridTile
@@ -84,11 +85,11 @@ export default class Tile extends Component{
               anchorEl={this.state.popOverAnchor}
               onRequestClose={this.onClosePopOver}>
               <Menu>
-                {types.map((type, i) => (
+                {libTypes.map((type, i) => (
                   <MenuItem
                     key={i}
                     style={styles.menuItem}
-                    disabled={this.props.gameHasType(type, item.get('name'))}
+                    disabled={type === libTypeOfItem}
                     primaryText={type}
                     onTouchTap={() => saveGame(item, type)}/>
                   ))}

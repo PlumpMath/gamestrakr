@@ -38,8 +38,6 @@ paginate:{
 * MERGE TO MASTER
 
 * render info in detail component
-* have library container use games container
-* make grid cmp more pure
 * show games type in app bar
 * Add search
 * Render recently viewed list and currently playing list of games in nav
