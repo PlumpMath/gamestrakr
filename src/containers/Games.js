@@ -8,6 +8,7 @@ import DropDownMenu from 'material-ui/DropDownMenu'
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar'
 
 import Grid from '../components/Grid'
+import Tile from '../components/Tile'
 import { gamesActions } from '../actions'
 
 const styles = {
@@ -46,8 +47,21 @@ class Games extends Component{
 		return this.props.gamesByType.hasIn([type, 'ids', name])
 	}
 
+  handleTileTap = (name) => {
+    this.context.router.push(`game/${name}`)
+  }
+
+	renderGame = (game) => {
+		return <Tile
+			key={game.get('name')}
+			item={game}
+			gameHasType={this.gameHasType}
+			saveGame={this.props.saveGameByType}
+			handleTileTap={this.handleTileTap} />
+	}
+
   render() {
-    const {gamesByTypeGames, saveGameByType, gamesByTypePagination} = this.props
+    const {gamesType, gamesByTypeGames, saveGameByType, gamesByTypePagination} = this.props
 
     return (
       <Grid
@@ -55,10 +69,16 @@ class Games extends Component{
 				gameHasType={this.gameHasType.bind(this)}
         saveGameByType={saveGameByType}
         items={gamesByTypeGames}
+				renderItem={this.renderGame}
+				gamesType={gamesType}
         {...gamesByTypePagination.toJS()} />
     )
   }
 }
+
+Games.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};
 
 function mapStateToProps(state, ownProps) {
   const gamesType = ownProps.params.gamesType

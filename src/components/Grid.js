@@ -4,7 +4,6 @@ import {GridList} from 'material-ui/GridList'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
 import CircularProgress from 'material-ui/CircularProgress'
-import Tile from './Tile'
 
 const styles = {
   root: {
@@ -42,10 +41,6 @@ export default class Grid extends Component{
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
   }
 
-  handleTileTap = (name) => {
-    this.context.router.push(`game/${name}`)
-  }
-
   renderLoadMore = () => {
     const { isFetching, onLoadMoreClick } = this.props
 
@@ -61,8 +56,7 @@ export default class Grid extends Component{
   render(){
     const {
       items, isFetching, gridCols, pageCount,
-      nextPageUrl, saveGameByType, gamesType,
-			gameHasType
+      nextPageUrl, gamesType, renderItem
     } = this.props
 
     const isEmpty = items.size === 0
@@ -79,8 +73,7 @@ export default class Grid extends Component{
       <div style={styles.root}>
         <div className="grid-ctr" style={styles.gridCtr}>
           <GridList cellHeight={200} cols={gridCols || 6} style={styles.gridList}>
-            {items.map((item, i) =>
-              <Tile key={i} item={item} gameHasType={gameHasType} saveGame={saveGameByType} handleTileTap={this.handleTileTap} />)}
+            {items.map((item) => renderItem(item))}
           </GridList>
         </div>
         {pageCount > 0 && !isLastPage && this.renderLoadMore()}
@@ -88,7 +81,3 @@ export default class Grid extends Component{
     )
   }
 }
-
-Grid.contextTypes = {
-  router: React.PropTypes.object.isRequired
-};
