@@ -14,6 +14,12 @@
   }
 }
 
+.tab-content-ctr{
+  >div{
+    position: inherit !important;
+  }
+}
+
 .game-detail-ctr{
   position: absolute;
   top: 0;

@@ -47,15 +47,19 @@ class Library extends Component{
 
   render() {
     const types = ['playing', 'planning', 'completed', 'onHold', 'dropped']
-    const {children, gamesType, gamesByTypes} = this.props
+    const {children, gamesType, gamesByTypePagination, gamesByTypes} = this.props
 
     return (
       <Tabs
+        contentContainerClassName="tab-content-ctr"
         onChange={(v) => this.setGamesType(v)}
         value={gamesType}>
         {types.map((type) => (
           <Tab key={type} value={type} label={type}>
-            {React.cloneElement(children, {items: gamesByTypes})}
+            {React.cloneElement(children, Object.assign(
+              {},
+              {items: gamesByTypes, gamesType: gamesType},
+              gamesByTypePagination.toJS()))}
           </Tab>
           ))}
         </Tabs>

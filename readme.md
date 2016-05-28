@@ -36,7 +36,6 @@ paginate:{
 * show games type in app bar
 * fix save game button and dropdown menu
 * improve show more button
-* fix css
 * MERGE TO MASTER
 
 * render info in detail component

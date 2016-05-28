@@ -61,17 +61,17 @@ export default class Grid extends Component{
   render(){
     const {
       items, isFetching, gridCols, pageCount,
-      nextPageUrl, saveGameByType
+      nextPageUrl, saveGameByType, gamesType
     } = this.props
 
-    const isEmpty = items.length === 0
+    const isEmpty = items.size === 0
     if (isEmpty && isFetching) {
       return <CircularProgress style={styles.loader} size={2} />
     }
 
     const isLastPage = !nextPageUrl
     if (isEmpty && isLastPage) {
-      return <h1><i>Nothing here!</i></h1>
+      return <h1>{`No games saved as ${gamesType}`}</h1>
     }
 
     return (
