@@ -3,6 +3,7 @@ import { CALL_API, Schemas } from '../middleware/api'
 export const GAMES_REQUEST = 'GAMES_REQUEST'
 export const GAMES_SUCCESS = 'GAMES_SUCCESS'
 export const GAMES_FAILURE = 'GAMES_FAILURE'
+export const GAMES_REMOVE = 'GAMES_REMOVE'
 
 function gamesUrl(baseUrl){
   return (state) => {
@@ -45,15 +46,16 @@ export function loadGamesByType(type, nextPage) {
   }
 }
 
-function postGame(game, gamesType, postUrl) {
+function postGame(game, gamesType, postUrl, currentLibType) {
   return {
     gamesType,
     [CALL_API]: {
-      types: [ GAMES_REQUEST, GAMES_SUCCESS, GAMES_FAILURE],
+      types: [ GAMES_REQUEST, GAMES_SUCCESS, GAMES_FAILURE, GAMES_REMOVE],
       endpoint: postUrl,
       requestMethod: 'POST',
       body: {game: game.toJS()},
-      schema: Schemas.GAME_ARRAY
+      schema: Schemas.GAME_ARRAY,
+			currentLibType
     }
   }
 }
@@ -64,7 +66,12 @@ export function saveGameByType(game, gamesType) {
       return null
     }
     const postUrl = `/games/${gamesType}`
+    const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped']
+		const currentLibType = getState().getIn(['pagination', 'gamesByType'])
+			.filter((v, k) => libTypes.includes(k))
+			.findKey((v, k) => v.hasIn(['ids', game.get('name')]))
 
-    return dispatch(postGame(game, gamesType, postUrl))
+
+    return dispatch(postGame(game, gamesType, postUrl, currentLibType))
   }
 }

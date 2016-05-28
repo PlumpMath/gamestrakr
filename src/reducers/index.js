@@ -34,7 +34,8 @@ const pagination = combineReducers({
     types: [
       gamesActions.GAMES_REQUEST,
       gamesActions.GAMES_SUCCESS,
-      gamesActions.GAMES_FAILURE
+      gamesActions.GAMES_FAILURE,
+      gamesActions.GAMES_REMOVE
     ]
   })
 })

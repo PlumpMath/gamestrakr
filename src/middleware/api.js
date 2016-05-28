@@ -91,7 +91,7 @@ export default store => next => action => {
   }
 
   let { endpoint } = callAPI
-  const { schema, types, requestMethod, body = {}} = callAPI
+  const { schema, types, requestMethod, currentLibType, body = {}} = callAPI
 
   if (typeof endpoint === 'function') {
     endpoint = endpoint(store.getState())
@@ -103,9 +103,9 @@ export default store => next => action => {
   if (!schema) {
     throw new Error('Specify one of the exported Schemas.')
   }
-  if (!Array.isArray(types) || types.length !== 3) {
-    throw new Error('Expected an array of three action types.')
-  }
+  // if (!Array.isArray(types) || types.length !== 3) {
+  //   throw new Error('Expected an array of three action types.')
+  // }
   if (!types.every(type => typeof type === 'string')) {
     throw new Error('Expected action types to be strings.')
   }
@@ -116,32 +116,40 @@ export default store => next => action => {
     return finalAction
   }
 
+  function actionWithNewType(data, type) {
+    const finalAction = Object.assign({}, action, data, type)
+    delete finalAction[CALL_API]
+    return finalAction
+  }
+
   const token = store.getState().getIn(['user', 'token'])
-  const [ requestType, successType, failureType ] = types
+  const [ requestType, successType, failureType, removeType ] = types
   next(actionWith({ type: requestType }))
 
   switch (requestMethod) {
     case 'GET':
       return getApi(endpoint, schema, token).then(
-        response => next(actionWith({
-          response,
-          type: successType
-        })),
-        error => next(actionWith({
-          type: failureType,
-          error: error.message || 'Something bad happened'
-        }))
-      )
+      response => next(actionWith({
+        response,
+        type: successType
+      })),
+      error => next(actionWith({
+        type: failureType,
+        error: error.message || 'Something bad happened'
+      }))
+    )
     case 'POST':
       return postApi(endpoint, schema, token, body).then(
-        response => next(actionWith({
-          response,
-          type: successType
-        })),
-        error => next(actionWith({
-          type: failureType,
-          error: error.message || 'Something bad happened'
-        }))
-      )
+      response => {
+        next(actionWith({ response, type: successType }))
+        if(typeof currentLibType == 'string') {
+          next(actionWithNewType({ response, type: removeType}, {'gamesType': currentLibType}))
+        }
+      },
+      error => next(actionWith({
+        type: failureType,
+        error: error.message || 'Something bad happened'
+      }))
+    )
   }
 }
