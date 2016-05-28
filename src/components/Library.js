@@ -17,6 +17,7 @@ export default class Library extends Component{
     return (
       <Tabs
         contentContainerClassName="tab-content-ctr"
+				value={this.props.params.gamesType}
         onChange={(v) => this.setGamesType(v)}>
         {types.map((type) => (
           <Tab key={type} value={type} label={type}>
