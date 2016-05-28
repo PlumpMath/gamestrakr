@@ -41,7 +41,6 @@ export default class Detail extends Component{
             <FlatButton label="Action2" />
           </CardActions>
         </Card>
-        );
       </div>
     )
   }

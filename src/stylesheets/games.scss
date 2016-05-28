@@ -21,7 +21,7 @@
 }
 
 .game-detail-ctr{
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 100%;
@@ -30,7 +30,7 @@
   background-color: #EEEEEE;
 
   .game-detail-content{
-    position: relative;
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
