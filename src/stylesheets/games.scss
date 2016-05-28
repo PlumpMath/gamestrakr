@@ -1,17 +1,11 @@
-.grid-ctr{
-  .tile-img-ctr{
-    height: auto;
-    max-width: 100%;
-
-    img{
-      height: auto;
-      max-width: 100%;
-    }
-  }
-
-  .tile-ctr{
-    cursor: pointer;
-  }
+.tile-ctr{
+	height: auto;
+	max-width: 100%;
+	cursor: pointer;
+	img, object{
+		height: auto;
+		max-width: 100%;
+	}
 }
 
 .tab-content-ctr{

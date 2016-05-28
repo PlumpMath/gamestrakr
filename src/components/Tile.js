@@ -24,14 +24,7 @@ export default class Tile extends Component{
     super(props)
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
     this.state = {
-      imageUrl: this.getGameImageUrl(),
       popOverOpen: false
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.item){
-      this.setState({imageUrl: this.getGameImageUrl(nextProps.item)})
     }
   }
 
@@ -39,10 +32,6 @@ export default class Tile extends Component{
     const {item} = this.props
     if(!item) return placeholderImageUrl
     return item.getIn(['image', 'smallUrl']) || item.getIn(['image', 'mediumUrl']) || placeholderImageUrl
-  }
-
-  onImageError = () => {
-    this.setState({imageUrl: placeholderImageUrl})
   }
 
   onClosePopOver = () => {
@@ -96,9 +85,9 @@ export default class Tile extends Component{
                 </Menu>
               </Popover>
             </IconButton>}>
-            <img
-              src={this.state.imageUrl}
-              onError={this.onImageError}/>
+						<object data={this.getGameImageUrl()} type="image/jpg">
+							<img src={placeholderImageUrl} />
+						</object>
           </GridTile>
     )
   }
