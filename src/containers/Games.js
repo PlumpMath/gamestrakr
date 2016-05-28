@@ -42,14 +42,19 @@ class Games extends Component{
     this.props.loadGamesByType(this.props.gamesType, true)
   }
 
+	gameHasType = (type, name) => {
+		return this.props.gamesByType.hasIn([type, 'ids', name])
+	}
+
   render() {
-    const {gamesByTypes, saveGameByType, gamesByTypePagination} = this.props
+    const {gamesByTypeGames, saveGameByType, gamesByTypePagination} = this.props
 
     return (
       <Grid
         onLoadMoreClick={this.handleLoadMoreClick}
+				gameHasType={this.gameHasType.bind(this)}
         saveGameByType={saveGameByType}
-        items={gamesByTypes}
+        items={gamesByTypeGames}
         {...gamesByTypePagination.toJS()} />
     )
   }
@@ -58,14 +63,14 @@ class Games extends Component{
 function mapStateToProps(state, ownProps) {
   const gamesType = ownProps.params.gamesType
   const games = state.getIn(['entities', 'games'])
-  const gamesByTypePagination =
-    state.getIn(['pagination', 'gamesByType', gamesType]) || Map({ids: []})
-  const gamesByTypes = gamesByTypePagination.get('ids').map(id => games.get(id))
+	const gamesByType = state.getIn(['pagination', 'gamesByType'])
+  const gamesByTypePagination = state.getIn(['pagination', 'gamesByType', gamesType]) || Map({ids: []})
+  const gamesByTypeGames = gamesByTypePagination.get('ids').map(id => games.get(id))
 
   const itemsPerPage =  state.getIn(['app', 'itemsPerPage'])
   const gridCols = state.getIn(['app', 'gridCols'])
 
-  return {gamesType, gamesByTypes, gamesByTypePagination}
+  return {gamesByType, gamesType, gamesByTypeGames, gamesByTypePagination}
 }
 
 export default connect(mapStateToProps, {

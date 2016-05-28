@@ -61,7 +61,8 @@ export default class Grid extends Component{
   render(){
     const {
       items, isFetching, gridCols, pageCount,
-      nextPageUrl, saveGameByType, gamesType
+      nextPageUrl, saveGameByType, gamesType,
+			gameHasType
     } = this.props
 
     const isEmpty = items.size === 0
@@ -79,7 +80,7 @@ export default class Grid extends Component{
         <div className="grid-ctr" style={styles.gridCtr}>
           <GridList cellHeight={200} cols={gridCols || 6} style={styles.gridList}>
             {items.map((item, i) =>
-              <Tile key={i} item={item} saveGame={saveGameByType} handleTileTap={this.handleTileTap} />)}
+              <Tile key={i} item={item} gameHasType={gameHasType} saveGame={saveGameByType} handleTileTap={this.handleTileTap} />)}
           </GridList>
         </div>
         {pageCount > 0 && !isLastPage && this.renderLoadMore()}

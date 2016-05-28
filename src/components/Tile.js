@@ -54,13 +54,6 @@ export default class Tile extends Component{
     this.props.saveGame(item, type)
   }
 
-  gameHasType = (status) => {
-    return false
-    // return this.props.gamesByType.getIn([status, 'items'], List()).some((item) => {
-    //   return item.get('name') === this.props.item.get('name')
-    // })
-  }
-
   onPlusTap = (e) => {
     e.preventDefault()
     e.stopPropagation()
@@ -95,7 +88,7 @@ export default class Tile extends Component{
                   <MenuItem
                     key={i}
                     style={styles.menuItem}
-                    disabled={this.gameHasType(type)}
+                    disabled={this.props.gameHasType(type, item.get('name'))}
                     primaryText={type}
                     onTouchTap={() => saveGame(item, type)}/>
                   ))}
