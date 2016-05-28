@@ -20,7 +20,7 @@ export default class Nav extends Component {
   }
 
   render() {
-    const {leftDrawerOpen, closeLeftDrawer, openLeftDrawer, navTitle, user, navigate, signOut} = this.props
+    const {leftDrawerOpen, closeLeftDrawer, openLeftDrawer, user, navigate, signOut} = this.props
     const signInButton = <MenuItem primaryText='Sign In' onTouchTap={() => navigate('/auth/login')}/>
     const signOutButton= <MenuItem primaryText='Sign Out' onTouchTap={signOut}/>
     const navLinks =  [
@@ -42,7 +42,7 @@ export default class Nav extends Component {
       <div>
         <AppBar
           onLeftIconButtonTouchTap={this.props.openLeftDrawer}
-          title={navTitle || ''}
+          title={''}
           iconElementRight={accountNavElement}/>
 
         <Drawer open={leftDrawerOpen}>

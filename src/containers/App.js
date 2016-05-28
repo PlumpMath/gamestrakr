@@ -5,7 +5,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import {connect} from 'react-redux'
 import {appActions, userActions} from '../actions/'
-import { Link, hashHistory } from 'react-router'
+import { Link } from 'react-router'
 
 const darkMuiTheme = getMuiTheme(darkBaseTheme)
 class App extends Component {
@@ -18,12 +18,12 @@ class App extends Component {
     window.removeEventListener('resize', this.handleResize)
   }
 
-  handleResize = (e) => {
+	handleResize = (e) => {
     this.props.windowResized(window.innerWidth)
   }
 
   navigate = (route) => {
-    hashHistory.push(route)
+    this.context.router.push(route)
     this.props.closeLeftDrawer()
   }
 
@@ -39,10 +39,13 @@ class App extends Component {
   }
 }
 
+App.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};
+
 function mapStateToProps(state){
   return {
     leftDrawerOpen: state.getIn(['app', 'leftDrawerOpen']),
-    navTitle: state.getIn(['app', 'currentPage']),
     user: state.get('user')
   }
 }
