@@ -1,8 +1,8 @@
 import React from 'react'
 import {Route, IndexRedirect, Redirect} from 'react-router'
 import App from './containers/App'
-import Library from './containers/Library'
-import Games from './containers/Games'
+import Library from './components/Library'
+import GridPage from './containers/GridPage'
 import Auth from './containers/Auth'
 import Grid from './components/Grid'
 import GameDetails from './components/Detail'
@@ -13,16 +13,15 @@ const routes = <Route path="/" component={App}>
  <IndexRedirect to="/games/recent" />
 
  <Redirect from="/library" to="library/playing"/>
- <Route path="library" component={Library}>
-   <Route path=":gamesType" component={Games}/>
- </Route>
+
+ <Route path="library/:gamesType" components={{main: GridPage, subNav: Library}}/>
 
  <Redirect from="/games" to="games/recent"/>
- <Route path="games/:gamesType" component={Games}/>
+ <Route path="games/:gamesType" components={{main: GridPage}}/>
 
- <Route path="/game/:name" component={GameDetails}/>
+ <Route path="/game/:name" components={{main: GameDetails}}/>
 
- <Route path="/auth/:authType" component={Auth}/>
+ <Route path="/auth/:authType" components={{main: Auth}}/>
 </Route>
 
 export default routes

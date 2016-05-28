@@ -23,7 +23,7 @@ function loadData(props) {
   props.loadGamesByType(gamesType)
 }
 
-class Games extends Component{
+class GridPage extends Component{
   constructor(props) {
     super(props)
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
@@ -76,7 +76,7 @@ class Games extends Component{
   }
 }
 
-Games.contextTypes = {
+GridPage.contextTypes = {
   router: React.PropTypes.object.isRequired
 };
 
@@ -97,5 +97,5 @@ export default connect(mapStateToProps, {
   loadGamesByType: gamesActions.loadGamesByType,
   saveGameByType: gamesActions.saveGameByType
 }
-)(Games)
+)(GridPage)
 
