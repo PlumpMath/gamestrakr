@@ -1,7 +1,7 @@
 import React from 'react'
 import {render} from 'react-dom'
 import {hashHistory} from 'react-router'
-import {appActions, userActions} from './actions/'
+import {appActions, userActions, gamesActions} from './actions/'
 import {fromJS} from 'immutable'
 import Root from './containers/Root'
 import configureStore from './store/configureStore'
@@ -15,6 +15,9 @@ const store = configureStore(fromJS({
 
 // Grab user from cookies if available, dispatch initial state
 store.dispatch(userActions.userFromCookie())
+const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped']
+libTypes.map((type) =>
+  store.dispatch(gamesActions.loadGamesByType(type)))
 
 render(
   <Root store={store} history={hashHistory} />,
