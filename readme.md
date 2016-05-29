@@ -31,9 +31,7 @@ paginate:{
 ```
 
 
-## TODOS
-* render errors
-* add error when user tries to save game when signed out
+u## TODOS
 * render info in detail component
 * make sure all components arent importing unused libs
 * use webpack uglify plugin
