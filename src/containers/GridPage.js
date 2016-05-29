@@ -64,7 +64,7 @@ class GridPage extends Component{
 	}
 
   render() {
-    const {gamesType, gamesByTypeGames, gamesByTypePagination} = this.props
+    const {gamesType, gridCols, gamesByTypeGames, gamesByTypePagination} = this.props
 
     return (
       <Grid
@@ -72,6 +72,7 @@ class GridPage extends Component{
         items={gamesByTypeGames}
 				renderItem={this.renderGame}
 				gamesType={gamesType}
+				gridCols={gridCols}
         {...gamesByTypePagination.toJS()} />
     )
   }
@@ -91,7 +92,7 @@ function mapStateToProps(state, ownProps) {
   const itemsPerPage =  state.getIn(['app', 'itemsPerPage'])
   const gridCols = state.getIn(['app', 'gridCols'])
 
-  return {gamesByType, gamesType, gamesByTypeGames, gamesByTypePagination}
+  return {gridCols, gamesByType, gamesType, gamesByTypeGames, gamesByTypePagination}
 }
 
 export default connect(mapStateToProps, {
