@@ -8,7 +8,8 @@ webpack-dev-server --inline
 app: {
   currentPage: String,
   leftDrawerOpen: Boolean,
-  selectedGamesType: String
+  selectedGamesType: String,
+  errorMessage: String
 },
 user: {
   token: String,
@@ -17,7 +18,6 @@ user: {
 entities: {
   games: Array
 },
-errorMessage: String,
 paginate:{
   gamesByType: {
     type: {

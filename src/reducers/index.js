@@ -14,19 +14,6 @@ function entities(state = Map({games: {}}), action) {
   return state
 }
 
-// Updates error message to notify about the failed fetches.
-function errorMessage(state = null, action) {
-  const { type, error } = action
-
-  if (type === appActions.RESET_ERROR_MESSAGE) {
-    return null
-  } else if (error) {
-    return action.error
-  }
-
-  return state
-}
-
 // Updates the pagination data for different actions.
 const pagination = combineReducers({
   gamesByType: paginate({
@@ -43,7 +30,6 @@ const pagination = combineReducers({
 const rootReducer = combineReducers({
   entities,
   pagination,
-  errorMessage,
   app,
   user
 })

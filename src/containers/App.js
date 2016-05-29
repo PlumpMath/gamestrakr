@@ -1,11 +1,13 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import Nav from '../components/Nav'
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import {connect} from 'react-redux'
 import {appActions, userActions} from '../actions/'
-import { Link } from 'react-router'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
 
 const darkMuiTheme = getMuiTheme(darkBaseTheme)
 class App extends Component {
@@ -22,6 +24,43 @@ class App extends Component {
     this.props.windowResized(window.innerWidth)
   }
 
+  handleDismissClick = (e) => {
+    this.props.resetErrorMessage()
+    e.preventDefault()
+  }
+
+  renderErrorMessage() {
+    const { errorMessage } = this.props
+    if (!errorMessage) {
+      return null
+    }
+
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={this.handleDismissClick}
+      />,
+      <FlatButton
+        label="Discard"
+        primary={true}
+        onTouchTap={this.handleDismissClick}
+      />,
+    ];
+
+    return (
+      <Dialog
+        actions={actions}
+        modal={false}
+        style={{color: '#fff', zIndex: '3000'}}
+        open={true}
+        onRequestClose={this.handleDismissClick}>
+        {errorMessage}
+      </Dialog>
+    );
+  }
+
+
   navigate = (route) => {
     this.context.router.push(route)
     this.props.closeLeftDrawer()
@@ -32,6 +71,7 @@ class App extends Component {
     return (
       <MuiThemeProvider muiTheme={darkMuiTheme}>
         <div>
+          {this.renderErrorMessage()}
           <Nav {...this.props} className="nav-ctr" navigate={this.navigate} />
 					{subNav}
           {main}
@@ -48,7 +88,8 @@ App.contextTypes = {
 function mapStateToProps(state){
   return {
     leftDrawerOpen: state.getIn(['app', 'leftDrawerOpen']),
-    user: state.get('user')
+    user: state.get('user'),
+    errorMessage: state.getIn(['app', 'errorMessage'])
   }
 }
 
@@ -65,6 +106,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     signOut: () => {
       dispatch(userActions.signOut())
+    },
+    resetErrorMessage: () => {
+      dispatch(appActions.resetErrorMessage())
     }
   }
 }
