@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "6db6130a5e1bc139ea25"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2123023666c4bb4d89d6"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -8670,9 +8670,11 @@
 	// Grab user from cookies if available, dispatch initial state
 	store.dispatch(_actions.userActions.userFromCookie());
 	var libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped'];
-	libTypes.map(function (type) {
-	  return store.dispatch(_actions.gamesActions.loadGamesByType(type));
-	});
+	if (store.getState().getIn(['user', 'token'])) {
+	  libTypes.map(function (type) {
+	    return store.dispatch(_actions.gamesActions.loadGamesByType(type));
+	  });
+	}
 
 	(0, _reactDom.render)(_react2.default.createElement(_Root2.default, { store: store, history: _reactRouter.hashHistory }), document.getElementById('app'));
 
