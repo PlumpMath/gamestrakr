@@ -16,8 +16,10 @@ const store = configureStore(fromJS({
 // Grab user from cookies if available, dispatch initial state
 store.dispatch(userActions.userFromCookie())
 const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped']
-libTypes.map((type) =>
-  store.dispatch(gamesActions.loadGamesByType(type)))
+if(store.getState().getIn(['user', 'token'])){
+	libTypes.map((type) =>
+		store.dispatch(gamesActions.loadGamesByType(type)))
+}
 
 render(
   <Root store={store} history={hashHistory} />,

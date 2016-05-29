@@ -32,6 +32,8 @@ paginate:{
 
 
 ## TODOS
+* render errors
+* add error when user tries to save game when signed out
 * render info in detail component
 * make sure all components arent importing unused libs
 * use webpack uglify plugin
@@ -40,6 +42,4 @@ paginate:{
 * Render recently viewed list and currently playing list of games in nav
 * Make fetching of games more customizeable(genre, search, platform, etc)
 * Enable users to rank games
-* Enable persisting of games saved before signing in
-* render errors
 * improve loader
