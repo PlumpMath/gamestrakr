@@ -5,68 +5,41 @@ webpack-dev-server --inline
 
 ### Redux state map
 ```javascript
-state = {
- app: {
-	currentPage: string,
-	leftDrawerOpen: bool,
-	selectedGamesType: string
- },
- user: {
-   token: String,
-   name: String,
- },
- gamesByType: {
-	upcoming: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
-	recent: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
-	searchedFor: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
-	playing: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
-	planning: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
-	completed: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
-	onHold: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
-	dropped: {
-    page: Integer,
-		isFetching: bool
-		items: []
-	},
- }
+app: {
+  currentPage: String,
+  leftDrawerOpen: Boolean,
+  selectedGamesType: String
+},
+user: {
+  token: String,
+  name: String,
+},
+entities: {
+  games: Array
+},
+errorMessage: String,
+paginate:{
+  gamesByType: {
+    type: {
+      isFetching: Boolean
+      nexPageUrl: String,
+      pageCount: Number,
+      ids: Array
+    }
+  }
 }
 ```
 
 
 ## TODOS
-* Add game detail component
-* Add message when no games underneath user games tab
+* render info in detail component
+* make sure all components arent importing unused libs
+* use webpack uglify plugin
+* show games type in app bar
 * Add search
 * Render recently viewed list and currently playing list of games in nav
 * Make fetching of games more customizeable(genre, search, platform, etc)
 * Enable users to rank games
 * Enable persisting of games saved before signing in
 * render errors
+* improve loader

@@ -1,5 +1,6 @@
-import * as appActions from './app';
-import * as gameActions from './games';
-import * as userActions from './user';
+import * as appActions from './app'
+import * as userActions from './user'
+import * as gamesActions from './games'
 
-export {appActions, gameActions, userActions};
+export {appActions, userActions, gamesActions}
+

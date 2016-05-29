@@ -1,16 +1,19 @@
-var webpack = require('webpack');
+var webpack = require('webpack')
+var path = require('path')
 
 module.exports = {
   entry: [
     'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
-    './src/index.jsx'
+    'babel-polyfill',
+    './src/index.js'
   ],
   module: {
     loaders: [
       {
-        test: /\.jsx?$/,
+        test: /\.js?$/,
         exclude: /node_modules/,
+        include: path.join(__dirname, 'src'),
         loader: 'react-hot!babel'
       },
       {
@@ -25,22 +28,24 @@ module.exports = {
       require('autoprefixer'),
       require('precss'),
       require('postcss-normalize')
-    ];
+    ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.css']
+    extensions: ['', '.js', '.css']
   },
   output: {
     path: __dirname + '/dist',
     publicPath: '/gamestrakr/dist/',
     filename: 'bundle.js'
   },
+  devtool: 'source-map',
   devServer: {
     contentBase: './',
     hot: true
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.DefinePlugin({'process.env.SERVER_URL': '"http://127.0.0.1:3000"'})
+    new webpack.DefinePlugin({'process.env.SERVER_URL': JSON.stringify('http://127.0.0.1:3000')}),
+    new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify('development')})
   ]
-};
+}

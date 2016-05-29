@@ -2,12 +2,13 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: [
-    './src/index.jsx'
+    'babel-polyfill',
+    './src/index.js'
   ],
   module: {
     loaders: [
       {
-        test: /\.jsx?$/,
+        test: /\.js?$/,
         exclude: /node_modules/,
         loader: 'babel'
       },
@@ -26,7 +27,7 @@ module.exports = {
     ];
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.css']
+    extensions: ['', '.js', '.css']
   },
   output: {
     path: __dirname + '/dist',
@@ -35,7 +36,7 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.DefinePlugin({'process.env.SERVER_URL': '"https://gamestrakr-server.herokuapp.com"'}),
-    new webpack.DefinePlugin({'process.env.NODE_ENV': "'production'"})
+    new webpack.DefinePlugin({'process.env.SERVER_URL': JSON.stringify('https://gamestrakr-server.herokuapp.com')}),
+    new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify('production')})
   ]
 };

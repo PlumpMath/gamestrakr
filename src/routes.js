@@ -1,37 +1,27 @@
-import React from 'react';
-import {Route, IndexRoute} from 'react-router';
-import App from './components/App';
-import GamesIndex from './components/games/Index';
-import UserGamesIndex from './components/games/UserIndex';
-import GamesDetail from './components/games/Detail';
+import React from 'react'
+import {Route, IndexRedirect, Redirect} from 'react-router'
+import App from './containers/App'
+import Library from './components/Library'
+import GridPage from './containers/GridPage'
+import Auth from './containers/Auth'
+import Grid from './components/Grid'
+import GameDetails from './components/Detail'
 
-import {appActions, userActions} from './actions/';
+import {appActions, userActions} from './actions/'
 
 const routes = <Route path="/" component={App}>
- <IndexRoute component={GamesIndex}/>
+ <IndexRedirect to="/games/recent" />
 
- <Route path="my_games" component={UserGamesIndex}>
-   <Route path=":name" component={GamesDetail}/>
- </Route>
+ <Redirect from="/library" to="library/playing"/>
 
- <Route path="games" component={GamesIndex}>
-   <Route path=":name" component={GamesDetail}/>
- </Route>
+ <Route path="library/:gamesType" components={{main: GridPage, subNav: Library}}/>
 
- <Route
-   path="/auth_success"
-   component={GamesIndex}
-   onEnter={(nextState, replace) => {
-     const {name, token} = queryString.parse(nextState.location.search);
-       // store.disptach(uploadSavedGames());
-     store.dispatch(userActions.userFromAuth(name, token));
-   }}/>
- <Route
-   path="/auth_failure"
-   component={GamesIndex}
-   onEnter={() => {
-     store.dispatch(userActions.authFailed());
-   }}/>
-</Route>;
+ <Redirect from="/games" to="games/recent"/>
+ <Route path="games/:gamesType" components={{main: GridPage}}/>
 
-export default routes;
+ <Route path="/game/:name" components={{main: GameDetails}}/>
+
+ <Route path="/auth/:authType" components={{main: Auth}}/>
+</Route>
+
+export default routes

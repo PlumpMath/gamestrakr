@@ -1,47 +1,42 @@
-span[type="button"]{
-  -webkit-appearance: none;
+.tile-ctr{
+	height: auto;
+	max-width: 100%;
+	cursor: pointer;
+	img, object{
+		height: auto;
+		max-width: 100%;
+	}
 }
 
-.grid-ctr{
-  .tile-img-ctr{
-    height: auto;
-    max-width: 100%;
-
-    img{
-      height: auto;
-      max-width: 100%;
-    }
-  }
-
-  .tile-ctr{
-    cursor: pointer;
+.tab-content-ctr{
+  >div{
+    position: inherit !important;
   }
 }
 
-.bottom-nav{
+.game-detail-ctr{
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
   width: 100%;
-  height: 150px;
-  background-color: #212121;
-  position: relative;
-  color: #fff;
+  z-index: 2000;
+  background-color: #EEEEEE;
 
-  .next-page-ctr, .prev-page-ctr{
+  .game-detail-content{
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    background: #fff;
+  }
+
+  .detail-go-back-btn{
+    position: relative;
     cursor: pointer;
-
-    span{
-      vertical-align: middle;
-      padding: 0 10px;
-    }
-  }
-
-  .next-page-ctr{
-    right: 20px;
-  }
-
-  .prev-page-ctr{
-    left: 20px;
+    top: 10px;
+    left: 10px;
   }
 }
