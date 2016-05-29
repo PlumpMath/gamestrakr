@@ -4,8 +4,7 @@ import App from './containers/App'
 import Library from './components/Library'
 import GridPage from './containers/GridPage'
 import Auth from './containers/Auth'
-import Grid from './components/Grid'
-import GameDetails from './components/Detail'
+import GameDetails from './containers/Detail'
 
 import {appActions, userActions} from './actions/'
 
