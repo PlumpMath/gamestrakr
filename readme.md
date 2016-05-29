@@ -33,6 +33,8 @@ paginate:{
 
 ## TODOS
 * render info in detail component
+* make sure all components arent importing unused libs
+* use webpack uglify plugin
 * show games type in app bar
 * Add search
 * Render recently viewed list and currently playing list of games in nav
