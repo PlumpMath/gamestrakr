@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {GridList} from 'material-ui/GridList'
-import FontIcon from 'material-ui/FontIcon'
-import IconButton from 'material-ui/IconButton'
 import CircularProgress from 'material-ui/CircularProgress'
+import RaisedButton from 'material-ui/RaisedButton';
 
 const styles = {
   root: {
@@ -32,7 +31,13 @@ const styles = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     margin: 0
-  }
+  },
+	loadMoreBtn: {
+		margin: '10px',
+	},
+	loadMoreLabel: {
+		fontSize: '20px',
+	}
 }
 
 export default class Grid extends Component{
@@ -45,11 +50,13 @@ export default class Grid extends Component{
     const { isFetching, onLoadMoreClick } = this.props
 
     return (
-      <button style={{ fontSize: '150%' }}
-        onClick={onLoadMoreClick}
-        disabled={isFetching}>
-        {isFetching ? 'Loading...' : 'Load More'}
-      </button>
+			<RaisedButton
+				label= {isFetching ? 'Loading...' : 'Load More'}
+				primary={true}
+				onClick={onLoadMoreClick}
+				style={styles.loadMoreBtn}
+				labelStyle={styles.loadMoreLabel}
+        disabled={isFetching}/>
     )
   }
 

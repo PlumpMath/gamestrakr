@@ -32,11 +32,6 @@ paginate:{
 
 
 ## TODOS
-* fix save game button and dropdown menu
-* make sure game is removed from previous section when saved
-* improve show more button
-* MERGE TO MASTER
-
 * render info in detail component
 * show games type in app bar
 * Add search
