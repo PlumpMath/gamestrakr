@@ -36,6 +36,7 @@ u## TODOS
 * make sure all components arent importing unused libs
 * use webpack uglify plugin
 * show games type in app bar
+* give giant bomb credit
 * Add search
 * Render recently viewed list and currently playing list of games in nav
 * Make fetching of games more customizeable(genre, search, platform, etc)
