@@ -8,6 +8,8 @@ import {connect} from 'react-redux'
 
 import {gamesActions} from '../actions/'
 
+const placeholderImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=38&txt=GamesTrackr&w=600&h=450&txttrack=0'
+
 function loadData(props) {
   const name = props.params.name
   if(name) props.loadGameByName(name)
@@ -25,6 +27,15 @@ class Detail extends Component{
     }
   }
 
+  getGameImageUrl = () => {
+    const {game} = this.props
+    if(!game) return placeholderImageUrl
+    return game.getIn(['image', 'largeUrl'])
+      || game.getIn(['image', 'mediumUrl'])
+      || game.getIn(['image', 'smallUrl'])
+      || placeholderImageUrl
+  }
+
   render(){
     const {game} = this.props
 
@@ -39,16 +50,13 @@ class Detail extends Component{
               title={game.get('name')}
               subtitle={game.get('deck')} />
             <CardMedia
-              overlay={<CardTitle title="Overlay title" subtitle="Overlay subtitle" />}>
-              <img src="http://lorempixel.com/600/337/nature/" />
+              overlay={<CardTitle title={game.get('name')} subtitle={game.get('deck')} />}>
+              <object data={this.getGameImageUrl()} type="image/jpg">
+                <img src={placeholderImageUrl} />
+              </object>
             </CardMedia>
-            <CardTitle title="Card title" subtitle="Card subtitle" />
-            <CardText>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-              Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-              Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-            </CardText>
+            <CardTitle title={game.get('name')} subtitle={game.get('deck')} />
+            <CardText className="card-text" dangerouslySetInnerHTML={{__html: game.get('description')}}/>
             <CardActions>
               <FlatButton label="Action1" />
               <FlatButton label="Action2" />
