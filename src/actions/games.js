@@ -64,6 +64,10 @@ function fetchGame(name) {
 export function loadGameByName(name) {
   return (dispatch, getState) => {
     // check if entities doesnt already contain game
+    if(getState().getIn(['entities', 'games', name])){
+      return null
+    }
+
     return dispatch(fetchGame(name))
   }
 }
