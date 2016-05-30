@@ -32,7 +32,6 @@ paginate:{
 
 
 u## TODOS
-* make sure all components arent importing unused libs
 * use webpack uglify plugin
 * make libTypes part of app state(configurable)
 * show games type in app bar
