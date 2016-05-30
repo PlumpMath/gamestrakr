@@ -1,6 +1,7 @@
-import { Schema, arrayOf, normalize } from 'normalizr';
+import { Schema, arrayOf, normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
-import 'isomorphic-fetch';
+import 'isomorphic-fetch'
+import {appActions} from '../actions/'
 
 // Extracts the next page URL from API response.
 function getNextPageUrl(response) {
@@ -45,7 +46,7 @@ function getApi(endpoint, schema, token) {
 function postApi(endpoint, schema, token, body) {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
   if (!token) {
-    return Promise.reject('No token for post request')
+    return Promise.reject({message: 'Must be signed in to save games to library'})
   }
   return fetch(fullUrl, {
     method: 'POST',
@@ -116,7 +117,7 @@ export default store => next => action => {
     return finalAction
   }
 
-  function actionWithNewType(data, type) {
+  function actionWithNewKey(data, type) {
     const finalAction = Object.assign({}, action, data, type)
     delete finalAction[CALL_API]
     return finalAction
@@ -143,11 +144,11 @@ export default store => next => action => {
       response => {
         next(actionWith({ response, type: successType }))
         if(typeof currentLibType == 'string') {
-          next(actionWithNewType({ response, type: removeType}, {'gamesType': currentLibType}))
+          next(actionWithNewKey({ response, type: removeType}, {'gamesType': currentLibType}))
         }
       },
       error => next(actionWith({
-        type: failureType,
+        type: appActions.SET_ERROR_MESSAGE,
         error: error.message || 'Something bad happened'
       }))
     )

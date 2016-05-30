@@ -13,8 +13,8 @@ const store = configureStore(fromJS({
   app: {'leftDrawerOpen': false, 'itemsPerPage': 24},
 }))
 
-// Grab user from cookies if available, dispatch initial state
 store.dispatch(userActions.userFromCookie())
+
 const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped']
 if(store.getState().getIn(['user', 'token'])){
 	libTypes.map((type) =>

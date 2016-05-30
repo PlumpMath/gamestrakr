@@ -8,7 +8,8 @@ webpack-dev-server --inline
 app: {
   currentPage: String,
   leftDrawerOpen: Boolean,
-  selectedGamesType: String
+  selectedGamesType: String,
+  errorMessage: String
 },
 user: {
   token: String,
@@ -17,7 +18,6 @@ user: {
 entities: {
   games: Array
 },
-errorMessage: String,
 paginate:{
   gamesByType: {
     type: {
@@ -31,13 +31,13 @@ paginate:{
 ```
 
 
-## TODOS
-* render errors
-* add error when user tries to save game when signed out
-* render info in detail component
+u## TODOS
 * make sure all components arent importing unused libs
 * use webpack uglify plugin
+* make libTypes part of app state(configurable)
 * show games type in app bar
+* give giant bomb credit
+* render improved/more info detail component
 * Add search
 * Render recently viewed list and currently playing list of games in nav
 * Make fetching of games more customizeable(genre, search, platform, etc)

@@ -5,6 +5,10 @@ export const GAMES_SUCCESS = 'GAMES_SUCCESS'
 export const GAMES_FAILURE = 'GAMES_FAILURE'
 export const GAMES_REMOVE = 'GAMES_REMOVE'
 
+export const GAME_REQUEST = 'GAME_REQUEST'
+export const GAME_SUCCESS = 'GAME_SUCCESS'
+export const GAME_FAILURE = 'GAME_FAILURE'
+
 function gamesUrl(baseUrl){
   return (state) => {
     if (state){
@@ -43,6 +47,28 @@ export function loadGamesByType(type, nextPage) {
     }
 
     return dispatch(fetchGames(type, nextPageUrl))
+  }
+}
+
+function fetchGame(name) {
+  return {
+    [CALL_API]: {
+      types: [ GAME_REQUEST, GAME_SUCCESS, GAME_FAILURE],
+      endpoint: `/games/by_name?name=${name}`,
+      requestMethod: 'GET',
+      schema: Schemas.GAME_ARRAY
+    }
+  }
+}
+
+export function loadGameByName(name) {
+  return (dispatch, getState) => {
+    // check if entities doesnt already contain game
+    if(getState().getIn(['entities', 'games', name])){
+      return null
+    }
+
+    return dispatch(fetchGame(name))
   }
 }
 

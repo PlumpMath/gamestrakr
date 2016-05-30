@@ -1,9 +1,5 @@
 import React, {Component} from 'react'
-import {connect} from 'react-redux'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import _ from 'lodash'
-import {List} from 'immutable'
-
 import {GridTile} from 'material-ui/GridList'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
