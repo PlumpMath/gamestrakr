@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "1e2203dddae874763e16"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "b0a5f4ddca69830c9fcc"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -65554,7 +65554,7 @@
 	      var item = _this.props.item;
 
 	      if (!item) return placeholderImageUrl;
-	      return item.getIn(['image', 'smallUrl']) || item.getIn(['image', 'mediumUrl']) || placeholderImageUrl;
+	      return item.getIn(['image', 'smallUrl']) || item.getIn(['image', 'mediumUrl']) || item.getIn(['image', 'largeUrl']) || placeholderImageUrl;
 	    };
 
 	    _this.onClosePopOver = function () {
