@@ -7,7 +7,6 @@ import {connect} from 'react-redux'
 import {appActions, userActions} from '../actions/'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
-import RaisedButton from 'material-ui/RaisedButton'
 
 const darkMuiTheme = getMuiTheme(darkBaseTheme)
 class App extends Component {

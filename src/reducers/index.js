@@ -1,4 +1,4 @@
-import {gamesActions, appActions} from '../actions'
+import {gamesActions} from '../actions'
 import { combineReducers } from 'redux-immutable'
 import paginate from './paginate'
 import app from './app'

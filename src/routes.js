@@ -6,8 +6,6 @@ import GridPage from './containers/GridPage'
 import Auth from './containers/Auth'
 import GameDetails from './containers/Detail'
 
-import {appActions, userActions} from './actions/'
-
 const routes = <Route path="/" component={App}>
  <IndexRedirect to="/games/recent" />
 

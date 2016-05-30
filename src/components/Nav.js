@@ -7,7 +7,6 @@ import FontIcon from 'material-ui/FontIcon'
 import IconMenu from 'material-ui/IconMenu'
 import IconButton from 'material-ui/IconButton'
 import MenuItem from 'material-ui/MenuItem'
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar'
 
 // Home - where users can view currently playing, their own collection, recently viewed etc
 // Games - where users can search for and sort through upcoming and recently released games
