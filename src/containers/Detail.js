@@ -36,6 +36,31 @@ class Detail extends Component{
       || placeholderImageUrl
   }
 
+	libTypeOfGame = (name) => {
+    const types = ['playing', 'planning', 'completed', 'onHold', 'dropped']
+		return this.props.gamesByType
+      .filter((v, k) => types.includes(k))
+      .findKey((v, k) => v.hasIn(['ids', name]))
+	}
+
+  renderCardActions = () => {
+    const {game, saveGameByType} = this.props
+    const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped']
+		const libTypeOfGame = this.libTypeOfGame(game.get('name'))
+
+    return (
+      <CardActions className="card-actions">
+        {libTypes.map((type, i) => (
+          <FlatButton
+            key={i}
+            disabled={type === libTypeOfGame}
+            label={type}
+            onTouchTap={() => saveGameByType(game, type)}/>
+          ))}
+      </CardActions>
+    )
+  }
+
   render(){
     const {game} = this.props
 
@@ -51,16 +76,15 @@ class Detail extends Component{
               subtitle={game.get('deck')} />
             <CardMedia
               overlay={<CardTitle title={game.get('name')} subtitle={game.get('deck')} />}>
-              <object data={this.getGameImageUrl()} type="image/jpg">
-                <img src={placeholderImageUrl} />
-              </object>
+              <div className="card-image-ctr">
+                <object data={this.getGameImageUrl()} type="image/jpg">
+                  <img src={placeholderImageUrl} />
+                </object>
+              </div>
             </CardMedia>
             <CardTitle title={game.get('name')} subtitle={game.get('deck')} />
             <CardText className="card-text" dangerouslySetInnerHTML={{__html: game.get('description')}}/>
-            <CardActions className="card-actions">
-              <FlatButton label="Action1" />
-              <FlatButton label="Action2" />
-            </CardActions>
+            {this.renderCardActions()}
           </Card>
         </div>
       )
@@ -87,11 +111,13 @@ function mapStateToProps(state, ownProps) {
   const gameId = ownProps.params.name
   const games = state.getIn(['entities', 'games'])
   const game = (games && games.size) ? games.get(gameId) : null
+	const gamesByType = state.getIn(['pagination', 'gamesByType'])
 
-  return {gameId, game}
+  return {gameId, game, gamesByType}
 }
 
 export default connect(mapStateToProps, {
-  loadGameByName: gamesActions.loadGameByName
+  loadGameByName: gamesActions.loadGameByName,
+  saveGameByType: gamesActions.saveGameByType
 })(Detail)
 

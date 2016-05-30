@@ -32,11 +32,12 @@ paginate:{
 
 
 u## TODOS
-* render info in detail component
 * make sure all components arent importing unused libs
 * use webpack uglify plugin
+* make libTypes part of app state(configurable)
 * show games type in app bar
 * give giant bomb credit
+* render improved/more info detail component
 * Add search
 * Render recently viewed list and currently playing list of games in nav
 * Make fetching of games more customizeable(genre, search, platform, etc)
