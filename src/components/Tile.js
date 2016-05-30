@@ -27,7 +27,10 @@ export default class Tile extends Component{
   getGameImageUrl = () => {
     const {item} = this.props
     if(!item) return placeholderImageUrl
-    return item.getIn(['image', 'smallUrl']) || item.getIn(['image', 'mediumUrl']) || placeholderImageUrl
+    return item.getIn(['image', 'smallUrl'])
+      || item.getIn(['image', 'mediumUrl'])
+      || item.getIn(['image', 'largeUrl'])
+      || placeholderImageUrl
   }
 
   onClosePopOver = () => {
