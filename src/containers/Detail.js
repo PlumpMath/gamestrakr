@@ -65,6 +65,14 @@ class Detail extends Component{
     const {game} = this.props
 
     if (game) {
+      const styles = {
+        cardImage: {
+          backgroundImage: `url(${this.getGameImageUrl()})`,
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat'
+        }
+      }
+
       return (
         <div className="game-detail-ctr">
           <IconButton className="detail-go-back-btn" onClick={() => this.context.router.goBack()}>
@@ -76,11 +84,7 @@ class Detail extends Component{
               subtitle={game.get('deck')} />
             <CardMedia
               overlay={<CardTitle title={game.get('name')} subtitle={game.get('deck')} />}>
-              <div className="card-image-ctr">
-                <object data={this.getGameImageUrl()} type="image/jpg">
-                  <img src={placeholderImageUrl} />
-                </object>
-              </div>
+              <div className="card-image-ctr" style={styles.cardImage} />
             </CardMedia>
             <CardTitle title={game.get('name')} subtitle={game.get('deck')} />
             <CardText className="card-text" dangerouslySetInnerHTML={{__html: game.get('description')}}/>
