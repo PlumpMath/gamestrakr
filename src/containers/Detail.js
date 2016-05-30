@@ -57,7 +57,7 @@ class Detail extends Component{
             </CardMedia>
             <CardTitle title={game.get('name')} subtitle={game.get('deck')} />
             <CardText className="card-text" dangerouslySetInnerHTML={{__html: game.get('description')}}/>
-            <CardActions>
+            <CardActions className="card-actions">
               <FlatButton label="Action1" />
               <FlatButton label="Action2" />
             </CardActions>
