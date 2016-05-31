@@ -31,7 +31,7 @@ paginate:{
 ```
 
 
-u## TODOS
+## TODOS
 * use webpack uglify plugin
 * make libTypes part of app state(configurable)
 * show games type in app bar
