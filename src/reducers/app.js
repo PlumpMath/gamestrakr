@@ -13,8 +13,17 @@ function setItemsPerPage(state, num){
   return state.set('itemsPerPage', num)
 }
 
-function setGridCols(state, cols){
-  return state.set('gridCols', cols)
+function setGridCols(state, size){
+  switch (true){
+    case (size < 800):
+      return state.set('gridCols', 2)
+    case (size < 1000):
+      return state.set('gridCols', 3)
+    case (size < 1500):
+      return state.set('gridCols', 4)
+    default:
+      return state.set('gridCols', 6)
+  }
 }
 
 function resetErrorMessage(state){
@@ -34,7 +43,7 @@ export default function app(state = Map(), action){
     case appActions.ITEMS_PER_PAGE:
       return setItemsPerPage(state, action.num)
     case appActions.SET_GRID_COLS:
-      return setGridCols(state, action.cols)
+      return setGridCols(state, action.size)
     case appActions.RESET_ERROR_MESSAGE:
       return resetErrorMessage(state)
     case appActions.SET_ERROR_MESSAGE:

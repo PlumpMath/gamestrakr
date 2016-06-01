@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import { appActions }from '../../src/actions/';
+import { appActions } from '../../src/actions/';
 
 describe('actions', () => {
   it('should create an action to reset error message', () => {
@@ -42,12 +42,12 @@ describe('actions', () => {
   })
 
   it('should create an action to set grid cols', () => {
-    const cols = 6
+    const size = 800
     const expectedAction = {
       type: appActions.SET_GRID_COLS,
-      cols
+      size
     }
-    expect(appActions.setGridCols(cols)).to.eql(expectedAction)
+    expect(appActions.setGridCols(size)).to.eql(expectedAction)
   })
 })
 

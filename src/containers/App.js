@@ -12,7 +12,7 @@ const darkMuiTheme = getMuiTheme(darkBaseTheme)
 class App extends Component {
   componentDidMount() {
     window.addEventListener('resize', this.handleResize)
-    this.props.windowResized(window.innerWidth)
+    this.props.setGridCols(window.innerWidth)
   }
 
   componentWillUnmount() {
@@ -20,7 +20,7 @@ class App extends Component {
   }
 
 	handleResize = (e) => {
-    this.props.windowResized(window.innerWidth)
+    this.props.setGridCols(window.innerWidth)
   }
 
   handleDismissClick = (e) => {
@@ -71,7 +71,7 @@ class App extends Component {
       <MuiThemeProvider muiTheme={darkMuiTheme}>
         <div>
           {this.renderErrorMessage()}
-          <Nav {...this.props} className="nav-ctr" navigate={this.navigate} />
+          <Nav className="nav-ctr" {...this.props} navigate={this.navigate} />
 					{subNav}
           {main}
         </div>
@@ -100,8 +100,8 @@ const mapDispatchToProps = (dispatch) => {
     closeLeftDrawer: () => {
       dispatch(appActions.closeLeftDrawer())
     },
-    windowResized: (width) => {
-      dispatch(appActions.windowResized(width))
+    setGridCols: (width) => {
+      dispatch(appActions.setGridCols(width))
     },
     signOut: () => {
       dispatch(userActions.signOut())
