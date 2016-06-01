@@ -49,7 +49,7 @@ class Auth extends Component {
 
 Auth.contextTypes = {
   router: React.PropTypes.object.isRequired
-};
+}
 
 export default connect(
   undefined,

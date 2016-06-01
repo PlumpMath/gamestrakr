@@ -31,5 +31,5 @@ export default class Library extends Component{
 
 Library.contextTypes = {
   router: React.PropTypes.object.isRequired
-};
+}
 

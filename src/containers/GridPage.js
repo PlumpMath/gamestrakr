@@ -75,7 +75,7 @@ class GridPage extends Component{
 
 GridPage.contextTypes = {
   router: React.PropTypes.object.isRequired
-};
+}
 
 function mapStateToProps(state, ownProps) {
   const gamesType = ownProps.params.gamesType

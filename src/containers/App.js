@@ -45,7 +45,7 @@ class App extends Component {
         primary={true}
         onTouchTap={this.handleDismissClick}
       />,
-    ];
+    ]
 
     return (
       <Dialog
@@ -56,7 +56,7 @@ class App extends Component {
         onRequestClose={this.handleDismissClick}>
         {errorMessage}
       </Dialog>
-    );
+    )
   }
 
 
@@ -82,7 +82,7 @@ class App extends Component {
 
 App.contextTypes = {
   router: React.PropTypes.object.isRequired
-};
+}
 
 function mapStateToProps(state){
   return {

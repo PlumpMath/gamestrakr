@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
+import FlatButton from 'material-ui/FlatButton'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
 import {connect} from 'react-redux'
@@ -109,7 +109,7 @@ class Detail extends Component{
 
 Detail.contextTypes = {
   router: React.PropTypes.object.isRequired
-};
+}
 
 function mapStateToProps(state, ownProps) {
   const gameId = ownProps.params.name

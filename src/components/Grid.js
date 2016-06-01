@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import {GridList} from 'material-ui/GridList'
 import CircularProgress from 'material-ui/CircularProgress'
-import RaisedButton from 'material-ui/RaisedButton';
+import RaisedButton from 'material-ui/RaisedButton'
 
 const styles = {
   root: {

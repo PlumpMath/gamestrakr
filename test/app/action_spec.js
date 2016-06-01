@@ -1,5 +1,5 @@
-import {expect} from 'chai';
-import { appActions } from '../../src/actions/';
+import {expect} from 'chai'
+import { appActions } from '../../src/actions/'
 
 describe('app actions', () => {
   it('should create an action to reset error message', () => {
