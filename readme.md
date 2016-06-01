@@ -32,8 +32,8 @@ paginate:{
 
 
 ## TODOS
-* make libTypes part of app state(configurable)
-* write tests
+* use redux-api-middleware
+* make libTypes part of app state(configurable), test
 * show games type in app bar
 * give giant bomb credit
 * render improved/more info detail component

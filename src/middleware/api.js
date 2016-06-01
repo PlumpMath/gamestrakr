@@ -70,14 +70,6 @@ function postApi(endpoint, schema, token, body) {
     })
 }
 
-const gameSchema = new Schema('games', {
-  idAttribute: game => game.name
-})
-
-export const Schemas = {
-  GAME: gameSchema,
-  GAME_ARRAY: arrayOf(gameSchema)
-}
 
 
 // Action key that carries API call info interpreted by this Redux middleware.

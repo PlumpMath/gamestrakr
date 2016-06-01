@@ -1,4 +1,14 @@
-import { CALL_API, Schemas } from '../middleware/api'
+import { CALL_API } from `redux-api-middleware`;
+import { Schema, arrayOf, normalize } from 'normalizr'
+
+const gameSchema = new Schema('games', {
+  idAttribute: game => game.name
+})
+
+export const Schemas = {
+  GAME: gameSchema,
+  GAME_ARRAY: arrayOf(gameSchema)
+}
 
 export const GAMES_REQUEST = 'GAMES_REQUEST'
 export const GAMES_SUCCESS = 'GAMES_SUCCESS'
@@ -28,7 +38,7 @@ function fetchGames(gamesType, nextPageUrl) {
     [CALL_API]: {
       types: [ GAMES_REQUEST, GAMES_SUCCESS, GAMES_FAILURE],
       endpoint: gamesUrl(nextPageUrl),
-      requestMethod: 'GET',
+      method: 'GET',
       schema: Schemas.GAME_ARRAY
     }
   }
