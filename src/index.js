@@ -9,9 +9,7 @@ import css from './stylesheets/index.scss'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin()
 
-const store = configureStore(fromJS({
-  app: {'leftDrawerOpen': false, 'itemsPerPage': 24},
-}))
+const store = configureStore()
 
 store.dispatch(userActions.userFromCookie())
 

@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import { appActions } from '../../src/actions/';
 
-describe('actions', () => {
+describe('app actions', () => {
   it('should create an action to reset error message', () => {
     const expectedAction = {
       type: appActions.RESET_ERROR_MESSAGE,

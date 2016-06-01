@@ -1,4 +1,4 @@
-import {Map} from 'immutable'
+import {fromJS} from 'immutable'
 import {appActions} from '../actions'
 
 function openLeftDrawer(state){
@@ -34,7 +34,12 @@ function setErrorMessage(state, error){
   return state.set('errorMessage', error)
 }
 
-export default function app(state = Map(), action){
+export default function app(state = fromJS({
+  leftDrawerOpen: false,
+  itemsPerPage: 24,
+  gridCols: 6,
+  errorMessage: null
+  }), action){
   switch (action.type) {
     case appActions.OPEN_LEFT_DRAWER:
       return openLeftDrawer(state)
@@ -52,3 +57,4 @@ export default function app(state = Map(), action){
       return state
   }
 }
+
