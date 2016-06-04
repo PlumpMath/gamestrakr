@@ -8,15 +8,13 @@ export const GAME_REQUEST = 'GAME_REQUEST';
 export const GAME_SUCCESS = 'GAME_SUCCESS';
 export const GAME_FAILURE = 'GAME_FAILURE';
 
-const gamesUrl = (baseUrl) => {
-  return (state) => {
-    if (state) {
-      const itemsPerPage = state.getIn(['app', 'itemsPerPage']);
-      return `${baseUrl}&limit=${itemsPerPage}`;
-    }
+const gamesUrl = (baseUrl) => state => {
+  if (state) {
+    const itemsPerPage = state.getIn(['app', 'itemsPerPage']);
+    return `${baseUrl}&limit=${itemsPerPage}`;
+  }
 
-    return baseUrl;
-  };
+  return baseUrl;
 };
 
 // Fetches a page of games by a type.
@@ -34,17 +32,16 @@ const fetchGames = (gamesType, nextPageUrl) => ({
 // Fetches a page of games by type.
 // Bails out if page is cached and user didn’t specifically request next page.
 // Relies on Redux Thunk middleware.
-export const loadGamesByType = (type, nextPage) => {
-  return (dispatch, getState) => {
-    const nextPageUrl = getState().getIn(['pagination', 'gamesByType', type, 'nextPageUrl'], `/games/${type}?`);
-    const pageCount = getState().getIn(['pagination', 'gamesByType', type, 'pageCount'], 0);
+export const loadGamesByType = (type, nextPage) => (dispatch, getState) => {
+  const nextPageUrl = getState()
+    .getIn(['pagination', 'gamesByType', type, 'nextPageUrl'], `/games/${type}?`);
+  const pageCount = getState().getIn(['pagination', 'gamesByType', type, 'pageCount'], 0);
 
-    if (pageCount > 0 && !nextPage) {
-      return null;
-    }
+  if (pageCount > 0 && !nextPage) {
+    return null;
+  }
 
-    return dispatch(fetchGames(type, nextPageUrl));
-  };
+  return dispatch(fetchGames(type, nextPageUrl));
 };
 
 const fetchGame = (name) => ({
@@ -56,15 +53,13 @@ const fetchGame = (name) => ({
   },
 });
 
-export const loadGameByName = (name) => {
-  return (dispatch, getState) => {
-    // check if entities doesnt already contain game
-    if (getState().getIn(['entities', 'games', name])) {
-      return null;
-    }
+export const loadGameByName = (name) => (dispatch, getState) => {
+  // check if entities doesnt already contain game
+  if (getState().getIn(['entities', 'games', name])) {
+    return null;
+  }
 
-    return dispatch(fetchGame(name));
-  };
+  return dispatch(fetchGame(name));
 };
 
 const postGame = (game, gamesType, postUrl, currentLibType) => ({
@@ -79,18 +74,17 @@ const postGame = (game, gamesType, postUrl, currentLibType) => ({
   },
 });
 
-export const saveGameByType = (game, gamesType) => {
-  return (dispatch, getState) => {
-    if (!['name', 'image', 'apiDetailUrl'].every((k) => game.has(k))) {
-      return null;
-    }
-    const postUrl = `/games/${gamesType}`;
-    const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped'];
-    const currentLibType = getState().getIn(['pagination', 'gamesByType'])
-      .filter((v, k) => libTypes.includes(k))
-      .findKey((v, k) => v.hasIn(['ids', game.get('name')]));
+export const saveGameByType = (game, gamesType) => (dispatch, getState) => {
+  if (!['name', 'image', 'apiDetailUrl'].every((k) => game.has(k))) {
+    return null;
+  }
+  const postUrl = `/games/${gamesType}`;
+  const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped'];
+  const currentLibType = getState().getIn(['pagination', 'gamesByType'])
+    .filter((v, k) => libTypes.includes(k))
+    .findKey((v) => v.hasIn(['ids', game.get('name')]));
 
 
-    return dispatch(postGame(game, gamesType, postUrl, currentLibType));
-  };
+  return dispatch(postGame(game, gamesType, postUrl, currentLibType));
 };
+

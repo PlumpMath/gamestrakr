@@ -12,19 +12,23 @@ export const receiveUser = (name, token) => ({
 export const userFromCookie = () => {
   const user = Cookies.getJSON('user');
 
-  return (dispatch, getState) => {
+  return (dispatch) => {
     if (user && user.name && user.token) {
       return dispatch(receiveUser(user.name, user.token));
     }
+
+    return undefined;
   };
 };
 
 export const userFromAuth = (name, token) => {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     if (name && token) {
-      Cookies.set('user', { name: name, token: token });
+      Cookies.set('user', { name, token });
       return dispatch(receiveUser(name, token));
     }
+
+    return undefined;
   };
 };
 
