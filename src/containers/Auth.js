@@ -21,7 +21,7 @@ class Auth extends Component {
 
     const authActions = {
       success: [
-        <FlatButton label={"Check out your saved games"} primary={true} linkButton={true} href={'#/my_games'}/>,
+        <FlatButton label={"Check out your saved games"} primary={true} linkButton={true} href={'#/library'}/>,
         <FlatButton label={"Look at the hot new releases"} primary={true} linkButton={true} href={'#/games/recent'}/>
       ],
       login: [

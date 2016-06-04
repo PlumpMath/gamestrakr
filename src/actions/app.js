@@ -5,42 +5,14 @@ export const CLOSE_LEFT_DRAWER = 'CLOSE_LEFT_DRAWER'
 export const ITEMS_PER_PAGE = 'ITEMS_PER_PAGE'
 export const SET_GRID_COLS = 'SET_GRID_COLS'
 
-// Resets the currently visible error message.
-export function resetErrorMessage() {
-  return {
-    type: RESET_ERROR_MESSAGE
-  }
-}
+export const resetErrorMessage = () => ({type: RESET_ERROR_MESSAGE})
 
-export function setErrorMessage(error) {
-  return {
-    type: SET_ERROR_MESSAGE,
-    error
-  }
-}
+export const setErrorMessage = (error) => ({type: SET_ERROR_MESSAGE, error})
 
-export function openLeftDrawer(){
-  return {
-    type: OPEN_LEFT_DRAWER
-  }
-}
+export const openLeftDrawer = () => ({type: OPEN_LEFT_DRAWER})
 
-export function closeLeftDrawer(){
-  return {
-    type: CLOSE_LEFT_DRAWER
-  }
-}
+export const closeLeftDrawer = () => ({type: CLOSE_LEFT_DRAWER})
 
-export function setItemsPerPage(num){
-  return {
-    type: ITEMS_PER_PAGE,
-    num
-  }
-}
+export const setItemsPerPage = (num) => ({ type: ITEMS_PER_PAGE, num })
 
-export function setGridCols(size){
-  return {
-    type: SET_GRID_COLS,
-    size
-  }
-}
+export const setGridCols = (size) => ({ type: SET_GRID_COLS, size})
