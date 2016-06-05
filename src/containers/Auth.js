@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -62,7 +62,13 @@ class Auth extends Component {
 }
 
 Auth.contextTypes = {
-  router: React.PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired,
+};
+
+Auth.propTypes = {
+  location: PropTypes.object.isRequired,
+  userFromAuth: PropTypes.func.isRequired,
+  params: PropTypes.object.isRequired,
 };
 
 export default connect(

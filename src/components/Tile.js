@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { Map } from 'immutable';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import startCase from 'lodash/startCase';
 import { GridTile } from 'material-ui/GridList';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
@@ -56,9 +58,9 @@ export default class Tile extends Component {
   }
 
   render() {
-    const { item, saveGame } = this.props;
+    const { item, saveGame, getLibTypeOfItem } = this.props;
     const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped'];
-    const libTypeOfItem = this.props.libTypeOfItem(item.get('name'));
+    const libTypeOfItem = getLibTypeOfItem(item.get('name'));
 
     return (
       <GridTile
@@ -66,7 +68,9 @@ export default class Tile extends Component {
         title={item.get('name')}
         onTouchTap={this.onTileTap}
         actionIcon={<IconButton onTouchTap={this.onPlusTap}>
-          <FontIcon className="material-icons">{false ? 'check_circle' : 'add_circle'}</FontIcon>
+          <FontIcon className="material-icons">
+            {libTypeOfItem ? 'check_circle' : 'add_circle'}
+          </FontIcon>
           <Popover
             open={this.state.popOverOpen}
             anchorEl={this.state.popOverAnchor}
@@ -77,7 +81,7 @@ export default class Tile extends Component {
                 key={i}
                 style={styles.menuItem}
                 disabled={type === libTypeOfItem}
-                primaryText={type}
+                primaryText={startCase(type)}
                 onTouchTap={() => saveGame(item, type)}
               />
               ))}
@@ -92,3 +96,11 @@ export default class Tile extends Component {
     );
   }
 }
+
+Tile.propTypes = {
+  item: PropTypes.instanceOf(Map).isRequired,
+  saveGame: PropTypes.func.isRequired,
+  handleTileTap: PropTypes.func.isRequired,
+  getLibTypeOfItem: PropTypes.func.isRequired,
+};
+

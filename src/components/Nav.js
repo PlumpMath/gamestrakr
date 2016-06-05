@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import { Map } from 'immutable';
 import { Link } from 'react-router';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
@@ -65,4 +66,13 @@ export default class Nav extends Component {
     );
   }
 }
+
+Nav.propTypes = {
+  leftDrawerOpen: PropTypes.bool.isRequired,
+  closeLeftDrawer: PropTypes.func.isRequired,
+  user: PropTypes.instanceOf(Map),
+  navigate: PropTypes.func.isRequired,
+  signOut: PropTypes.func.isRequired,
+  openLeftDrawer: PropTypes.func.isRequired,
+};
 

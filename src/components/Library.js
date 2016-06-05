@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import startCase from 'lodash/startCase';
@@ -32,6 +32,11 @@ export default class Library extends Component {
 }
 
 Library.contextTypes = {
-  router: React.PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired,
+};
+
+Library.propTypes = {
+  params: PropTypes.object.isRequired,
+  children: PropTypes.node,
 };
 
