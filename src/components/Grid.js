@@ -1,5 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { OrderedSet } from 'immutable';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import startCase from 'lodash/startCase';
 import { GridList } from 'material-ui/GridList';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -74,7 +76,7 @@ export default class Grid extends Component {
 
     const isLastPage = !nextPageUrl;
     if (isEmpty && isLastPage) {
-      return <h1>{`No games saved as ${gamesType}`}</h1>;
+      return <h1>{`No games saved as ${startCase(gamesType)}`}</h1>;
     }
 
     return (
@@ -89,3 +91,18 @@ export default class Grid extends Component {
     );
   }
 }
+
+Grid.propTypes = {
+  isFetching: PropTypes.bool,
+  items: PropTypes.oneOfType([
+    PropTypes.instanceOf(OrderedSet),
+    PropTypes.array,
+  ]).isRequired,
+  pageCount: PropTypes.number,
+  nextPageUrl: PropTypes.string,
+  onLoadMoreClick: PropTypes.func.isRequired,
+  gridCols: PropTypes.number.isRequired,
+  gamesType: PropTypes.string.isRequired,
+  renderItem: PropTypes.func.isRequired,
+};
+

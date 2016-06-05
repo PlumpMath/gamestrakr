@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import { Map } from 'immutable';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
@@ -118,6 +119,12 @@ class Detail extends Component {
 
 Detail.contextTypes = {
   router: React.PropTypes.object.isRequired,
+};
+
+Detail.propTypes = {
+  game: PropTypes.instanceOf(Map),
+  gamesByType: PropTypes.instanceOf(Map),
+  saveGameByType: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {

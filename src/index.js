@@ -4,12 +4,11 @@ import { hashHistory } from 'react-router';
 import { userActions, gamesActions } from './actions/';
 import Root from './containers/Root';
 import configureStore from './store/configureStore';
-import css from './stylesheets/index.scss';
+import './stylesheets/index.scss';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 const store = configureStore();
-
 store.dispatch(userActions.userFromCookie());
 
 const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped'];

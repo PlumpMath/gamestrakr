@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Map } from 'immutable';
+import { Map, OrderedSet } from 'immutable';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import Grid from '../components/Grid';
 import Tile from '../components/Tile';
@@ -42,15 +42,14 @@ class GridPage extends Component {
     this.context.router.push(`game/${name}`);
   }
 
-  renderGame = (game) => {
-    return (<Tile
-      key={game.get('name')}
-      item={game}
-      libTypeOfItem={(name) => this.libTypeOfGame(name)}
+  renderGame = (game) => (
+    <Tile
+      key={game.get('name')} item={game}
+      getLibTypeOfItem={(name) => this.libTypeOfGame(name)}
       saveGame={this.props.saveGameByType}
       handleTileTap={this.handleTileTap}
-    />);
-  }
+    />
+  );
 
   render() {
     const { gamesType, gridCols, gamesByTypeGames, gamesByTypePagination } = this.props;
@@ -69,7 +68,20 @@ class GridPage extends Component {
 }
 
 GridPage.contextTypes = {
-  router: React.PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired,
+};
+
+GridPage.propTypes = {
+  gamesType: PropTypes.string.isRequired,
+  loadGamesByType: PropTypes.func.isRequired,
+  saveGameByType: PropTypes.func.isRequired,
+  gamesByType: PropTypes.instanceOf(Map),
+  gridCols: PropTypes.number,
+  gamesByTypeGames: PropTypes.oneOfType([
+    PropTypes.instanceOf(OrderedSet),
+    PropTypes.array,
+  ]).isRequired,
+  gamesByTypePagination: PropTypes.instanceOf(Map),
 };
 
 function mapStateToProps(state, ownProps) {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Nav from '../components/Nav';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -81,7 +81,16 @@ class App extends Component {
 }
 
 App.contextTypes = {
-  router: React.PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired,
+};
+
+App.propTypes = {
+  setGridCols: PropTypes.func.isRequired,
+  resetErrorMessage: PropTypes.func.isRequired,
+  closeLeftDrawer: PropTypes.func.isRequired,
+  errorMessage: PropTypes.string,
+  main: PropTypes.node.isRequired,
+  subNav: PropTypes.node,
 };
 
 function mapStateToProps(state) {
