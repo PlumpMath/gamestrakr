@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import { Tabs, Tab } from 'material-ui/Tabs';
+import startCase from 'lodash/startCase';
 
 export default class Library extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ export default class Library extends Component {
         onChange={(v) => this.setGamesType(v)}
       >
         {types.map((type) => (
-          <Tab key={type} value={type} label={type}>
+          <Tab key={type} value={type} label={startCase(type)}>
             {this.props.children}
           </Tab>
           ))}
