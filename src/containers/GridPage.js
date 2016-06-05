@@ -7,14 +7,6 @@ import Tile from '../components/Tile';
 import { gamesActions } from '../actions';
 import { libTypes } from '../constants';
 
-function loadData(props) {
-  const { gamesType, userToken } = props;
-  props.loadGamesByType(gamesType);
-  if (userToken) {
-    libTypes.map(type => props.loadGamesByType(type));
-  }
-}
-
 class GridPage extends Component {
   constructor(props) {
     super(props);
@@ -22,12 +14,20 @@ class GridPage extends Component {
   }
 
   componentWillMount() {
-    loadData(this.props);
+    this.fetchData(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.gamesType !== this.props.gamesType) {
-      loadData(nextProps);
+      this.fetchData(nextProps);
+    }
+  }
+
+  fetchData(props) {
+    const { gamesType, userToken } = props;
+    props.loadGamesByType(gamesType);
+    if (userToken) {
+      libTypes.map(type => props.loadGamesByType(type));
     }
   }
 

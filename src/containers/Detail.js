@@ -12,11 +12,6 @@ import { gamesActions } from '../actions/';
 
 const placeholderImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=38&txt=GamesTrackr&w=600&h=450&txttrack=0';
 
-function loadData(props) {
-  const name = props.params.name;
-  if (name) props.loadGameByName(name);
-}
-
 class Detail extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +20,7 @@ class Detail extends Component {
 
   componentWillMount() {
     if (!this.props.game) {
-      loadData(this.props);
+      this.fetchData(this.props);
     }
   }
 
@@ -36,6 +31,11 @@ class Detail extends Component {
       || game.getIn(['image', 'mediumUrl'])
       || game.getIn(['image', 'smallUrl'])
       || placeholderImageUrl;
+  }
+
+  fetchData(props) {
+    const name = props.params.name;
+    if (name) props.loadGameByName(name);
   }
 
   handleGoBack = () => {
