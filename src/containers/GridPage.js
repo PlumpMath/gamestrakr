@@ -5,10 +5,14 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 import Grid from '../components/Grid';
 import Tile from '../components/Tile';
 import { gamesActions } from '../actions';
+import { libTypes } from '../constants';
 
 function loadData(props) {
-  const { gamesType } = props;
+  const { gamesType, userToken } = props;
   props.loadGamesByType(gamesType);
+  if (userToken) {
+    libTypes.map(type => props.loadGamesByType(type));
+  }
 }
 
 class GridPage extends Component {
@@ -92,8 +96,9 @@ function mapStateToProps(state, ownProps) {
     state.getIn(['pagination', 'gamesByType', gamesType]) || Map({ ids: [] });
   const gamesByTypeGames = gamesByTypePagination.get('ids').map(id => games.get(id));
   const gridCols = state.getIn(['app', 'gridCols']);
+  const userToken = state.getIn(['user', 'token']);
 
-  return { gridCols, gamesByType, gamesType, gamesByTypeGames, gamesByTypePagination };
+  return { gridCols, userToken, gamesByType, gamesType, gamesByTypeGames, gamesByTypePagination };
 }
 
 export default connect(mapStateToProps, {

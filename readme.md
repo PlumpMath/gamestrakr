@@ -32,8 +32,8 @@ paginate:{
 
 
 ## TODOS
-* make libTypes part of app state(configurable)
-* write tests
+* add selector fns to reducers
+* write more tests
 * show games type in app bar
 * give giant bomb credit
 * render improved/more info detail component

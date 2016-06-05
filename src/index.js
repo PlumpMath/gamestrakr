@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { hashHistory } from 'react-router';
-import { userActions, gamesActions } from './actions/';
+import { userActions } from './actions/';
 import Root from './containers/Root';
 import configureStore from './store/configureStore';
 import './stylesheets/index.scss';
@@ -10,11 +10,6 @@ injectTapEventPlugin();
 
 const store = configureStore();
 store.dispatch(userActions.userFromCookie());
-
-const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped'];
-if (store.getState().getIn(['user', 'token'])) {
-  libTypes.map((type) => store.dispatch(gamesActions.loadGamesByType(type)));
-}
 
 render(
   <Root store={store} history={hashHistory} />,

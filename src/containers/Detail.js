@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import { libTypes } from '../constants';
 import { Map } from 'immutable';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
@@ -50,7 +51,6 @@ class Detail extends Component {
 
   renderCardActions = () => {
     const { game, saveGameByType } = this.props;
-    const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped'];
     const libTypeOfGame = this.libTypeOfGame(game.get('name'));
 
     return (

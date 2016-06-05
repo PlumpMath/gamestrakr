@@ -1,4 +1,5 @@
 import { CALL_API, Schemas } from '../middleware/api';
+import { libTypes } from '../constants';
 
 export const GAMES_REQUEST = 'GAMES_REQUEST';
 export const GAMES_SUCCESS = 'GAMES_SUCCESS';
@@ -79,7 +80,6 @@ export const saveGameByType = (game, gamesType) => (dispatch, getState) => {
     return null;
   }
   const postUrl = `/games/${gamesType}`;
-  const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped'];
   const currentLibType = getState().getIn(['pagination', 'gamesByType'])
     .filter((v, k) => libTypes.includes(k))
     .findKey((v) => v.hasIn(['ids', game.get('name')]));

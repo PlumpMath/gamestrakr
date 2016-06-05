@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Map } from 'immutable';
+import { libTypes } from '../constants';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import startCase from 'lodash/startCase';
 import { GridTile } from 'material-ui/GridList';
@@ -59,7 +60,6 @@ export default class Tile extends Component {
 
   render() {
     const { item, saveGame, getLibTypeOfItem } = this.props;
-    const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped'];
     const libTypeOfItem = getLibTypeOfItem(item.get('name'));
 
     return (
