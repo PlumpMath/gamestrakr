@@ -8,7 +8,7 @@ export default class Library extends Component {
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
   }
 
-  setGamesType(type) {
+  setGamesType = (type) => {
     this.context.router.push(`library/${type}`);
   }
 
@@ -22,10 +22,10 @@ export default class Library extends Component {
       >
         {types.map((type) => (
           <Tab key={type} value={type} label={type}>
-						{this.props.children}
+            {this.props.children}
           </Tab>
           ))}
-        </Tabs>
+      </Tabs>
     );
   }
 }

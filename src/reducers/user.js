@@ -3,11 +3,7 @@ import { Map, fromJS } from 'immutable';
 import { userActions } from '../actions';
 
 function receiveUser(state, name, token) {
-  return state.merge(fromJS({ name: name, token: token }));
-}
-
-function userFromCookie(state) {
-  return state.merge(userFromCookie);
+  return state.merge(fromJS({ name, token }));
 }
 
 function signOut(state) {

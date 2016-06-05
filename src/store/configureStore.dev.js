@@ -8,9 +8,9 @@ import DevTools from '../containers/DevTools';
 
 const logger = createLogger({
   stateTransformer: (state) => {
-    let newState = {};
+    const newState = {};
 
-    for (var i of Object.keys(state.toJS())) {
+    for (const i of Object.keys(state.toJS())) {
       if (Iterable.isIterable(state.get(i))) {
         newState[i] = state.get(i).toJS();
       } else {

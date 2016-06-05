@@ -1,8 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { hashHistory } from 'react-router';
-import { appActions, userActions, gamesActions } from './actions/';
-import { fromJS } from 'immutable';
+import { userActions, gamesActions } from './actions/';
 import Root from './containers/Root';
 import configureStore from './store/configureStore';
 import css from './stylesheets/index.scss';
@@ -15,8 +14,7 @@ store.dispatch(userActions.userFromCookie());
 
 const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped'];
 if (store.getState().getIn(['user', 'token'])) {
-	                    libTypes.map((type) =>
-		store.dispatch(gamesActions.loadGamesByType(type)));
+  libTypes.map((type) => store.dispatch(gamesActions.loadGamesByType(type)));
 }
 
 render(

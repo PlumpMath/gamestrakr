@@ -42,29 +42,29 @@ export default function paginate({ types, mapActionToKey }) {
     }
   }
 
-	                    function removeFromPagination(state = Map({
-		                    isFetching: false,
-		                    nextPageUrl: undefined,
-		                    pageCount: 0,
-		                    ids: OrderedSet(),
-	}), action) {
-		                    return state.update('ids', ids => ids.filterNot((id) => action.response.result.includes(id)));
-	}
+  function removeFromPagination(state = Map({
+    isFetching: false,
+    nextPageUrl: undefined,
+    pageCount: 0,
+    ids: OrderedSet(),
+  }), action) {
+    return state.update('ids', ids => ids.filterNot((id) => action.response.result.includes(id)));
+  }
 
   return function updatePaginationByKey(state = Map(), action) {
+    let key;
+
     switch (action.type) {
       case requestType:
       case successType:
       case failureType:
-        var key = mapActionToKey(action);
+        key = mapActionToKey(action);
         if (typeof key !== 'string') {
           throw new Error('Expected key to be a string.');
         }
-        return state.merge({
-          [key]: updatePagination(state.get(key), action),
-        });
-			                                                            case removeType:
-				                                                                                var key = mapActionToKey(action);
+        return state.merge({ [key]: updatePagination(state.get(key), action) });
+      case removeType:
+        key = mapActionToKey(action);
         if (typeof key !== 'string') {
           throw new Error('Expected key to be a string.');
         }

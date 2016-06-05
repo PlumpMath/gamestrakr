@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import { Link } from 'react-router';
 import AppBar from 'material-ui/AppBar';
@@ -19,8 +19,9 @@ export default class Nav extends Component {
   }
 
   render() {
-    const { leftDrawerOpen, closeLeftDrawer, openLeftDrawer, user, navigate, signOut } = this.props;
-    const signInButton = <MenuItem primaryText="Sign In" onTouchTap={() => navigate('/auth/login')} />;
+    const { leftDrawerOpen, closeLeftDrawer, user, navigate, signOut } = this.props;
+    const signInButton =
+      <MenuItem primaryText="Sign In" onTouchTap={() => navigate('/auth/login')} />;
     const signOutButton = <MenuItem primaryText="Sign Out" onTouchTap={signOut} />;
     const navLinks = [
       { name: 'Recent', route: 'games/recent', icon: 'videogame_asset' },
@@ -29,8 +30,8 @@ export default class Nav extends Component {
     ];
 
     const accountNavElement = (
-      <IconMenu iconButtonElement={
-        <IconButton>
+      <IconMenu
+        iconButtonElement={<IconButton>
           <FontIcon className="material-icons">account_circle</FontIcon>
         </IconButton>}
       >
@@ -49,23 +50,18 @@ export default class Nav extends Component {
         <Drawer open={leftDrawerOpen}>
           <AppBar
             title={<Link to="/" style={{ textDecoration: 'none', color: '#000' }}>GamesTrakr</Link>}
-            iconElementLeft={
-              <IconButton
-                onClick={closeLeftDrawer}
-              >
-                <FontIcon className="material-icons">arrow_back</FontIcon>
+            iconElementLeft={<IconButton onClick={closeLeftDrawer} >
+              <FontIcon className="material-icons">arrow_back</FontIcon>
             </IconButton>}
           />
 
-            {navLinks.map((item) => {
-              return (
-                <MenuItem key={item.name} onTouchTap={() => navigate(item.route)}>
-                  {item.name}
-                </MenuItem>
-                );
-            })}
-          </Drawer>
-        </div>
+        {navLinks.map((item) => (
+          <MenuItem key={item.name} onTouchTap={() => navigate(item.route)}>
+            {item.name}
+          </MenuItem>
+          ))}
+        </Drawer>
+      </div>
     );
   }
 }

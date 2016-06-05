@@ -21,28 +21,41 @@ class Auth extends Component {
 
     const authActions = {
       success: [
-        <FlatButton label={"Check out your saved games"} primary linkButton href={'#/library'} />,
-        <FlatButton label={"Look at the hot new releases"} primary linkButton href={'#/games/recent'} />,
+        <FlatButton
+          label={"Check out your saved games"} primary linkButton href={'#/library'}
+        />,
+        <FlatButton
+          label={"Look at the hot new releases"} primary linkButton href={'#/games/recent'}
+        />,
       ],
       login: [
-        <FlatButton label={"Sign in With Twitter"} primary linkButton href={`${process.env.SERVER_URL}/auth/twitter`} />,
-        <FlatButton label={"Sign in With Facebook"} primary linkButton href={`${process.env.SERVER_URL}/auth/facebook`} />,
+        <FlatButton
+          label={"Sign in With Twitter"}
+          primary linkButton href={`${process.env.SERVER_URL}/auth/twitter`}
+        />,
+        <FlatButton
+          label={"Sign in With Facebook"}
+          primary linkButton href={`${process.env.SERVER_URL}/auth/facebook`}
+        />,
       ],
     };
     const authText = {
       success: { title: 'You have been signed in', body: 'Congratulations' },
-      login: { title: 'Please sign in below', body: 'Sign in and you can store your GamesTrakr library in the cloud' },
+      login: {
+        title: 'Please sign in below',
+        body: 'Sign in and you can store your GamesTrakr library in the cloud',
+      },
     };
 
     return (
       <Dialog
-        title={authText[authType]['title']}
+        title={authText[authType].title}
         actions={authActions[authType]}
         modal={false}
         open
         onRequestClose={() => this.context.router.push('/')}
       >
-        <div>{authText[authType]['body']}</div>
+        <div>{authText[authType].body}</div>
       </Dialog>
     );
   }
