@@ -1,38 +1,37 @@
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 
-export const RECEIVE_USER = 'RECEIVE_USER'
-export const SIGN_OUT = 'SIGN_OUT'
+export const RECEIVE_USER = 'RECEIVE_USER';
+export const SIGN_OUT = 'SIGN_OUT';
 
-export function receiveUser(name, token){
-  return {
-    type: RECEIVE_USER,
-    name,
-    token
-  }
-}
+export const receiveUser = (name, token) => ({
+  type: RECEIVE_USER,
+  name,
+  token,
+});
 
-export function userFromCookie(){
-  const user = Cookies.getJSON('user')
+export const userFromCookie = () => {
+  const user = Cookies.getJSON('user');
 
-  return (dispatch, getState) => {
+  return (dispatch) => {
     if (user && user.name && user.token) {
-      return dispatch(receiveUser(user.name, user.token))
+      return dispatch(receiveUser(user.name, user.token));
     }
-  }
-}
 
-export function userFromAuth(name, token){
-  return (dispatch, getState) => {
+    return undefined;
+  };
+};
+
+export const userFromAuth = (name, token) => {
+  return (dispatch) => {
     if (name && token) {
-      Cookies.set('user', {name: name, token: token})
-      return dispatch(receiveUser(name, token))
+      Cookies.set('user', { name, token });
+      return dispatch(receiveUser(name, token));
     }
-  }
-}
 
-export function signOut(){
-  return {
-    type: SIGN_OUT
-  }
-}
+    return undefined;
+  };
+};
 
+export const signOut = () => ({
+  type: SIGN_OUT,
+});

@@ -1,25 +1,25 @@
-import { createStore, applyMiddleware, compose } from 'redux'
-import thunk from 'redux-thunk'
-import createLogger from 'redux-logger'
-import api from '../middleware/api'
-import rootReducer from '../reducers'
-import {Iterable} from 'immutable'
-import DevTools from '../containers/DevTools'
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
+import createLogger from 'redux-logger';
+import api from '../middleware/api';
+import rootReducer from '../reducers';
+import { Iterable } from 'immutable';
+import DevTools from '../containers/DevTools';
 
-const logger= createLogger({
+const logger = createLogger({
   stateTransformer: (state) => {
-    let newState = {}
+    const newState = {};
 
-    for (var i of Object.keys(state.toJS())) {
+    for (const i of Object.keys(state.toJS())) {
       if (Iterable.isIterable(state.get(i))) {
-        newState[i] = state.get(i).toJS()
+        newState[i] = state.get(i).toJS();
       } else {
-        newState[i] = state.get(i)
+        newState[i] = state.get(i);
       }
-    };
-    return newState
-  }
-})
+    }
+    return newState;
+  },
+});
 
 const enhancer = compose(
   applyMiddleware(thunk, api, logger),
@@ -31,7 +31,7 @@ export default function configureStore(initialState) {
 
   if (module.hot) {
     module.hot.accept('../reducers', () =>
-      store.replaceReducer(require('../reducers')/*.default if you use Babel 6+ */)
+      store.replaceReducer(require('../reducers')/* .default if you use Babel 6+ */)
     );
   }
 

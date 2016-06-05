@@ -1,4 +1,4 @@
-var webpack = require('webpack');
+var webpack = require('webpack')
 
 module.exports = {
   entry: [
@@ -22,9 +22,8 @@ module.exports = {
     return [
       require('postcss-import')({ path: ['node_modules', './src'], addDependencyTo: webpack}),
       require('autoprefixer'),
-      require('precss'),
       require('postcss-normalize')
-    ];
+    ]
   },
   resolve: {
     extensions: ['', '.js', '.css']
@@ -41,4 +40,4 @@ module.exports = {
       sourceMap: false
     })
   ]
-};
+}
