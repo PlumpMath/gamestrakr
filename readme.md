@@ -37,6 +37,7 @@ paginate:{
 * show games type in app bar
 * give giant bomb credit
 * render improved/more info detail component
+* improve image styles
 * Add search
 * Render recently viewed list and currently playing list of games in nav
 * Make fetching of games more customizeable(genre, search, platform, etc)

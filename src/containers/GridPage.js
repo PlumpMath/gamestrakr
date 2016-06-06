@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Map, OrderedSet } from 'immutable';
+import { OrderedSet } from 'immutable';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import Grid from '../components/Grid';
-import Tile from '../components/Tile';
 import { gamesActions } from '../actions';
 import { libTypes } from '../constants';
+import { getVisibleGamesByType, getGamesPaginationByType } from '../reducers';
 
 class GridPage extends Component {
   constructor(props) {
@@ -35,37 +35,16 @@ class GridPage extends Component {
     this.props.loadGamesByType(this.props.gamesType, true);
   }
 
-  libTypeOfGame = (name) => {
-    const types = ['playing', 'planning', 'completed', 'onHold', 'dropped'];
-    return this.props.gamesByType
-    .filter((v, k) => types.includes(k))
-    .findKey((v) => v.hasIn(['ids', name]));
-  }
-
-  handleTileTap = (name) => {
-    this.context.router.push(`game/${name}`);
-  }
-
-  renderGame = (game) => (
-    <Tile
-      key={game.get('name')} item={game}
-      getLibTypeOfItem={(name) => this.libTypeOfGame(name)}
-      saveGame={this.props.saveGameByType}
-      handleTileTap={this.handleTileTap}
-    />
-  );
-
   render() {
-    const { gamesType, gridCols, gamesByTypeGames, gamesByTypePagination } = this.props;
+    const { gamesType, gridCols, games } = this.props;
 
     return (
       <Grid
         onLoadMoreClick={this.handleLoadMoreClick}
-        items={gamesByTypeGames}
-        renderItem={this.renderGame}
+        items={games}
+        renderTile={this.renderTile}
         gamesType={gamesType}
         gridCols={gridCols}
-        {...gamesByTypePagination.toJS()}
       />
     );
   }
@@ -77,28 +56,27 @@ GridPage.contextTypes = {
 
 GridPage.propTypes = {
   gamesType: PropTypes.string.isRequired,
-  loadGamesByType: PropTypes.func.isRequired,
-  saveGameByType: PropTypes.func.isRequired,
-  gamesByType: PropTypes.instanceOf(Map),
   gridCols: PropTypes.number,
-  gamesByTypeGames: PropTypes.oneOfType([
+  games: PropTypes.oneOfType([
     PropTypes.instanceOf(OrderedSet),
     PropTypes.array,
   ]).isRequired,
-  gamesByTypePagination: PropTypes.instanceOf(Map),
+  loadGamesByType: PropTypes.func.isRequired,
+  saveGameByType: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   const gamesType = ownProps.params.gamesType;
-  const games = state.getIn(['entities', 'games']);
-  const gamesByType = state.getIn(['pagination', 'gamesByType']);
-  const gamesByTypePagination =
-    state.getIn(['pagination', 'gamesByType', gamesType]) || Map({ ids: [] });
-  const gamesByTypeGames = gamesByTypePagination.get('ids').map(id => games.get(id));
   const gridCols = state.getIn(['app', 'gridCols']);
   const userToken = state.getIn(['user', 'token']);
 
-  return { gridCols, userToken, gamesByType, gamesType, gamesByTypeGames, gamesByTypePagination };
+  return {
+    gridCols,
+    userToken,
+    games: getVisibleGamesByType(state, gamesType),
+    gamesType,
+    ...getGamesPaginationByType(state, gamesType),
+  };
 }
 
 export default connect(mapStateToProps, {

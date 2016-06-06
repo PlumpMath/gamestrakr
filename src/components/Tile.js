@@ -59,8 +59,7 @@ export default class Tile extends Component {
   }
 
   render() {
-    const { item, saveGame, getLibTypeOfItem } = this.props;
-    const libTypeOfItem = getLibTypeOfItem(item.get('name'));
+    const { item, saveGame, gamesType } = this.props;
 
     return (
       <GridTile
@@ -69,7 +68,7 @@ export default class Tile extends Component {
         onTouchTap={this.onTileTap}
         actionIcon={<IconButton onTouchTap={this.onPlusTap}>
           <FontIcon className="material-icons">
-            {libTypeOfItem ? 'check_circle' : 'add_circle'}
+            {gamesType ? 'check_circle' : 'add_circle'}
           </FontIcon>
           <Popover
             open={this.state.popOverOpen}
@@ -80,7 +79,7 @@ export default class Tile extends Component {
               {libTypes.map((type, i) => (<MenuItem
                 key={i}
                 style={styles.menuItem}
-                disabled={type === libTypeOfItem}
+                disabled={type === gamesType}
                 primaryText={startCase(type)}
                 onTouchTap={() => saveGame(item, type)}
               />
@@ -101,6 +100,6 @@ Tile.propTypes = {
   item: PropTypes.instanceOf(Map).isRequired,
   saveGame: PropTypes.func.isRequired,
   handleTileTap: PropTypes.func.isRequired,
-  getLibTypeOfItem: PropTypes.func.isRequired,
+  gamesType: PropTypes.string,
 };
 

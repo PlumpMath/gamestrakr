@@ -5,6 +5,7 @@ import startCase from 'lodash/startCase';
 import { GridList } from 'material-ui/GridList';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
+import TileContainer from '../containers/TileContainer';
 
 const styles = {
   root: {
@@ -63,10 +64,15 @@ export default class Grid extends Component {
     );
   }
 
+  renderTile = (item) => (
+    <TileContainer key={item.get('name')} item={item} />
+  );
+
+
   render() {
     const {
       items, isFetching, gridCols, pageCount,
-      nextPageUrl, gamesType, renderItem,
+      nextPageUrl, gamesType
     } = this.props;
 
     const isEmpty = items.size === 0;
@@ -83,7 +89,7 @@ export default class Grid extends Component {
       <div style={styles.root}>
         <div className="grid-ctr" style={styles.gridCtr}>
           <GridList cellHeight={200} cols={gridCols || 6} style={styles.gridList}>
-            {items.map((item) => renderItem(item))}
+            {items.map((item) => this.renderTile(item))}
           </GridList>
         </div>
         {pageCount > 0 && !isLastPage && this.renderLoadMore()}
@@ -94,15 +100,14 @@ export default class Grid extends Component {
 
 Grid.propTypes = {
   isFetching: PropTypes.bool,
+  pageCount: PropTypes.number,
+  nextPageUrl: PropTypes.string,
   items: PropTypes.oneOfType([
     PropTypes.instanceOf(OrderedSet),
     PropTypes.array,
   ]).isRequired,
-  pageCount: PropTypes.number,
-  nextPageUrl: PropTypes.string,
   onLoadMoreClick: PropTypes.func.isRequired,
   gridCols: PropTypes.number.isRequired,
   gamesType: PropTypes.string.isRequired,
-  renderItem: PropTypes.func.isRequired,
 };
 
