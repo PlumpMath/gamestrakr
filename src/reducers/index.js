@@ -13,8 +13,9 @@ const rootReducer = combineReducers({
 
 export default rootReducer;
 
-export const getVisibleGamesByType = (state, key) => (
-  fromPagination.getVisibleGamesByType(state.get('pagination'), key)
+export const getGamesByType = (state, key) => (
+  fromPagination
+  .getGamesByType(state.get('pagination'), state.getIn(['entities', 'games']), key)
 );
 
 export const getGamesPaginationByType = (state, key) => (

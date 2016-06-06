@@ -20,10 +20,10 @@ const pagination = combineReducers({
 export default pagination;
 
 
-export const getVisibleGamesByType = (state, key) => (
-  state.getIn(['gamesByType', key, 'ids'], List())
-  .map(id => state.getIn(['entities', 'games']).get(id))
-);
+export const getGamesByType = (state, games, key) => {
+  return state.getIn(['gamesByType', key, 'ids'], List())
+  .map(id => games.get(id));
+};
 
 export const getGamesPaginationByType = (state, key) => (
   state.getIn(['gamesByType', key], Map())

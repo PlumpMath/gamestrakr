@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { OrderedSet } from 'immutable';
+import { OrderedSet, List } from 'immutable';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import startCase from 'lodash/startCase';
 import { GridList } from 'material-ui/GridList';
@@ -65,11 +65,11 @@ export default class Grid extends Component {
 
   render() {
     const {
-      ids, isFetching, gridCols, pageCount,
+      gamesByType, isFetching, gridCols, pageCount,
       nextPageUrl, gamesType, renderTile,
     } = this.props;
 
-    const isEmpty = (!ids || ids.size === 0);
+    const isEmpty = (!gamesByType || gamesByType.size === 0);
     if (isEmpty && isFetching) {
       return <CircularProgress style={styles.loader} size={2} />;
     }
@@ -83,7 +83,7 @@ export default class Grid extends Component {
       <div style={styles.root}>
         <div className="grid-ctr" style={styles.gridCtr}>
           <GridList cellHeight={200} cols={gridCols || 6} style={styles.gridList}>
-            {ids.map((id) => renderTile(id))}
+            {gamesByType.map((id) => renderTile(id))}
           </GridList>
         </div>
         {pageCount > 0 && !isLastPage && this.renderLoadMore()}
@@ -96,9 +96,9 @@ Grid.propTypes = {
   isFetching: PropTypes.bool,
   pageCount: PropTypes.number,
   nextPageUrl: PropTypes.string,
-  ids: PropTypes.oneOfType([
+  gamesByType: PropTypes.oneOfType([
     PropTypes.instanceOf(OrderedSet),
-    PropTypes.array,
+    PropTypes.instanceOf(List),
   ]),
   onLoadMoreClick: PropTypes.func.isRequired,
   renderTile: PropTypes.func.isRequired,

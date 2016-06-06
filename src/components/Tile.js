@@ -25,14 +25,20 @@ export default class Tile extends Component {
   }
 
   render() {
-    const { item, saveGame, gamesType, popOverOpen,
-      popOverAnchor, handleClosePopOver, getGameImageUrl } = this.props;
+    const { game,
+      saveGameByType,
+      gamesType,
+      popOverOpen,
+      popOverAnchor,
+      handleClosePopOver,
+      getGameImageUrl,
+      handleTileTap } = this.props;
 
     return (
       <GridTile
         className="tile-ctr"
-        title={item.get('name')}
-        onTouchTap={this.onTileTap}
+        title={game.get('name')}
+        onTouchTap={handleTileTap}
         actionIcon={<IconButton onTouchTap={this.props.handlePlusTap}>
           <FontIcon className="material-icons">
             {gamesType ? 'check_circle' : 'add_circle'}
@@ -48,7 +54,7 @@ export default class Tile extends Component {
                 style={styles.menuItem}
                 disabled={type === gamesType}
                 primaryText={startCase(type)}
-                onTouchTap={() => saveGame(item, type)}
+                onTouchTap={() => saveGameByType(game, type)}
               />
               ))}
             </Menu>
@@ -64,8 +70,8 @@ export default class Tile extends Component {
 }
 
 Tile.propTypes = {
-  item: PropTypes.instanceOf(Map).isRequired,
-  saveGame: PropTypes.func.isRequired,
+  game: PropTypes.instanceOf(Map).isRequired,
+  saveGameByType: PropTypes.func.isRequired,
   handleTileTap: PropTypes.func.isRequired,
   handlePlusTap: PropTypes.func.isRequired,
   handleClosePopOver: PropTypes.func.isRequired,

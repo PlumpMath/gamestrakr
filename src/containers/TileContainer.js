@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Map } from 'immutable';
-import { getGamesTypeById, getGameById } from '../reducers';
+import { getGamesTypeById } from '../reducers';
 import { gamesActions } from '../actions';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import Tile from '../components/Tile';
@@ -29,7 +29,7 @@ class TileContainer extends Component {
   handleTileTap = (e) => {
     const { game } = this.props;
     if (e.currentTarget.className === 'tile-ctr') {
-      this.context.router.push(`game/${game.get(name)}`);
+      this.context.router.push(`game/${game.get('name')}`);
     }
   }
 
@@ -51,13 +51,11 @@ class TileContainer extends Component {
   render() {
     return (
       <Tile
-        item={this.props.game}
-        saveGame={this.props.saveGameByType}
-        gamesType={this.props.gamesType}
         handleTileTap={this.handleTileTap}
         handlePlusTap={this.handlePlusTap}
         handleClosePopOver={this.handleClosePopOver}
         getGameImageUrl={this.getGameImageUrl}
+        {...this.props}
         {...this.state}
       />
     );
@@ -69,7 +67,6 @@ TileContainer.contextTypes = {
 };
 
 TileContainer.propTypes = {
-  gameId: PropTypes.string.isRequired,
   gamesType: PropTypes.string,
   game: PropTypes.instanceOf(Map),
   saveGameByType: PropTypes.func.isRequired,
@@ -77,7 +74,6 @@ TileContainer.propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({
   gamesType: getGamesTypeById(state, ownProps.gameId),
-  game: getGameById(state, ownProps.gameId),
 });
 
 export default connect(mapStateToProps, {
