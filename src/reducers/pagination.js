@@ -1,6 +1,8 @@
 import paginate from './paginate';
 import { gamesActions } from '../actions';
 import { combineReducers } from 'redux-immutable';
+import { Map, List } from 'immutable';
+import { libTypes } from '../constants';
 
 // Updates the pagination data for different actions.
 const pagination = combineReducers({
@@ -19,15 +21,16 @@ export default pagination;
 
 
 export const getVisibleGamesByType = (state, key) => (
-  state.getIn(['gamesByType', key, 'ids']).map(id => state.getIn(['entities', 'games']).get(id))
+  state.getIn(['gamesByType', key, 'ids'], List())
+  .map(id => state.getIn(['entities', 'games']).get(id))
 );
 
 export const getGamesPaginationByType = (state, key) => (
-  state.getIn(['gamesByType', key]).filter((v, k) => k !== 'ids').toJS()
+  state.getIn(['gamesByType', key], Map())
 );
 
-export const getGamesTypeById = (state, key) => (
-    return this.props.gamesByType
-    .filter((v, k) => types.includes(k))
-    .findKey((v) => v.hasIn(['ids', name]));
+export const getGamesTypeById = (state, id) => (
+  state.get('gamesByType')
+  .filter((v, k) => libTypes.includes(k))
+  .findKey((v) => v.hasIn(['ids', id]))
 );

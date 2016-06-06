@@ -9,3 +9,6 @@ export default function entities(state = Map({ games: {} }), action) {
   return state;
 }
 
+export const getGameById = (state, id) => (
+  state.getIn(['games', id])
+);

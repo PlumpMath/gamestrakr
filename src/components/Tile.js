@@ -22,58 +22,25 @@ export default class Tile extends Component {
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-    this.state = {
-      popOverOpen: false,
-    };
-  }
-
-  onClosePopOver = () => {
-    this.setState({ popOverOpen: false });
-  }
-
-  onAddGame = (type) => {
-    const { item } = this.props;
-    this.props.saveGame(item, type);
-  }
-
-  onPlusTap = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    this.setState({ popOverOpen: true, popOverAnchor: e.currentTarget });
-  }
-
-  onTileTap = (e) => {
-    const { item } = this.props;
-    if (e.currentTarget.className === 'tile-ctr') {
-      this.props.handleTileTap(item.get('name'));
-    }
-  }
-
-  getGameImageUrl = () => {
-    const { item } = this.props;
-    if (!item) return placeholderImageUrl;
-    return item.getIn(['image', 'smallUrl'])
-      || item.getIn(['image', 'mediumUrl'])
-      || item.getIn(['image', 'largeUrl'])
-      || placeholderImageUrl;
   }
 
   render() {
-    const { item, saveGame, gamesType } = this.props;
+    const { item, saveGame, gamesType, popOverOpen,
+      popOverAnchor, handleClosePopOver, getGameImageUrl } = this.props;
 
     return (
       <GridTile
         className="tile-ctr"
         title={item.get('name')}
         onTouchTap={this.onTileTap}
-        actionIcon={<IconButton onTouchTap={this.onPlusTap}>
+        actionIcon={<IconButton onTouchTap={this.props.handlePlusTap}>
           <FontIcon className="material-icons">
             {gamesType ? 'check_circle' : 'add_circle'}
           </FontIcon>
           <Popover
-            open={this.state.popOverOpen}
-            anchorEl={this.state.popOverAnchor}
-            onRequestClose={this.onClosePopOver}
+            open={popOverOpen}
+            anchorEl={popOverAnchor}
+            onRequestClose={handleClosePopOver}
           >
             <Menu>
               {libTypes.map((type, i) => (<MenuItem
@@ -88,7 +55,7 @@ export default class Tile extends Component {
           </Popover>
         </IconButton>}
       >
-        <object data={this.getGameImageUrl()} type="image/jpg">
+        <object data={getGameImageUrl()} type="image/jpg">
           <img role="presentation" src={placeholderImageUrl} />
         </object>
       </GridTile>
@@ -100,6 +67,11 @@ Tile.propTypes = {
   item: PropTypes.instanceOf(Map).isRequired,
   saveGame: PropTypes.func.isRequired,
   handleTileTap: PropTypes.func.isRequired,
+  handlePlusTap: PropTypes.func.isRequired,
+  handleClosePopOver: PropTypes.func.isRequired,
+  getGameImageUrl: PropTypes.func.isRequired,
   gamesType: PropTypes.string,
+  popOverOpen: PropTypes.bool,
+  popOverAnchor: PropTypes.object,
 };
 

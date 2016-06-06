@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { OrderedSet } from 'immutable';
+import { Map } from 'immutable';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import Grid from '../components/Grid';
 import { gamesActions } from '../actions';
 import { libTypes } from '../constants';
-import { getVisibleGamesByType, getGamesPaginationByType } from '../reducers';
+import { getGamesPaginationByType } from '../reducers';
+import TileContainer from '../containers/TileContainer';
 
 class GridPage extends Component {
   constructor(props) {
@@ -35,53 +36,46 @@ class GridPage extends Component {
     this.props.loadGamesByType(this.props.gamesType, true);
   }
 
-  render() {
-    const { gamesType, gridCols, games } = this.props;
+  renderTile(id) {
+    return <TileContainer key={id} gameId={id} />;
+  }
 
+  render() {
     return (
       <Grid
         onLoadMoreClick={this.handleLoadMoreClick}
-        items={games}
         renderTile={this.renderTile}
-        gamesType={gamesType}
-        gridCols={gridCols}
+        gridCols={this.props.gridCols}
+        gamesType={this.props.gamesType}
+        {...this.props.pagination.toJS()}
       />
     );
   }
 }
 
-GridPage.contextTypes = {
-  router: PropTypes.object.isRequired,
-};
-
 GridPage.propTypes = {
   gamesType: PropTypes.string.isRequired,
   gridCols: PropTypes.number,
-  games: PropTypes.oneOfType([
-    PropTypes.instanceOf(OrderedSet),
-    PropTypes.array,
-  ]).isRequired,
   loadGamesByType: PropTypes.func.isRequired,
-  saveGameByType: PropTypes.func.isRequired,
+  pagination: PropTypes.instanceOf(Map),
 };
 
 function mapStateToProps(state, ownProps) {
   const gamesType = ownProps.params.gamesType;
   const gridCols = state.getIn(['app', 'gridCols']);
   const userToken = state.getIn(['user', 'token']);
+  const pagination = getGamesPaginationByType(state, gamesType);
 
   return {
     gridCols,
     userToken,
-    games: getVisibleGamesByType(state, gamesType),
     gamesType,
-    ...getGamesPaginationByType(state, gamesType),
+    pagination,
   };
 }
 
 export default connect(mapStateToProps, {
   loadGamesByType: gamesActions.loadGamesByType,
-  saveGameByType: gamesActions.saveGameByType,
 }
 )(GridPage);
 
