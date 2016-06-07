@@ -30,7 +30,7 @@ export const getGameById = (state, id) => (
 );
 
 export const getIsFetching = (state, type) => (
-  state.getIn(['pagination', 'gamesByType', 'isFetching', type], false)
+  state.getIn(['pagination', 'gamesByType', type, 'isFetching'])
 );
 
 export const getPageCount = (state, type) => (

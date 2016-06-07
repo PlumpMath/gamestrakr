@@ -26,6 +26,10 @@ class GridContainer extends Component {
 
   fetchData(props) {
     const { gamesType, userToken, loadGamesByType } = props;
+    if (libTypes.includes(gamesType) && !userToken) {
+      return null;
+    }
+
     loadGamesByType(gamesType);
     if (userToken) {
       libTypes.map(type => loadGamesByType(type));

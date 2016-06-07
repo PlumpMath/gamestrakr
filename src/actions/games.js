@@ -6,6 +6,8 @@ export const GAMES_REQUEST = 'GAMES_REQUEST';
 export const GAMES_SUCCESS = 'GAMES_SUCCESS';
 export const GAMES_FAILURE = 'GAMES_FAILURE';
 export const GAMES_REMOVE = 'GAMES_REMOVE';
+
+// Actions for fetching single game entity
 export const GAME_REQUEST = 'GAME_REQUEST';
 export const GAME_SUCCESS = 'GAME_SUCCESS';
 export const GAME_FAILURE = 'GAME_FAILURE';
@@ -64,7 +66,7 @@ export const loadGameByName = (name) => (dispatch, getState) => {
   return dispatch(fetchGame(name));
 };
 
-const postGame = (game, gamesType, postUrl, currentLibType) => ({
+const postGame = (game, gamesType, postUrl) => ({
   gamesType,
   [CALL_API]: {
     types: [GAMES_REQUEST, GAMES_SUCCESS, GAMES_FAILURE, GAMES_REMOVE],
@@ -72,20 +74,38 @@ const postGame = (game, gamesType, postUrl, currentLibType) => ({
     requestMethod: 'POST',
     body: { game: game.toJS() },
     schema: Schemas.GAME_ARRAY,
-    currentLibType,
   },
 });
+
+const saveGame = (game, gamesType) => (dispatch, getState) => {
+  const currentLibType = gamesSelectors.getTypeById(getState(), game.get('name'));
+
+  if (typeof currentLibType === 'string') {
+    dispatch({
+      gamesType: currentLibType,
+      type: GAMES_REMOVE,
+      response: {result: [game.get('name')]}
+    });
+  }
+
+  dispatch({
+    gamesType,
+    type: GAMES_SUCCESS,
+    response: {result: [game.get('name')]}
+  });
+
+  return Promise.resolve();
+};
 
 export const saveGameByType = (game, gamesType) => (dispatch, getState) => {
   if (!['name', 'image', 'apiDetailUrl'].every((k) => game.has(k))) {
     return null;
   }
   const postUrl = `/games/${gamesType}`;
-  const currentLibType = getState().getIn(['pagination', 'gamesByType'])
-    .filter((v, k) => libTypes.includes(k))
-    .findKey((v) => v.hasIn(['ids', game.get('name')]));
+  dispatch(saveGame(game, gamesType));
 
+  if(getState().getIn(['user', 'token'])) dispatch(postGame(game, gamesType, postUrl));
 
-  return dispatch(postGame(game, gamesType, postUrl, currentLibType));
+  return Promise.resolve();
 };
 

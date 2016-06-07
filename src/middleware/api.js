@@ -91,7 +91,7 @@ export default store => next => action => {
   }
 
   let { endpoint } = callAPI;
-  const { schema, types, requestMethod, currentLibType, body = {} } = callAPI;
+  const { schema, types, requestMethod, body = {} } = callAPI;
 
   if (typeof endpoint === 'function') {
     endpoint = endpoint(store.getState());
@@ -131,9 +131,6 @@ export default store => next => action => {
       return postApi(endpoint, schema, token, body).then(
       response => {
         next(actionWith({ response, type: successType }));
-        if (typeof currentLibType === 'string') {
-          next(actionWithNewKey({ response, type: removeType }, { gamesType: currentLibType }));
-        }
       },
       error => next(actionWith({
         type: failureType,
