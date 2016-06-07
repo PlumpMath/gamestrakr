@@ -32,7 +32,8 @@ export default class Tile extends Component {
       popOverAnchor,
       handleClosePopOver,
       imageUrl,
-      handleTileTap } = this.props;
+      handleTileTap,
+      handleImageError } = this.props;
 
     return (
       <GridTile
@@ -61,9 +62,7 @@ export default class Tile extends Component {
           </Popover>
         </IconButton>}
       >
-        <object data={imageUrl} type="image/jpg">
-          <img role="presentation" src={placeholderImageUrl} />
-        </object>
+        <img src={imageUrl} onError={handleImageError} />
       </GridTile>
     );
   }

@@ -14,6 +14,7 @@ class TileContainer extends Component {
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.state = {
       popOverOpen: false,
+      imageUrl: this.getGameImageUrl()
     };
   }
 
@@ -24,6 +25,10 @@ class TileContainer extends Component {
       || game.getIn(['image', 'mediumUrl'])
       || game.getIn(['image', 'largeUrl'])
       || placeholderImageUrl;
+  }
+
+  handleImageError = () => {
+    this.setState({imageUrl: placeholderImageUrl});
   }
 
   handleTileTap = (e) => {
@@ -54,7 +59,7 @@ class TileContainer extends Component {
         handleTileTap={this.handleTileTap}
         handlePlusTap={this.handlePlusTap}
         handleClosePopOver={this.handleClosePopOver}
-        imageUrl={this.getGameImageUrl()}
+        handleImageError={this.handleImageError}
         {...this.props}
         {...this.state}
       />
