@@ -18,7 +18,8 @@
       "react"
     ],
     "plugins": [
-      "transform-class-properties"
+      "transform-class-properties",
+      "transform-object-rest-spread"
     ]
   },
   "devDependencies": {
@@ -48,6 +49,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "humps": "^1.1.0",
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.1",
@@ -64,6 +66,7 @@
     "redux": "^3.5.2",
     "redux-immutable": "^3.0.6",
     "redux-logger": "^2.6.1",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "reselect": "^2.5.1"
   }
 }

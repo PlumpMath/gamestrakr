@@ -1,35 +1,40 @@
 import React, { Component, PropTypes } from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
+import { libTypes } from '../constants';
 import { Map } from 'immutable';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import { connect } from 'react-redux';
-
+import { getGamesTypeById, getGameById } from '../selectors';
 import { gamesActions } from '../actions/';
 
-const placeholderImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=38&txt=GamesTrackr&w=600&h=450&txttrack=0';
-
-function loadData(props) {
-  const name = props.params.name;
-  if (name) props.loadGameByName(name);
-}
+const placeholderImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=38&txt=GamesTrakr&w=600&h=250&txttrack=0';
 
 class Detail extends Component {
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
-  }
-
-  componentWillMount() {
-    if (!this.props.game) {
-      loadData(this.props);
+    this.state = {
+      imageUrl: this.getGameImageUrl()
     }
   }
 
-  getGameImageUrl = () => {
-    const { game } = this.props;
+  componentWillMount() {
+    const {game} = this.props;
+    if (!game) {
+      this.fetchData(this.props);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps && nextProps.game){
+      this.setState({imageUrl: this.getGameImageUrl(nextProps.game)});
+    }
+  }
+
+  getGameImageUrl = (game = null) => {
     if (!game) return placeholderImageUrl;
     return game.getIn(['image', 'largeUrl'])
       || game.getIn(['image', 'mediumUrl'])
@@ -37,28 +42,28 @@ class Detail extends Component {
       || placeholderImageUrl;
   }
 
+  fetchData(props) {
+    const name = props.params.name;
+    if (name) props.loadGameByName(name);
+  }
+
   handleGoBack = () => {
     this.context.router.goBack();
   }
 
-  libTypeOfGame = (name) => {
-    const types = ['playing', 'planning', 'completed', 'onHold', 'dropped'];
-    return this.props.gamesByType
-    .filter((v, k) => types.includes(k))
-    .findKey((v) => v.hasIn(['ids', name]));
+  handleImageError = () => {
+    this.setState({imageUrl: placeholderImageUrl})
   }
 
   renderCardActions = () => {
-    const { game, saveGameByType } = this.props;
-    const libTypes = ['playing', 'planning', 'completed', 'onHold', 'dropped'];
-    const libTypeOfGame = this.libTypeOfGame(game.get('name'));
+    const { game, gamesType, saveGameByType } = this.props;
 
     return (
       <CardActions className="card-actions">
         {libTypes.map((type, i) => (
           <FlatButton
             key={i}
-            disabled={type === libTypeOfGame}
+            disabled={type === gamesType}
             label={type}
             onTouchTap={() => saveGameByType(game, type)}
           />
@@ -71,14 +76,6 @@ class Detail extends Component {
     const { game } = this.props;
 
     if (game) {
-      const styles = {
-        cardImage: {
-          backgroundImage: `url(${this.getGameImageUrl()})`,
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-        },
-      };
-
       return (
         <div className="game-detail-ctr">
           <IconButton className="detail-go-back-btn" onClick={() => this.context.router.goBack()}>
@@ -92,7 +89,7 @@ class Detail extends Component {
             <CardMedia
               overlay={<CardTitle title={game.get('name')} subtitle={game.get('deck')} />}
             >
-              <div className="card-image-ctr" style={styles.cardImage} />
+              <img src={this.state.imageUrl} onError={this.handleImageError} />
             </CardMedia>
             <CardTitle title={game.get('name')} subtitle={game.get('deck')} />
             <CardText
@@ -129,11 +126,11 @@ Detail.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   const gameId = ownProps.params.name;
-  const games = state.getIn(['entities', 'games']);
-  const game = (games && games.size) ? games.get(gameId) : null;
-  const gamesByType = state.getIn(['pagination', 'gamesByType']);
 
-  return { gameId, game, gamesByType };
+  return {
+    game: getGameById(state, gameId),
+    gamesType: getGamesTypeById(state, gameId)
+  };
 }
 
 export default connect(mapStateToProps, {

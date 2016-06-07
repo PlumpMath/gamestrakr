@@ -32,11 +32,12 @@ paginate:{
 
 
 ## TODOS
-* make libTypes part of app state(configurable)
-* write tests
+* add selector fns to reducers
+* write more tests
 * show games type in app bar
 * give giant bomb credit
 * render improved/more info detail component
+* improve image styles
 * Add search
 * Render recently viewed list and currently playing list of games in nav
 * Make fetching of games more customizeable(genre, search, platform, etc)
