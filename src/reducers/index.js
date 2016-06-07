@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux-immutable';
 import app from './app';
-import entities, * as fromEntities from './entities';
-import pagination, * as fromPagination from './pagination';
+import entities from './entities';
+import pagination from './pagination';
 import user from './user';
 
 const rootReducer = combineReducers({
@@ -12,20 +12,3 @@ const rootReducer = combineReducers({
 });
 
 export default rootReducer;
-
-export const getGamesByType = (state, key) => (
-  fromPagination
-  .getGamesByType(state.get('pagination'), state.getIn(['entities', 'games']), key)
-);
-
-export const getGamesPaginationByType = (state, key) => (
-  fromPagination.getGamesPaginationByType(state.get('pagination'), key)
-);
-
-export const getGamesTypeById = (state, id) => (
-  fromPagination.getGamesTypeById(state.get('pagination'), id)
-);
-
-export const getGameById = (state, id) => (
-  fromEntities.getGameById(state.get('entities'), id)
-);

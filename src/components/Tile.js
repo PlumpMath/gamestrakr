@@ -31,7 +31,7 @@ export default class Tile extends Component {
       popOverOpen,
       popOverAnchor,
       handleClosePopOver,
-      getGameImageUrl,
+      imageUrl,
       handleTileTap } = this.props;
 
     return (
@@ -61,7 +61,7 @@ export default class Tile extends Component {
           </Popover>
         </IconButton>}
       >
-        <object data={getGameImageUrl()} type="image/jpg">
+        <object data={imageUrl} type="image/jpg">
           <img role="presentation" src={placeholderImageUrl} />
         </object>
       </GridTile>
@@ -75,7 +75,7 @@ Tile.propTypes = {
   handleTileTap: PropTypes.func.isRequired,
   handlePlusTap: PropTypes.func.isRequired,
   handleClosePopOver: PropTypes.func.isRequired,
-  getGameImageUrl: PropTypes.func.isRequired,
+  imageUrl: PropTypes.string.isRequired,
   gamesType: PropTypes.string,
   popOverOpen: PropTypes.bool,
   popOverAnchor: PropTypes.object,
