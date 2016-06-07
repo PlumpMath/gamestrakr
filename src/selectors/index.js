@@ -2,8 +2,8 @@ import { createSelector } from 'reselect';
 import { Map, OrderedSet } from 'immutable';
 import { libTypes } from '../constants';
 
-const getGamesByTypeIds = (state, key) => (
-  state.getIn(['pagination', 'gamesByType', key, 'ids'], OrderedSet())
+const getGamesByTypeIds = (state, type) => (
+  state.getIn(['pagination', 'gamesByType', type, 'ids'], OrderedSet())
 );
 
 const getGamesEntities = (state) => (
@@ -15,8 +15,8 @@ export const getGamesByType = createSelector(
   (ids, games) => (ids.map(id => games.get(id)))
 );
 
-export const getGamesPaginationByType = (state, key) => (
-  state.getIn(['pagination', 'gamesByType', key], Map())
+export const getGamesPaginationByType = (state, type) => (
+  state.getIn(['pagination', 'gamesByType', type], Map())
 );
 
 export const getGamesTypeById = (state, id) => (
@@ -27,4 +27,16 @@ export const getGamesTypeById = (state, id) => (
 
 export const getGameById = (state, id) => (
   state.getIn(['entities', 'games', id])
+);
+
+export const getIsFetchingByGamesType = (state, type) => (
+  state.getIn(['pagination', 'gamesByType', 'isFetching', type], false)
+);
+
+export const getPageCountByGamesType = (state, type) => (
+  state.getIn(['pagination', 'gamesByType', type, 'pageCount'], 0)
+);
+
+export const getNextPageUrlByGamesType = (state, type) => (
+  state.getIn(['pagination', 'gamesByType', type, 'nextPageUrl'], `/games/${type}?`)
 );

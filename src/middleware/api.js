@@ -52,7 +52,7 @@ function postApi(endpoint, schema, token, body) {
     method: 'POST',
     headers: {
       'X-Access-Token': token,
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(body) })
@@ -62,7 +62,7 @@ function postApi(endpoint, schema, token, body) {
       if (!response.ok) {
         return Promise.reject(json);
       }
-      let camelizedJson = camelizeKeys(json);
+      const camelizedJson = camelizeKeys(json);
 
       return Object.assign({},
         normalize(camelizedJson, schema)
@@ -128,7 +128,21 @@ export default store => next => action => {
   next(actionWith({ type: requestType }));
 
   switch (requestMethod) {
+    case 'POST':
+      return postApi(endpoint, schema, token, body).then(
+      response => {
+        next(actionWith({ response, type: successType }));
+        if (typeof currentLibType === 'string') {
+          next(actionWithNewKey({ response, type: removeType }, { gamesType: currentLibType }));
+        }
+      },
+      error => next(actionWith({
+        type: appActions.SET_ERROR_MESSAGE,
+        error: error.message || 'Something bad happened',
+      }))
+    );
     case 'GET':
+    default:
       return getApi(endpoint, schema, token).then(
       response => next(actionWith({
         response,
@@ -136,19 +150,6 @@ export default store => next => action => {
       })),
       error => next(actionWith({
         type: failureType,
-        error: error.message || 'Something bad happened',
-      }))
-    );
-    case 'POST':
-      return postApi(endpoint, schema, token, body).then(
-      response => {
-        next(actionWith({ response, type: successType }));
-        if (typeof currentLibType == 'string') {
-          next(actionWithNewKey({ response, type: removeType }, { 'gamesType': currentLibType }));
-        }
-      },
-      error => next(actionWith({
-        type: appActions.SET_ERROR_MESSAGE,
         error: error.message || 'Something bad happened',
       }))
     );

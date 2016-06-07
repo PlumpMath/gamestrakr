@@ -32,9 +32,8 @@ paginate:{
 
 
 ## TODOS
-* add selector fns to reducers
-* write more tests
 * show games type in app bar
+* write more tests
 * give giant bomb credit
 * render improved/more info detail component
 * improve image styles
