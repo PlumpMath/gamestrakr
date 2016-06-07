@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Map } from 'immutable';
-import { getGamesTypeById } from '../selectors';
+import { gamesSelectors } from '../selectors';
 import { gamesActions } from '../actions';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import Tile from '../components/Tile';
@@ -14,7 +14,7 @@ class TileContainer extends Component {
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.state = {
       popOverOpen: false,
-      imageUrl: this.getGameImageUrl()
+      imageUrl: this.getGameImageUrl(),
     };
   }
 
@@ -28,7 +28,7 @@ class TileContainer extends Component {
   }
 
   handleImageError = () => {
-    this.setState({imageUrl: placeholderImageUrl});
+    this.setState({ imageUrl: placeholderImageUrl });
   }
 
   handleTileTap = (e) => {
@@ -78,7 +78,7 @@ TileContainer.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  gamesType: getGamesTypeById(state, ownProps.game.get('name')),
+  gamesType: gamesSelectors.getTypeById(state, ownProps.game.get('name')),
 });
 
 export default connect(mapStateToProps, {

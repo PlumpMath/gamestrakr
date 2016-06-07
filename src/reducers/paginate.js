@@ -20,11 +20,13 @@ export default function paginate({ types, mapActionToKey }) {
     nextPageUrl: undefined,
     pageCount: 0,
     ids: OrderedSet(),
+    errorMessage: null,
   }), action) {
     switch (action.type) {
       case requestType:
         return state.merge({
           isFetching: true,
+          errorMessage: null,
         });
       case successType:
         return state.merge({
@@ -32,10 +34,12 @@ export default function paginate({ types, mapActionToKey }) {
           ids: state.get('ids').concat(action.response.result),
           nextPageUrl: action.response.nextPageUrl,
           pageCount: state.get('pageCount') + 1,
+          errorMessage: null,
         });
       case failureType:
         return state.merge({
           isFetching: false,
+          errorMessage: action.errorMessage,
         });
       default:
         return state;

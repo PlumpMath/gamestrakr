@@ -7,7 +7,7 @@ import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import { connect } from 'react-redux';
-import { getGamesTypeById, getGameById } from '../selectors';
+import { gamesSelectors } from '../selectors';
 import { gamesActions } from '../actions/';
 
 const placeholderImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=38&txt=GamesTrakr&w=600&h=250&txttrack=0';
@@ -17,20 +17,20 @@ class Detail extends Component {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     this.state = {
-      imageUrl: this.getGameImageUrl()
-    }
+      imageUrl: this.getGameImageUrl(),
+    };
   }
 
   componentWillMount() {
-    const {game} = this.props;
+    const { game } = this.props;
     if (!game) {
       this.fetchData(this.props);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps && nextProps.game){
-      this.setState({imageUrl: this.getGameImageUrl(nextProps.game)});
+    if (nextProps && nextProps.game) {
+      this.setState({ imageUrl: this.getGameImageUrl(nextProps.game) });
     }
   }
 
@@ -52,7 +52,7 @@ class Detail extends Component {
   }
 
   handleImageError = () => {
-    this.setState({imageUrl: placeholderImageUrl})
+    this.setState({ imageUrl: placeholderImageUrl });
   }
 
   renderCardActions = () => {
@@ -89,7 +89,7 @@ class Detail extends Component {
             <CardMedia
               overlay={<CardTitle title={game.get('name')} subtitle={game.get('deck')} />}
             >
-              <img src={this.state.imageUrl} onError={this.handleImageError} />
+              <img src={this.state.imageUrl} role="presentation" onError={this.handleImageError} />
             </CardMedia>
             <CardTitle title={game.get('name')} subtitle={game.get('deck')} />
             <CardText
@@ -120,6 +120,7 @@ Detail.contextTypes = {
 
 Detail.propTypes = {
   game: PropTypes.instanceOf(Map),
+  gamesType: PropTypes.string,
   gamesByType: PropTypes.instanceOf(Map),
   saveGameByType: PropTypes.func.isRequired,
 };
@@ -128,8 +129,8 @@ function mapStateToProps(state, ownProps) {
   const gameId = ownProps.params.name;
 
   return {
-    game: getGameById(state, gameId),
-    gamesType: getGamesTypeById(state, gameId)
+    game: gamesSelectors.getGameById(state, gameId),
+    gamesType: gamesSelectors.getTypeById(state, gameId),
   };
 }
 

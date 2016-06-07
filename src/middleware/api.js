@@ -1,7 +1,6 @@
 import { Schema, arrayOf, normalize } from 'normalizr';
 import { camelizeKeys } from 'humps';
 import 'isomorphic-fetch';
-import { appActions } from '../actions/';
 
 // Extracts the next page URL from API response.
 function getNextPageUrl(response) {
@@ -137,7 +136,7 @@ export default store => next => action => {
         }
       },
       error => next(actionWith({
-        type: appActions.SET_ERROR_MESSAGE,
+        type: failureType,
         error: error.message || 'Something bad happened',
       }))
     );

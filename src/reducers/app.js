@@ -26,14 +26,6 @@ function setGridCols(state, size) {
   }
 }
 
-function resetErrorMessage(state) {
-  return state.set('errorMessage', null);
-}
-
-function setErrorMessage(state, error) {
-  return state.set('errorMessage', error);
-}
-
 export default function app(state = fromJS({
   leftDrawerOpen: false,
   itemsPerPage: 24,
@@ -49,10 +41,6 @@ export default function app(state = fromJS({
       return setItemsPerPage(state, action.num);
     case appActions.SET_GRID_COLS:
       return setGridCols(state, action.size);
-    case appActions.RESET_ERROR_MESSAGE:
-      return resetErrorMessage(state);
-    case appActions.SET_ERROR_MESSAGE:
-      return setErrorMessage(state, action.error);
     default:
       return state;
   }

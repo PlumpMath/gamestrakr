@@ -1,10 +1,6 @@
 import { CALL_API, Schemas } from '../middleware/api';
 import { libTypes } from '../constants';
-import {
-  getIsFetchingByGamesType,
-  getPageCountByGamesType,
-  getNextPageUrlByGamesType,
-} from '../selectors';
+import { gamesSelectors } from '../selectors';
 
 export const GAMES_REQUEST = 'GAMES_REQUEST';
 export const GAMES_SUCCESS = 'GAMES_SUCCESS';
@@ -39,9 +35,9 @@ const fetchGames = (gamesType, nextPageUrl) => ({
 // Bails out if page is cached and user didn’t specifically request next page.
 // Relies on Redux Thunk middleware.
 export const loadGamesByType = (type, nextPage) => (dispatch, getState) => {
-  const nextPageUrl = getNextPageUrlByGamesType(getState(), type);
-  const pageCount = getPageCountByGamesType(getState(), type);
-  const isFetching = getIsFetchingByGamesType(getState(), type);
+  const nextPageUrl = gamesSelectors.getNextPageUrl(getState(), type);
+  const pageCount = gamesSelectors.getPageCount(getState(), type);
+  const isFetching = gamesSelectors.getIsFetching(getState(), type);
 
   if (isFetching || (pageCount > 0 && !nextPage)) {
     return null;
