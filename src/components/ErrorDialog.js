@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
-const ErrorDialog = (errorMessage, onDismiss, onRetry) => (
+const ErrorDialog = ({ errorMessage, onDismiss, onRetry }) => (
   <Dialog
-    actions={
-      [<FlatButton
+    actions={<div>
+      <FlatButton
         label="Cancel"
         primary
         onTouchTap={onDismiss}
-      />, <FlatButton
+      />
+      <FlatButton
         label="Retry"
         primary
         onTouchTap={onRetry}
-      />]
+      />
+    </div>
     }
     modal={false}
     style={{ color: '#fff', zIndex: '3000' }}
@@ -23,6 +25,12 @@ const ErrorDialog = (errorMessage, onDismiss, onRetry) => (
     {errorMessage}
   </Dialog>
 );
+
+ErrorDialog.propTypes = {
+  errorMessage: PropTypes.string.isRequired,
+  onDismiss: PropTypes.func.isRequired,
+  onRetry: PropTypes.func.isRequired,
+};
 
 export default ErrorDialog;
 

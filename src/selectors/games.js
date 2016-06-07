@@ -42,5 +42,5 @@ export const getNextPageUrl = (state, type) => (
 );
 
 export const getErrorMessage = (state, type) => (
-  state.getIn(['pagination', 'gamesByType', type, 'errorMessag'])
+  state.getIn(['pagination', 'gamesByType', type, 'errorMessage'])
 );

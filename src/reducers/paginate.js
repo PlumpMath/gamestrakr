@@ -39,7 +39,7 @@ export default function paginate({ types, mapActionToKey }) {
       case failureType:
         return state.merge({
           isFetching: false,
-          errorMessage: action.errorMessage,
+          errorMessage: action.error,
         });
       default:
         return state;

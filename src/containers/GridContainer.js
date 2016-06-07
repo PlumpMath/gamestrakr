@@ -25,11 +25,20 @@ class GridContainer extends Component {
   }
 
   fetchData(props) {
-    const { gamesType, userToken } = props;
-    props.loadGamesByType(gamesType);
+    const { gamesType, userToken, loadGamesByType } = props;
+    loadGamesByType(gamesType);
     if (userToken) {
-      libTypes.map(type => props.loadGamesByType(type));
+      libTypes.map(type => loadGamesByType(type));
     }
+  }
+
+  handleRetry = () => {
+    const { gamesType, loadGamesByType } = this.props;
+    loadGamesByType(gamesType);
+  }
+
+  handleDismiss = () => {
+    this.context.router.push('/');
   }
 
   handleLoadMoreClick = () => {
@@ -45,11 +54,17 @@ class GridContainer extends Component {
       <Grid
         onLoadMoreClick={this.handleLoadMoreClick}
         renderTile={this.renderTile}
+        onRetry={this.handleRetry}
+        onDismiss={this.handleDismiss}
         {...this.props}
       />
     );
   }
 }
+
+GridContainer.contextTypes = {
+  router: React.PropTypes.object.isRequired,
+};
 
 GridContainer.propTypes = {
   gamesType: PropTypes.string.isRequired,
