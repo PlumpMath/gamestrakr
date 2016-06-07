@@ -16,7 +16,7 @@ export const getGamesByType = createSelector(
 );
 
 export const getGamesPaginationByType = (state, key) => (
-  state.getIn(['gamesByType', key], Map())
+  state.getIn(['pagination', 'gamesByType', key], Map())
 );
 
 export const getGamesTypeById = (state, id) => (

@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, IndexRedirect, Redirect } from 'react-router';
 import App from './containers/App';
 import Library from './components/Library';
-import GridPage from './containers/GridPage';
+import GridContainer from './containers/GridContainer';
 import Auth from './containers/Auth';
 import GameDetails from './containers/Detail';
 
@@ -11,10 +11,10 @@ const routes = (<Route path="/" component={App}>
 
   <Redirect from="/library" to="library/playing" />
 
-  <Route path="library/:gamesType" components={{ main: GridPage, subNav: Library }} />
+  <Route path="library/:gamesType" components={{ main: GridContainer, subNav: Library }} />
 
   <Redirect from="/games" to="games/recent" />
-  <Route path="games/:gamesType" components={{ main: GridPage }} />
+  <Route path="games/:gamesType" components={{ main: GridContainer}} />
 
   <Route path="/game/:name" components={{ main: GameDetails }} />
 

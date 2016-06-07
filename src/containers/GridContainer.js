@@ -8,7 +8,7 @@ import { libTypes } from '../constants';
 import { getGamesPaginationByType, getGamesByType } from '../selectors';
 import TileContainer from '../containers/TileContainer';
 
-class GridPage extends Component {
+class GridContainer extends Component {
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
@@ -54,7 +54,7 @@ class GridPage extends Component {
   }
 }
 
-GridPage.propTypes = {
+GridContainer.propTypes = {
   gamesType: PropTypes.string.isRequired,
   gamesByType: PropTypes.oneOfType([
     PropTypes.instanceOf(OrderedSet),
@@ -84,5 +84,5 @@ function mapStateToProps(state, ownProps) {
 export default connect(mapStateToProps, {
   loadGamesByType: gamesActions.loadGamesByType,
 }
-)(GridPage);
+)(GridContainer);
 
