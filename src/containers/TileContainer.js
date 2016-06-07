@@ -6,7 +6,7 @@ import { gamesActions } from '../actions';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import Tile from '../components/Tile';
 
-const placeholderImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=38&txt=GamesTrackr&w=450&h=300&txttrack=0';
+const placeholderImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=38&txt=GamesTrakr&w=450&h=300&txttrack=0';
 
 class TileContainer extends Component {
   constructor(props) {

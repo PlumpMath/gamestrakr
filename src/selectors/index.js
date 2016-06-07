@@ -20,11 +20,11 @@ export const getGamesPaginationByType = (state, key) => (
 );
 
 export const getGamesTypeById = (state, id) => (
-  state.getIn(['pagination', 'gamesByType'])
+  state.getIn(['pagination', 'gamesByType'], Map())
   .filter((v, k) => libTypes.includes(k))
   .findKey((v) => v.hasIn(['ids', id]))
 );
 
-// export const getGameById = (state, id) => (
-//   state.getIn(['games', id])
-// );
+export const getGameById = (state, id) => (
+  state.getIn(['entities', 'games', id])
+);
