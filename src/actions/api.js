@@ -41,7 +41,7 @@ export function getApi(endpoint, schema, getState) {
     });
 }
 
-function postApi(endpoint, body) {
+function postApi(endpoint, body, schema, getState) {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint;
   const token = store.getState().getIn(['user', 'token']);
   if (!token) {

@@ -2,11 +2,13 @@ import schemas from './schema';
 import * as api from './api';
 import { libTypes } from '../constants';
 import { gamesSelectors } from '../selectors';
+import { normalize } from 'normalizr';
 
 export const GAMES_REQUEST = 'GAMES_REQUEST';
 export const GAMES_SUCCESS = 'GAMES_SUCCESS';
 export const GAMES_FAILURE = 'GAMES_FAILURE';
 export const GAMES_REMOVE = 'GAMES_REMOVE';
+
 export const GAME_SUCCESS = 'GAME_SUCCESS';
 
 const gamesUrl = (baseUrl) => state => {
@@ -59,38 +61,8 @@ export const loadGameByName = (name) => (dispatch, getState) => {
   }
 
   api.getApi(`/games/by_name?name=${name}`, schemas.GAME_ARRAY, getState).then(
-    response => dispatch({ type: GAME_SUCCESS, response }));
-};
-
-const postGame = (game, gamesType, postUrl) => ({
-  gamesType,
-  [CALL_API]: {
-    types: [GAMES_REQUEST, GAMES_SUCCESS, GAMES_FAILURE, GAMES_REMOVE],
-    endpoint: postUrl,
-    requestMethod: 'POST',
-    body: { game: game.toJS() },
-    schema: Schemas.GAME_ARRAY,
-  },
-});
-
-const saveGame = (game, gamesType) => (dispatch, getState) => {
-  const currentLibType = gamesSelectors.getTypeById(getState(), game.get('name'));
-
-  if (typeof currentLibType === 'string') {
-    dispatch({
-      gamesType: currentLibType,
-      type: GAMES_REMOVE,
-      response: {result: [game.get('name')]}
-    });
-  }
-
-  dispatch({
-    gamesType,
-    type: GAMES_SUCCESS,
-    response: {result: [game.get('name')]}
-  });
-
-  return Promise.resolve();
+    response => dispatch({ type: GAME_SUCCESS, response })
+  );
 };
 
 export const saveGameByType = (game, gamesType) => (dispatch, getState) => {
@@ -98,10 +70,31 @@ export const saveGameByType = (game, gamesType) => (dispatch, getState) => {
     return null;
   }
   const postUrl = `/games/${gamesType}`;
-  dispatch(saveGame(game, gamesType));
+  const currentLibType = gamesSelectors.getTypeById(getState(), game.get('name'));
 
-  if(getState().getIn(['user', 'token'])) dispatch(postGame(game, gamesType, postUrl));
+  if (typeof currentLibType === 'string') {
+    dispatch({
+      gamesType: currentLibType,
+      type: GAMES_REMOVE,
+      response: normalize(game.toJS(), schemas.GAME)
+    });
+  }
 
-  return Promise.resolve();
+  if(getState().getIn(['user', 'token'])){
+    api.postApi(postUrl, {game: game.toJS()}, schemas.GAME, getState).then(
+      response => dispatch({
+      gamesType,
+      type: GAMES_SUCCESS,
+      response
+    }));
+  } else {
+    // allow anon users to save games temporarily
+    dispatch({
+      gamesType,
+      type: GAMES_SUCCESS,
+      response: normalize(game.toJS(), schemas.GAME)
+    })
+  }
+
 };
 

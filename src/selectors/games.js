@@ -24,7 +24,7 @@ export const getPagination = (state, type) => (
 );
 
 export const getTypeById = (state, id) => (
-  state.getIn(['games'], Map())
+  state.getIn(['games', 'byType'], Map())
   .filter((v, k) => libTypes.includes(k))
   .findKey((v) => v.hasIn(['ids', id]))
 );

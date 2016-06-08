@@ -4,7 +4,7 @@ import { Map, OrderedSet } from 'immutable';
 // and a function telling how to extract the key from an action.
 export default function paginate({ types, mapActionToKey }) {
   if (!Array.isArray(types) || types.length !== 4) {
-    throw new Error('Expected types to be an array of three elements.');
+    throw new Error('Expected types to be an array of four elements.');
   }
   if (!types.every(t => typeof t === 'string')) {
     throw new Error('Expected types to be strings.');
