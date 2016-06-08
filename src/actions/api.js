@@ -31,7 +31,6 @@ export function getApi(endpoint, schema, getState) {
       if (!response.ok) {
         return Promise.reject(json);
       }
-
       const camelizedJson = camelizeKeys(json);
       const nextPageUrl = getNextPageUrl(response);
 

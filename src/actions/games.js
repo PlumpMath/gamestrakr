@@ -7,11 +7,7 @@ export const GAMES_REQUEST = 'GAMES_REQUEST';
 export const GAMES_SUCCESS = 'GAMES_SUCCESS';
 export const GAMES_FAILURE = 'GAMES_FAILURE';
 export const GAMES_REMOVE = 'GAMES_REMOVE';
-
-// Actions for fetching single game entity
-export const GAME_REQUEST = 'GAME_REQUEST';
 export const GAME_SUCCESS = 'GAME_SUCCESS';
-export const GAME_FAILURE = 'GAME_FAILURE';
 
 const gamesUrl = (baseUrl) => state => {
   if (state) {
@@ -33,37 +29,37 @@ export const loadGamesByType = (type, nextPage) => (dispatch, getState) => {
   if (isFetching || (pageCount > 0 && !nextPage)) {
     return null;
   }
-
-  return dispatch(api.getApi(gamesUrl(nextPageUrl), schemas.GAME_ARRAY, getState)).then(response => {
-    dispatch({
-      type: GAMES_SUCCESS,
-      gamesType: type,
-      response,
-    }),
-    dispatch({
-      type: GAMES_FAILURE,
-      gamesType: type,
-      response,
-    })
+  dispatch({
+    type: GAMES_REQUEST,
+    gamesType: type
   });
+
+  api.getApi(gamesUrl(nextPageUrl), schemas.GAME_ARRAY, getState).then(
+    response => dispatch({
+    type: GAMES_SUCCESS,
+    gamesType: type,
+    response,
+  }),
+  response => dispatch({
+    type: GAMES_FAILURE,
+    gamesType: type,
+    response,
+  }));
 };
 
 const fetchGame = (name) => ({
-  [CALL_API]: {
-    types: [GAME_REQUEST, GAME_SUCCESS, GAME_FAILURE],
     endpoint: `/games/by_name?name=${name}`,
-    requestMethod: 'GET',
     schema: Schemas.GAME_ARRAY,
-  },
 });
 
 export const loadGameByName = (name) => (dispatch, getState) => {
   // check if entities doesnt already contain game
-  if (gamesSelectors.getGameById(name)){
+  if (gamesSelectors.getGameById(getState(), name)){
     return null;
   }
 
-  return dispatch(fetchGame(name));
+  api.getApi(`/games/by_name?name=${name}`, schemas.GAME_ARRAY, getState).then(
+    response => dispatch({ type: GAME_SUCCESS, response }));
 };
 
 const postGame = (game, gamesType, postUrl) => ({

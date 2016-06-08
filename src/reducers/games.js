@@ -15,8 +15,8 @@ const games = combineReducers({
     ],
   }),
   byId: (state = Map(), action) => {
-    if (action.response && action.response.entities) {
-      return state.mergeDeep(action.response.entities);
+    if (action.response && action.response.entities && action.response.entities.games) {
+      return state.mergeDeep(action.response.entities.games);
     }
 
     return state;
