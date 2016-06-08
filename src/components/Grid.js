@@ -5,6 +5,7 @@ import startCase from 'lodash/startCase';
 import { GridList } from 'material-ui/GridList';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
+import ErrorDialog from './ErrorDialog';
 
 const styles = {
   root: {
@@ -65,18 +66,31 @@ export default class Grid extends Component {
 
   render() {
     const {
-      gamesByType, isFetching, gridCols, pageCount,
-      nextPageUrl, gamesType, renderTile,
+      gamesByType,
+      isFetching,
+      gridCols,
+      pageCount,
+      nextPageUrl,
+      gamesType,
+      renderTile,
+      errorMessage,
+      onRetry,
+      onDismiss,
     } = this.props;
+
+    const isLastPage = !nextPageUrl;
+
+    if (errorMessage) {
+      return <ErrorDialog errorMessage={errorMessage} onDismiss={onDismiss} onRetry={onRetry} />;
+    }
 
     const isEmpty = (!gamesByType || gamesByType.size === 0);
     if (isEmpty && isFetching) {
       return <CircularProgress style={styles.loader} size={2} />;
     }
 
-    const isLastPage = !nextPageUrl;
-    if (isEmpty && isLastPage) {
-      return <h1>{`No games saved as ${startCase(gamesType)}`}</h1>;
+    if (isEmpty) {
+      return <h1>{`No games found with type: ${startCase(gamesType)}`}</h1>;
     }
 
     return (
@@ -96,11 +110,14 @@ Grid.propTypes = {
   isFetching: PropTypes.bool,
   pageCount: PropTypes.number,
   nextPageUrl: PropTypes.string,
+  errorMessage: PropTypes.string,
   gamesByType: PropTypes.oneOfType([
     PropTypes.instanceOf(OrderedSet),
     PropTypes.instanceOf(List),
   ]),
   onLoadMoreClick: PropTypes.func.isRequired,
+  onDismiss: PropTypes.func.isRequired,
+  onRetry: PropTypes.func.isRequired,
   renderTile: PropTypes.func.isRequired,
   gridCols: PropTypes.number.isRequired,
   gamesType: PropTypes.string.isRequired,

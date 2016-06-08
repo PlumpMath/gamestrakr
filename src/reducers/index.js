@@ -1,12 +1,10 @@
 import { combineReducers } from 'redux-immutable';
 import app from './app';
-import entities from './entities';
-import pagination from './pagination';
+import games from './games';
 import user from './user';
 
 const rootReducer = combineReducers({
-  entities,
-  pagination,
+  games,
   app,
   user,
 });

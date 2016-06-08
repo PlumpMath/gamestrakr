@@ -1,13 +1,15 @@
-import { CALL_API, Schemas } from '../middleware/api';
+import schemas from '../schemas';
+import * as api from '../api';
 import { libTypes } from '../constants';
+import { gamesSelectors } from '../selectors';
+import { normalize } from 'normalizr';
 
 export const GAMES_REQUEST = 'GAMES_REQUEST';
 export const GAMES_SUCCESS = 'GAMES_SUCCESS';
 export const GAMES_FAILURE = 'GAMES_FAILURE';
 export const GAMES_REMOVE = 'GAMES_REMOVE';
-export const GAME_REQUEST = 'GAME_REQUEST';
-export const GAME_SUCCESS = 'GAME_SUCCESS';
-export const GAME_FAILURE = 'GAME_FAILURE';
+
+export const GAME_SEARCH_SUCCESS = 'GAME_SEARCH_SUCCESS';
 
 const gamesUrl = (baseUrl) => state => {
   if (state) {
@@ -18,73 +20,81 @@ const gamesUrl = (baseUrl) => state => {
   return baseUrl;
 };
 
-// Fetches a page of games by a type.
-// Relies on the custom API middleware defined in ../middleware/api.js.
-const fetchGames = (gamesType, nextPageUrl) => ({
-  gamesType,
-  [CALL_API]: {
-    types: [GAMES_REQUEST, GAMES_SUCCESS, GAMES_FAILURE],
-    endpoint: gamesUrl(nextPageUrl),
-    requestMethod: 'GET',
-    schema: Schemas.GAME_ARRAY,
-  },
-});
-
 // Fetches a page of games by type.
 // Bails out if page is cached and user didn’t specifically request next page.
 // Relies on Redux Thunk middleware.
 export const loadGamesByType = (type, nextPage) => (dispatch, getState) => {
-  const nextPageUrl = getState()
-    .getIn(['pagination', 'gamesByType', type, 'nextPageUrl'], `/games/${type}?`);
-  const pageCount = getState().getIn(['pagination', 'gamesByType', type, 'pageCount'], 0);
+  let nextPageUrl = gamesSelectors.getNextPageUrl(getState(), type);
+  const pageCount = gamesSelectors.getPageCount(getState(), type);
+  const isFetching = gamesSelectors.getIsFetching(getState(), type);
 
-  if (pageCount > 0 && !nextPage) {
+  if (isFetching || (pageCount > 0 && !nextPage)) {
     return null;
   }
+  dispatch({
+    type: GAMES_REQUEST,
+    gamesType: type
+  });
 
-  return dispatch(fetchGames(type, nextPageUrl));
+  api.getApi(gamesUrl(nextPageUrl), schemas.GAME_ARRAY, getState).then(
+    response => dispatch({
+    type: GAMES_SUCCESS,
+    gamesType: type,
+    response,
+  }),
+  response => dispatch({
+    type: GAMES_FAILURE,
+    gamesType: type,
+    response,
+  }));
 };
 
 const fetchGame = (name) => ({
-  [CALL_API]: {
-    types: [GAME_REQUEST, GAME_SUCCESS, GAME_FAILURE],
     endpoint: `/games/by_name?name=${name}`,
-    requestMethod: 'GET',
     schema: Schemas.GAME_ARRAY,
-  },
 });
 
 export const loadGameByName = (name) => (dispatch, getState) => {
   // check if entities doesnt already contain game
-  if (getState().getIn(['entities', 'games', name])) {
+  if (gamesSelectors.getGameById(getState(), name)){
     return null;
   }
 
-  return dispatch(fetchGame(name));
+  api.getApi(`/games/by_name?name=${name}`, schemas.GAME_ARRAY, getState).then(
+    response => dispatch({ type: GAME_SEARCH_SUCCESS, response })
+  );
 };
-
-const postGame = (game, gamesType, postUrl, currentLibType) => ({
-  gamesType,
-  [CALL_API]: {
-    types: [GAMES_REQUEST, GAMES_SUCCESS, GAMES_FAILURE, GAMES_REMOVE],
-    endpoint: postUrl,
-    requestMethod: 'POST',
-    body: { game: game.toJS() },
-    schema: Schemas.GAME_ARRAY,
-    currentLibType,
-  },
-});
 
 export const saveGameByType = (game, gamesType) => (dispatch, getState) => {
   if (!['name', 'image', 'apiDetailUrl'].every((k) => game.has(k))) {
     return null;
   }
   const postUrl = `/games/${gamesType}`;
-  const currentLibType = getState().getIn(['pagination', 'gamesByType'])
-    .filter((v, k) => libTypes.includes(k))
-    .findKey((v) => v.hasIn(['ids', game.get('name')]));
+  const currentLibType = gamesSelectors.getTypeById(getState(), game.get('name'));
 
+  if (typeof currentLibType === 'string') {
+    dispatch({
+      gamesType: currentLibType,
+      type: GAMES_REMOVE,
+      response: normalize(game.toJS(), schemas.GAME)
+    });
+  }
 
-  return dispatch(postGame(game, gamesType, postUrl, currentLibType));
+  if(getState().getIn(['user', 'token'])){
+    api.postApi(postUrl, {game: game.toJS()}, schemas.GAME, getState).then(
+      response => dispatch({
+      gamesType,
+      type: GAMES_SUCCESS,
+      response
+    }));
+  } else {
+    // allow anon users to save games temporarily
+    dispatch({
+      gamesType,
+      type: GAMES_SUCCESS,
+      response: normalize(game.toJS(), schemas.GAME)
+    })
+  }
+
 };
 

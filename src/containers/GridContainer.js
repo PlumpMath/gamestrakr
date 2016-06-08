@@ -5,7 +5,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 import Grid from '../components/Grid';
 import { gamesActions } from '../actions';
 import { libTypes } from '../constants';
-import { getGamesPaginationByType, getGamesByType } from '../selectors';
+import { gamesSelectors } from '../selectors';
 import TileContainer from '../containers/TileContainer';
 
 class GridContainer extends Component {
@@ -25,11 +25,24 @@ class GridContainer extends Component {
   }
 
   fetchData(props) {
-    const { gamesType, userToken } = props;
-    props.loadGamesByType(gamesType);
-    if (userToken) {
-      libTypes.map(type => props.loadGamesByType(type));
+    const { gamesType, userToken, loadGamesByType } = props;
+    if (libTypes.includes(gamesType) && !userToken) {
+      return null;
     }
+
+    loadGamesByType(gamesType);
+    if (userToken) {
+      libTypes.map(type => loadGamesByType(type));
+    }
+  }
+
+  handleRetry = () => {
+    const { gamesType, loadGamesByType } = this.props;
+    loadGamesByType(gamesType);
+  }
+
+  handleDismiss = () => {
+    this.context.router.push('/');
   }
 
   handleLoadMoreClick = () => {
@@ -45,14 +58,17 @@ class GridContainer extends Component {
       <Grid
         onLoadMoreClick={this.handleLoadMoreClick}
         renderTile={this.renderTile}
-        gridCols={this.props.gridCols}
-        gamesType={this.props.gamesType}
-        gamesByType={this.props.gamesByType}
-        {...this.props.pagination.toJS()}
+        onRetry={this.handleRetry}
+        onDismiss={this.handleDismiss}
+        {...this.props}
       />
     );
   }
 }
+
+GridContainer.contextTypes = {
+  router: React.PropTypes.object.isRequired,
+};
 
 GridContainer.propTypes = {
   gamesType: PropTypes.string.isRequired,
@@ -69,15 +85,18 @@ function mapStateToProps(state, ownProps) {
   const gamesType = ownProps.params.gamesType;
   const gridCols = state.getIn(['app', 'gridCols']);
   const userToken = state.getIn(['user', 'token']);
-  const gamesByType = getGamesByType(state, gamesType);
-  const pagination = getGamesPaginationByType(state, gamesType);
+
+  const gamesByType = gamesSelectors.getGamesByType(state, gamesType);
+  const pagination = gamesSelectors.getPagination(state, gamesType);
+  const errorMessage = gamesSelectors.getErrorMessage(state, gamesType);
 
   return {
     gridCols,
     userToken,
     gamesType,
-    pagination,
+    ...pagination.toJS(),
     gamesByType,
+    errorMessage,
   };
 }
 

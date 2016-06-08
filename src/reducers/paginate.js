@@ -4,7 +4,7 @@ import { Map, OrderedSet } from 'immutable';
 // and a function telling how to extract the key from an action.
 export default function paginate({ types, mapActionToKey }) {
   if (!Array.isArray(types) || types.length !== 4) {
-    throw new Error('Expected types to be an array of three elements.');
+    throw new Error('Expected types to be an array of four elements.');
   }
   if (!types.every(t => typeof t === 'string')) {
     throw new Error('Expected types to be strings.');
@@ -20,11 +20,13 @@ export default function paginate({ types, mapActionToKey }) {
     nextPageUrl: undefined,
     pageCount: 0,
     ids: OrderedSet(),
+    errorMessage: null,
   }), action) {
     switch (action.type) {
       case requestType:
         return state.merge({
           isFetching: true,
+          errorMessage: null,
         });
       case successType:
         return state.merge({
@@ -32,10 +34,12 @@ export default function paginate({ types, mapActionToKey }) {
           ids: state.get('ids').concat(action.response.result),
           nextPageUrl: action.response.nextPageUrl,
           pageCount: state.get('pageCount') + 1,
+          errorMessage: null,
         });
       case failureType:
         return state.merge({
           isFetching: false,
+          errorMessage: action.error,
         });
       default:
         return state;

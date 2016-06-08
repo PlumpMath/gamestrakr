@@ -10,8 +10,6 @@ import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Popover from 'material-ui/Popover';
 
-const placeholderImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=38&txt=GamesTrackr&w=450&h=300&txttrack=0';
-
 const styles = {
   menuItem: {
     textTransform: 'capitalize',
@@ -62,7 +60,7 @@ export default class Tile extends Component {
           </Popover>
         </IconButton>}
       >
-        <img src={imageUrl} onError={handleImageError} />
+        <img src={imageUrl} role="presentation" onError={handleImageError} />
       </GridTile>
     );
   }
@@ -74,6 +72,7 @@ Tile.propTypes = {
   handleTileTap: PropTypes.func.isRequired,
   handlePlusTap: PropTypes.func.isRequired,
   handleClosePopOver: PropTypes.func.isRequired,
+  handleImageError: PropTypes.func.isRequired,
   imageUrl: PropTypes.string.isRequired,
   gamesType: PropTypes.string,
   popOverOpen: PropTypes.bool,
