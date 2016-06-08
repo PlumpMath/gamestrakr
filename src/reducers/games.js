@@ -1,10 +1,11 @@
 import paginate from './paginate';
 import { gamesActions } from '../actions';
 import { combineReducers } from 'redux-immutable';
+import { Map } from 'immutable';
 
 // Updates the pagination data for different actions.
-const pagination = combineReducers({
-  gamesByType: paginate({
+const games = combineReducers({
+  byType: paginate({
     mapActionToKey: action => action.gamesType,
     types: [
       gamesActions.GAMES_REQUEST,
@@ -13,7 +14,14 @@ const pagination = combineReducers({
       gamesActions.GAMES_REMOVE,
     ],
   }),
+  byId: (state = Map(), action) => {
+    if (action.response && action.response.entities) {
+      return state.mergeDeep(action.response.entities);
+    }
+
+    return state;
+  }
 });
 
-export default pagination;
+export default games;
 

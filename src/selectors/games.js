@@ -3,44 +3,48 @@ import { Map, OrderedSet } from 'immutable';
 import { libTypes } from '../constants';
 
 const getGamesByTypeIds = (state, type) => (
-  state.getIn(['pagination', 'gamesByType', type, 'ids'], OrderedSet())
+  state.getIn(['games', 'byType', type, 'ids'], OrderedSet())
 );
 
 const getGamesEntities = (state) => (
-  state.getIn(['entities', 'games'], Map())
+  state.getIn(['games', 'byId'], Map())
 );
 
-export const getGames = createSelector(
+export const getGamesByType = createSelector(
   [getGamesByTypeIds, getGamesEntities],
-  (ids, games) => (ids.map(id => games.get(id)))
+  (ids, games) => {
+    if (ids.size > 0){
+      return ids.map(id => games.get(id))
+    }
+  }
 );
 
 export const getPagination = (state, type) => (
-  state.getIn(['pagination', 'gamesByType', type], Map())
+  state.getIn(['games', 'byType', type], Map())
 );
 
 export const getTypeById = (state, id) => (
-  state.getIn(['pagination', 'gamesByType'], Map())
+  state.getIn(['games'], Map())
   .filter((v, k) => libTypes.includes(k))
   .findKey((v) => v.hasIn(['ids', id]))
 );
 
 export const getGameById = (state, id) => (
-  state.getIn(['entities', 'games', id])
+  state.getIn(['games', 'byId', id])
 );
 
 export const getIsFetching = (state, type) => (
-  state.getIn(['pagination', 'gamesByType', type, 'isFetching'])
+  state.getIn(['games', 'byType', type, 'isFetching'])
 );
 
 export const getPageCount = (state, type) => (
-  state.getIn(['pagination', 'gamesByType', type, 'pageCount'], 0)
+  state.getIn(['games', 'byType', type, 'pageCount'], 0)
 );
 
 export const getNextPageUrl = (state, type) => (
-  state.getIn(['pagination', 'gamesByType', type, 'nextPageUrl'], `/games/${type}?`)
+  state.getIn(['games', 'byType', type, 'nextPageUrl'], `/games/${type}?`)
 );
 
 export const getErrorMessage = (state, type) => (
-  state.getIn(['pagination', 'gamesByType', type, 'errorMessage'])
+  state.getIn(['games', 'byType', type, 'errorMessage'])
 );

@@ -86,7 +86,7 @@ function mapStateToProps(state, ownProps) {
   const gridCols = state.getIn(['app', 'gridCols']);
   const userToken = state.getIn(['user', 'token']);
 
-  const gamesByType = gamesSelectors.getGames(state, gamesType);
+  const gamesByType = gamesSelectors.getGamesByType(state, gamesType);
   const pagination = gamesSelectors.getPagination(state, gamesType);
   const errorMessage = gamesSelectors.getErrorMessage(state, gamesType);
 

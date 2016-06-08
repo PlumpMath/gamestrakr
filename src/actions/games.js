@@ -1,4 +1,5 @@
-import { CALL_API, Schemas } from '../middleware/api';
+import schemas from './schema';
+import * as api from './api';
 import { libTypes } from '../constants';
 import { gamesSelectors } from '../selectors';
 
@@ -21,23 +22,11 @@ const gamesUrl = (baseUrl) => state => {
   return baseUrl;
 };
 
-// Fetches a page of games by a type.
-// Relies on the custom API middleware defined in ../middleware/api.js.
-const fetchGames = (gamesType, nextPageUrl) => ({
-  gamesType,
-  [CALL_API]: {
-    types: [GAMES_REQUEST, GAMES_SUCCESS, GAMES_FAILURE],
-    endpoint: gamesUrl(nextPageUrl),
-    requestMethod: 'GET',
-    schema: Schemas.GAME_ARRAY,
-  },
-});
-
 // Fetches a page of games by type.
 // Bails out if page is cached and user didn’t specifically request next page.
 // Relies on Redux Thunk middleware.
 export const loadGamesByType = (type, nextPage) => (dispatch, getState) => {
-  const nextPageUrl = gamesSelectors.getNextPageUrl(getState(), type);
+  let nextPageUrl = gamesSelectors.getNextPageUrl(getState(), type);
   const pageCount = gamesSelectors.getPageCount(getState(), type);
   const isFetching = gamesSelectors.getIsFetching(getState(), type);
 
@@ -45,7 +34,18 @@ export const loadGamesByType = (type, nextPage) => (dispatch, getState) => {
     return null;
   }
 
-  return dispatch(fetchGames(type, nextPageUrl));
+  return dispatch(api.getApi(gamesUrl(nextPageUrl), schemas.GAME_ARRAY, getState)).then(response => {
+    dispatch({
+      type: GAMES_SUCCESS,
+      gamesType: type,
+      response,
+    }),
+    dispatch({
+      type: GAMES_FAILURE,
+      gamesType: type,
+      response,
+    })
+  });
 };
 
 const fetchGame = (name) => ({
@@ -59,7 +59,7 @@ const fetchGame = (name) => ({
 
 export const loadGameByName = (name) => (dispatch, getState) => {
   // check if entities doesnt already contain game
-  if (getState().getIn(['entities', 'games', name])) {
+  if (gamesSelectors.getGameById(name)){
     return null;
   }
 

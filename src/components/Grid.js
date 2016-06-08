@@ -78,6 +78,8 @@ export default class Grid extends Component {
       onDismiss,
     } = this.props;
 
+    const isLastPage = !nextPageUrl;
+
     if (errorMessage) {
       return <ErrorDialog errorMessage={errorMessage} onDismiss={onDismiss} onRetry={onRetry} />;
     }
@@ -87,8 +89,7 @@ export default class Grid extends Component {
       return <CircularProgress style={styles.loader} size={2} />;
     }
 
-    const isLastPage = !nextPageUrl;
-    if (isEmpty && isLastPage) {
+    if (isEmpty) {
       return <h1>{`No games found with type: ${startCase(gamesType)}`}</h1>;
     }
 
