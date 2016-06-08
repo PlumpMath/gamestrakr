@@ -32,9 +32,6 @@ paginate:{
 
 
 ## TODOS
-* remove pagination store, make gamesByType store top level
-* remove entities store,
-* remove api middleware, just use thens with responses
 * write more tests
 * show games type in app bar
 * give giant bomb credit

@@ -41,9 +41,9 @@ export function getApi(endpoint, schema, getState) {
     });
 }
 
-function postApi(endpoint, body, schema, getState) {
+export function postApi(endpoint, body, schema, getState) {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint;
-  const token = store.getState().getIn(['user', 'token']);
+  const token = getState().getIn(['user', 'token']);
   if (!token) {
     return Promise.reject({ message: 'Must be signed in to save games to library' });
   }
@@ -63,8 +63,6 @@ function postApi(endpoint, body, schema, getState) {
       }
       const camelizedJson = camelizeKeys(json);
 
-      return Promise.resolve(Object.assign({},
-        normalize(camelizedJson, schema)
-      ));
+      return Promise.resolve(normalize(camelizedJson, schema));
     });
 }

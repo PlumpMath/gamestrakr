@@ -1,5 +1,5 @@
-import schemas from './schema';
-import * as api from './api';
+import schemas from '../schemas';
+import * as api from '../api';
 import { libTypes } from '../constants';
 import { gamesSelectors } from '../selectors';
 import { normalize } from 'normalizr';
@@ -9,7 +9,7 @@ export const GAMES_SUCCESS = 'GAMES_SUCCESS';
 export const GAMES_FAILURE = 'GAMES_FAILURE';
 export const GAMES_REMOVE = 'GAMES_REMOVE';
 
-export const GAME_SUCCESS = 'GAME_SUCCESS';
+export const GAME_SEARCH_SUCCESS = 'GAME_SEARCH_SUCCESS';
 
 const gamesUrl = (baseUrl) => state => {
   if (state) {
@@ -61,7 +61,7 @@ export const loadGameByName = (name) => (dispatch, getState) => {
   }
 
   api.getApi(`/games/by_name?name=${name}`, schemas.GAME_ARRAY, getState).then(
-    response => dispatch({ type: GAME_SUCCESS, response })
+    response => dispatch({ type: GAME_SEARCH_SUCCESS, response })
   );
 };
 
