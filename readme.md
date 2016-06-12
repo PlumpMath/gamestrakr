@@ -32,7 +32,8 @@ paginate:{
 
 
 ## TODOS
-* write more tests
+* update redux tests, write component tests
+* implement offline game storage with pouchdb
 * show games type in app bar
 * give giant bomb credit
 * render improved/more info detail component
@@ -41,4 +42,4 @@ paginate:{
 * Render recently viewed list and currently playing list of games in nav
 * Make fetching of games more customizeable(genre, search, platform, etc)
 * Enable users to rank games
-* improve loader
+* improve loaders

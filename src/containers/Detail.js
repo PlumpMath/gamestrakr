@@ -4,8 +4,6 @@ import { libTypes } from '../constants';
 import { Map } from 'immutable';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon';
-import IconButton from 'material-ui/IconButton';
 import { connect } from 'react-redux';
 import { gamesSelectors } from '../selectors';
 import { gamesActions } from '../actions/';
@@ -78,11 +76,15 @@ class Detail extends Component {
     if (game) {
       return (
         <div className="game-detail-ctr">
-          <IconButton className="detail-go-back-btn" onClick={() => this.context.router.goBack()}>
-            <FontIcon className="material-icons" color="black" >arrow_back</FontIcon>
-          </IconButton>
+          <i
+            className="material-icons detail-go-back-btn"
+            onClick={() => this.context.router.goBack()}
+          >
+            arrow_back
+          </i>
           <Card className="game-detail-content">
             <CardHeader
+              className="game-detail-header"
               title={game.get('name')}
               subtitle={game.get('deck')}
             />
@@ -103,11 +105,11 @@ class Detail extends Component {
 
     return (
       <div className="game-detail-ctr">
-        <IconButton className="detail-go-back-btn" onClick={this.handleGoBack}>
-          <FontIcon className="material-icons" color="black" >arrow_back</FontIcon>
-        </IconButton>
+        <i className="material-icons detail-go-back-btn" onClick={this.handleGoBack}>
+          arrow_back
+        </i>
         <Card className="game-detail-content">
-          <h1>Loading</h1>
+          <h1 className="game-detail-loader">Loading</h1>
         </Card>
       </div>
     );
